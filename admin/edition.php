@@ -23,7 +23,13 @@ if ($id !== '' && $idx === null) {
     redirect('liste.php?c=' . $c);
 }
 $item = $idx !== null ? array_replace(defaults_of($def['fields']), $items[$idx]) : defaults_of($def['fields']);
+if ($c === 'repertoire' && $idx === null && !empty($_GET['artiste'])) {
+    $item['artiste'] = true;
+}
 $listUrl = $def['list_url'] ?? 'liste.php?c=' . $c;
+if ($c === 'repertoire' && (!empty($_GET['artiste']) || ($idx !== null && est_artiste($items[$idx])))) {
+    $listUrl = 'repertoire.php?vue=artistes';
+}
 
 /** Adresse unique d'une exposition : nom de l'artiste + année. */
 function unique_slug(array $items, string $base, string $selfId): string

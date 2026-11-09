@@ -17,7 +17,7 @@ admin_start('Tableau de bord', 'index.php');
 <div class="tuiles">
   <a class="tuile" href="liste.php?c=expositions"><b><?= count(expositions()) ?></b><span>expositions publiées</span></a>
   <a class="tuile" href="candidatures.php"><b><?= count($nouvelles) ?></b><span>candidature<?= count($nouvelles) > 1 ? 's' : '' ?> à lire</span></a>
-  <a class="tuile" href="newsletter.php"><b><?= $inscrits ?></b><span>inscrit<?= $inscrits > 1 ? 's' : '' ?> à la newsletter</span></a>
+  <a class="tuile" href="newsletter.php"><b><?= $inscrits ?></b><span>inscrit<?= $inscrits > 1 ? 's' : '' ?> au programme</span></a>
   <a class="tuile" href="liste.php?c=expositions"><b><?= count($brouillons) ?></b><span>brouillon<?= count($brouillons) > 1 ? 's' : '' ?></span></a>
 </div>
 

@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $idx !== null) {
         $opts = schema()['collections']['repertoire']['fields']['discipline']['options'];
         $a = array_replace(defaults_of(schema()['collections']['repertoire']['fields']), [
             'id' => new_id(), 'nom' => $c['nom'], 'email' => $c['email'], 'telephone' => $c['telephone'],
-            'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien'], 'groupes' => 'Candidat',
+            'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien'], 'groupes' => 'Candidat', 'artiste' => true,
             'notes' => 'Candidature du ' . fr_date(substr($c['date'], 0, 10), 'dmy') . ' : ' . mb_substr($c['message'], 0, 500),
         ]);
         $rep[] = $a;

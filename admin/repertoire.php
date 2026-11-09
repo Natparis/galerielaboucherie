@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'synch
     csrf_check();
     $st = copains_synchroniser();
     $st['erreur'] ? flash('Synchronisation impossible : ' . $st['erreur'] . '.', 'err') : flash('Synchronisé avec Copains d\'après. ' . copains_resume($st));
-    redirect('repertoire.php');
+    redirect(($_GET['vue'] ?? '') === 'artistes' ? 'repertoire.php?vue=artistes' : 'repertoire.php');
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['export'])) {
     $st = copains_synchro_auto();
@@ -22,7 +22,7 @@ $rep = repertoire();
 // Export CSV
 if (isset($_GET['export'])) {
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename="repertoire-artistes-' . date('Y-m-d') . '.csv"');
+    header('Content-Disposition: attachment; filename="repertoire-contacts-' . date('Y-m-d') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF");
     fputcsv($out, ['nom', 'email', 'telephone', 'discipline', 'ville', 'adresse', 'lien', 'groupes', 'notes'], ';');
@@ -70,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'impor
         // « Françoise Dubarry et Bernard Conte » → deux fiches
         foreach (preg_split('/\s+(?:et|&)\s+/u', $x['artiste']) as $nom) {
             $groupe = $x['date_debut'] > today() ? 'Programmé' : 'A exposé';
-            $n[fusionner($list, ['nom' => trim($nom), 'email' => '', 'discipline' => in_array($x['discipline'], $opts, true) ? $x['discipline'] : '', 'lien' => $x['lien']], $groupe)]++;
+            $n[fusionner($list, ['nom' => trim($nom), 'email' => '', 'discipline' => in_array($x['discipline'], $opts, true) ? $x['discipline'] : '', 'lien' => $x['lien'], 'artiste' => true], $groupe)]++;
         }
     }
     foreach (data_load('candidatures', []) as $c) {
-        $n[fusionner($list, ['nom' => $c['nom'], 'email' => $c['email'], 'telephone' => $c['telephone'], 'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien']], 'Candidat')]++;
+        $n[fusionner($list, ['nom' => $c['nom'], 'email' => $c['email'], 'telephone' => $c['telephone'], 'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien'], 'artiste' => true], 'Candidat')]++;
     }
     data_save('repertoire', $list);
     if (copains_actif()) {
@@ -89,7 +89,10 @@ $q = trim((string)($_GET['q'] ?? ''));
 $gr = (string)($_GET['groupe'] ?? '');
 $di = (string)($_GET['discipline'] ?? '');
 $or = (string)($_GET['origine'] ?? '');
-$aff = array_filter($rep, function ($a) use ($q, $gr, $di, $or) {
+$vueArtistes = ($_GET['vue'] ?? '') === 'artistes';
+$ici = $vueArtistes ? 'repertoire.php?vue=artistes' : 'repertoire.php';
+$aff = array_filter($rep, function ($a) use ($q, $gr, $di, $or, $vueArtistes) {
+    if ($vueArtistes && !est_artiste($a)) return false;
     if ($or !== '' && !in_array($or, origines_de($a), true)) return false;
     if ($q !== '' && mb_stripos($a['nom'] . ' ' . $a['email'] . ' ' . $a['ville'] . ' ' . $a['notes'] . ' ' . $a['groupes'] . ' ' . $a['style'], $q) === false) return false;
     if ($gr !== '' && !in_array($gr, groupes_de($a), true)) return false;
@@ -105,11 +108,11 @@ $disc = array_values(array_unique(array_filter(array_column($rep, 'discipline'))
 sort($disc);
 $sansEmail = count(array_filter($rep, fn($a) => $a['email'] === ''));
 
-admin_start('Répertoire des artistes', 'repertoire.php');
+admin_start($vueArtistes ? 'Artistes' : 'Répertoire des contacts', $vueArtistes ? 'repertoire.php?vue=artistes' : 'repertoire.php');
 ?>
 <div class="outils">
   <div class="btns-l">
-    <a class="btn" href="edition.php?c=repertoire"><?= icon('plus') ?> Ajouter un artiste</a>
+    <a class="btn" href="edition.php?c=repertoire<?= $vueArtistes ? '&amp;artiste=1' : '' ?>"><?= icon('plus') ?> <?= $vueArtistes ? 'Ajouter un artiste' : 'Ajouter un contact' ?></a>
     <form method="post" style="display:inline"><?= csrf_field() ?><button class="btn ligne" name="action" value="importer" data-confirmer="Créer ou compléter des fiches à partir des expositions et des candidatures ? (aucune fiche existante n'est effacée)">Importer expositions et candidatures</button></form>
     <a class="btn ligne" href="?export=1"><?= icon('download') ?> Exporter (CSV)</a>
   </div>
@@ -124,9 +127,9 @@ admin_start('Répertoire des artistes', 'repertoire.php');
 <?php else: ?>
 <p class="aide">Pour partager ce répertoire avec celui de Copains d'après, renseignez l'adresse et la clé de partage dans <a href="page.php?p=reglages">Coordonnées et réglages</a>.</p>
 <?php endif ?>
-<p class="aide">Fiches privées, jamais affichées sur le site. <?= count($rep) ?> artiste<?= count($rep) > 1 ? 's' : '' ?><?= $sansEmail ? " · $sansEmail sans e-mail" : '' ?>.</p>
+<p class="aide">Fiches privées, jamais affichées sur le site. <?php $nbA = count(array_filter($rep, 'est_artiste')); ?><?= $vueArtistes ? $nbA . ' artiste' . ($nbA > 1 ? 's' : '') . ' sur ' . count($rep) . ' contacts' : count($rep) . ' contact' . (count($rep) > 1 ? 's' : '') . ', dont ' . $nbA . ' artiste' . ($nbA > 1 ? 's' : '') ?><?= $sansEmail ? " · $sansEmail sans e-mail" : '' ?>.</p>
 
-<form class="filtres-adm" method="get">
+<form class="filtres-adm" method="get"><?php if ($vueArtistes): ?><input type="hidden" name="vue" value="artistes"><?php endif ?>
   <label class="sr-only" for="q">Rechercher</label><input id="q" type="search" name="q" value="<?= e($q) ?>" placeholder="Nom, ville, note…">
 <?php if (count($nbOrig) > 1 || copains_actif()): ?>
   <label class="sr-only" for="origine">Origine</label>
@@ -137,13 +140,13 @@ admin_start('Répertoire des artistes', 'repertoire.php');
   <label class="sr-only" for="discipline">Discipline</label>
   <select id="discipline" name="discipline"><option value="">Toutes disciplines</option><?php foreach ($disc as $d): ?><option<?= $di === $d ? ' selected' : '' ?>><?= e($d) ?></option><?php endforeach ?></select>
   <button class="btn ligne petit">Filtrer</button>
-  <?php if ($q !== '' || $gr !== '' || $di !== '' || $or !== ''): ?><a href="repertoire.php">Tout afficher</a><?php endif ?>
+  <?php if ($q !== '' || $gr !== '' || $di !== '' || $or !== ''): ?><a href="<?= e($ici) ?>">Tout afficher</a><?php endif ?>
 </form>
 
 <?php if (!$rep): ?>
-<div class="vide-etat">Le répertoire est vide. Ajoutez un artiste, ou importez d'un clic ceux des expositions et des candidatures.</div>
+<div class="vide-etat">Le répertoire est vide. Ajoutez un contact, ou importez d'un clic ceux des expositions et des candidatures.</div>
 <?php elseif (!$aff): ?>
-<p class="vide-etat">Aucun artiste ne correspond.</p>
+<p class="vide-etat">Aucun contact ne correspond.</p>
 <?php else: ?>
 <form method="get" action="ecrire.php" data-selection>
 <div class="barre-selection">

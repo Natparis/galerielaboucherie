@@ -117,7 +117,7 @@
       items.forEach(function (li) {
         var cb = li.querySelector('input');
         if (t === 'aucun') { cb.checked = false; return; }
-        var ok = o ? JSON.parse(li.dataset.origines).indexOf(o) > -1 : g ? JSON.parse(li.dataset.groupes).indexOf(g) > -1 : li.dataset.type === t;
+        var ok = o ? JSON.parse(li.dataset.origines).indexOf(o) > -1 : g ? JSON.parse(li.dataset.groupes).indexOf(g) > -1 : t === 'seuls-artistes' ? li.dataset.artiste === '1' : li.dataset.type === t;
         if (ok && li.dataset.abonne === '1') cb.checked = true;
       });
       maj();

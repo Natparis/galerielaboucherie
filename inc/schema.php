@@ -51,8 +51,8 @@ return [
         ],
 
         'repertoire' => [
-            'label' => 'Répertoire des artistes',
-            'singular' => 'un artiste',
+            'label' => 'Répertoire des contacts',
+            'singular' => 'un contact',
             'title' => 'nom',
             'list_url' => 'repertoire.php',
             'private' => true,
@@ -61,6 +61,7 @@ return [
             'sort' => 'nom',
             'fields' => [
                 'nom' => ['label' => 'Prénom et nom (ou nom d\'artiste)', 'type' => 'text', 'required' => true],
+                'artiste' => ['label' => 'C\'est un artiste', 'type' => 'checkbox', 'help' => 'La fiche apparaît alors dans « Artistes ». Les fiches venues des expositions, des candidatures ou de la Programmation de Copains le sont automatiquement.'],
                 'email' => ['label' => 'E-mail', 'type' => 'email', 'col' => 'half'],
                 'telephone' => ['label' => 'Téléphone', 'type' => 'tel', 'col' => 'half'],
                 'discipline' => ['label' => 'Discipline', 'type' => 'select', 'options' => $disciplines, 'col' => 'half'],
@@ -116,7 +117,7 @@ return [
                 'email_expediteur' => ['label' => 'Adresse d\'expédition des messages aux artistes', 'type' => 'email', 'help' => 'Idéalement une adresse du nom de domaine du site (ex. contact@galerielaboucherie.com), sinon les messages risquent d\'arriver en indésirables. Les réponses arrivent à l\'e-mail de contact.'],
                 'signature' => ['label' => 'Signature des messages', 'type' => 'textarea', 'rows' => 3, 'default' => "La galerie éphémère — La Boucherie\n39 grande rue, 18240 Léré\n06 73 98 32 61"],
                 'email_notification' => ['label' => 'E-mail qui reçoit les candidatures', 'type' => 'email', 'help' => 'Un message est envoyé à chaque nouvelle candidature (si l\'hébergeur autorise l\'envoi de mails).'],
-                'copains_url' => ['label' => 'Adresse du site Copains d\'après', 'type' => 'url', 'help' => 'Pour partager le répertoire des artistes. Ex. : https://www.copainsdapres.org/ — laisser vide pour ne pas partager.'],
+                'copains_url' => ['label' => 'Adresse du site Copains d\'après', 'type' => 'url', 'help' => 'Pour partager le répertoire des contacts. Ex. : https://www.copainsdapres.org/ — laisser vide pour ne pas partager.'],
                 'copains_cle' => ['label' => 'Clé de partage', 'type' => 'secret', 'help' => 'La même clé que $CLE_PARTAGE dans le fichier config.php de Copains d\'après. Laisser vide pour garder la clé actuelle.'],
                 'latitude' => ['label' => 'Latitude (carte)', 'type' => 'text', 'default' => '47.46866', 'col' => 'half'],
                 'longitude' => ['label' => 'Longitude (carte)', 'type' => 'text', 'default' => '2.86980', 'col' => 'half'],

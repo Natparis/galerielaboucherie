@@ -11,7 +11,7 @@ $news = data_load('newsletter', []);
 $dest = [];
 foreach ($rep as $a) {
     if ($a['email'] !== '') {
-        $dest['a:' . $a['id']] = ['nom' => $a['nom'], 'email' => $a['email'], 'groupes' => groupes_de($a), 'origines' => origines_de($a), 'abonne' => (bool)$a['abonne'], 'type' => 'artiste'];
+        $dest['a:' . $a['id']] = ['nom' => $a['nom'], 'email' => $a['email'], 'groupes' => groupes_de($a), 'origines' => origines_de($a), 'artiste' => est_artiste($a), 'abonne' => (bool)$a['abonne'], 'type' => 'artiste'];
     }
 }
 foreach ($news as $n) {
@@ -52,7 +52,7 @@ if (isset($_GET['msg'])) {
     $ok = count(array_filter($m['destinataires'], fn($d) => $d['ok']));
     admin_start('Message envoyé', 'ecrire.php');
     ?>
-<p class="fil"><a href="ecrire.php">← Écrire aux artistes</a></p>
+<p class="fil"><a href="ecrire.php">← Écrire</a></p>
 <div class="deux">
   <section class="bloc">
     <p class="aide">Envoyé le <?= fr_date(substr($m['date'], 0, 10), 'longy') ?> à <?= e(substr($m['date'], 11, 5)) ?> par <?= e($m['auteur']) ?></p>
@@ -157,8 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $groupes = tous_groupes($rep);
 $coches = array_flip($coches);
-admin_start('Écrire aux artistes', 'ecrire.php');
+admin_start('Écrire', 'ecrire.php');
 ?>
+<?= onglets_ecrire('ecrire') ?>
 <p class="aide">Chaque personne reçoit son propre e-mail (les autres destinataires restent invisibles). <code>{prenom}</code> et <code>{nom}</code> sont remplacés automatiquement. Les réponses arrivent à l'adresse de contact<?= $s['email'] ? ' (' . e($s['email']) . ')' : '' ?>.</p>
 <?php if (!$s['email_expediteur']): ?><div class="flash err">Conseil : renseignez une « adresse d'expédition » dans <a href="page.php?p=reglages">Coordonnées et réglages</a> pour que les messages n'arrivent pas en indésirables.</div><?php endif ?>
 
@@ -171,22 +172,23 @@ admin_start('Écrire aux artistes', 'ecrire.php');
       <p class="vide-etat">Aucun contact avec e-mail. Remplissez d'abord le <a href="repertoire.php">répertoire</a>.</p>
 <?php else: ?>
       <div class="raccourcis" aria-label="Sélection rapide">
-        <button type="button" class="puce-adm" data-choisir="artiste">Tous les artistes</button>
+        <button type="button" class="puce-adm" data-choisir="artiste">Tous les contacts du répertoire</button>
+        <button type="button" class="puce-adm" data-choisir="seuls-artistes">Tous les artistes</button>
 <?php $nbO = []; foreach ($dest as $d) foreach ($d['origines'] as $o) $nbO[$o] = ($nbO[$o] ?? 0) + 1;
       foreach (ORIGINES as $k => [$nom, $court, $coul]): if (empty($nbO[$k]) || count($nbO) < 2) continue; ?>        <button type="button" class="puce-adm origine-btn" style="--c:<?= $coul ?>" data-choisir-origine="<?= e($k) ?>"><?= e($nom) ?> (<?= $nbO[$k] ?>)</button>
 <?php endforeach ?>
 <?php foreach ($groupes as $g => $nb): ?>        <button type="button" class="puce-adm" data-choisir-groupe="<?= e($g) ?>"><?= e($g) ?> (<?= $nb ?>)</button>
 <?php endforeach ?>
-<?php if ($news): ?>        <button type="button" class="puce-adm" data-choisir="newsletter">Inscrits newsletter (<?= count($news) ?>)</button>
+<?php if ($news): ?>        <button type="button" class="puce-adm" data-choisir="newsletter">Inscrits au programme (<?= count($news) ?>)</button>
 <?php endif ?>
         <button type="button" class="puce-adm vider" data-choisir="aucun">Aucun</button>
       </div>
       <input type="search" class="filtre-dest" placeholder="Chercher un nom…" aria-label="Chercher un destinataire" data-filtre-dest>
       <ul class="liste-dest">
 <?php foreach ($dest as $k => $d): ?>
-        <li data-type="<?= $d['type'] ?>" data-origines="<?= e(json_encode($d['origines'])) ?>" data-groupes="<?= e(json_encode($d['groupes'], JSON_UNESCAPED_UNICODE)) ?>" data-abonne="<?= $d['abonne'] ? '1' : '0' ?>">
+        <li data-type="<?= $d['type'] ?>" data-artiste="<?= !empty($d['artiste']) ? '1' : '0' ?>" data-origines="<?= e(json_encode($d['origines'])) ?>" data-groupes="<?= e(json_encode($d['groupes'], JSON_UNESCAPED_UNICODE)) ?>" data-abonne="<?= $d['abonne'] ? '1' : '0' ?>">
           <label class="case"><input type="checkbox" name="dest[]" value="<?= e($k) ?>" data-email="<?= e($d['email']) ?>"<?= isset($coches[$k]) ? ' checked' : '' ?>>
-          <span><?= $d['nom'] ? '<strong>' . e($d['nom']) . '</strong> ' : '' ?><?= $d['type'] === 'artiste' ? badges_origine(['projets' => $d['origines']]) : '' ?><small><?= e($d['email']) ?><?= $d['type'] === 'newsletter' ? ' · newsletter' : '' ?><?= !$d['abonne'] ? ' · ne veut plus d\'envois groupés' : '' ?></small></span></label>
+          <span><?= $d['nom'] ? '<strong>' . e($d['nom']) . '</strong> ' : '' ?><?= $d['type'] === 'artiste' ? badges_origine(['projets' => $d['origines']]) : '' ?><small><?= e($d['email']) ?><?= $d['type'] === 'newsletter' ? ' · inscrit au programme' : '' ?><?= !$d['abonne'] ? ' · ne veut plus d\'envois groupés' : '' ?></small></span></label>
         </li>
 <?php endforeach ?>
       </ul>

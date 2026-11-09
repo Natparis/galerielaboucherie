@@ -27,9 +27,9 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 - **Articles de presse** : scan, PDF, lien, citation, « à la une »
 - **Pages du site** : tous les textes de chaque page (titres, paragraphes, étapes, frise, photos…)
 - **Candidatures** : lecture, photos jointes (privées), statut, note interne, création de l'exposition en un clic
-- **Répertoire des artistes** : fiches privées (contact, discipline, groupes, notes), import automatique depuis les expositions et candidatures, export CSV
+- **Répertoire des contacts** : fiches privées (contact, discipline, groupes, notes), import automatique depuis les expositions et candidatures, export CSV
 - **Répertoire partagé avec Copains d'après** : les fiches se synchronisent dans les deux sens avec le Répertoire de Copains d'après (fiches « Galerie éphémère »), via `partage.php` de leur site et une clé de partage commune. Nom, e-mail, téléphone et notes sont partagés ; discipline, style, groupes, photo restent propres à la galerie. Chaque fiche affiche son **origine** comme dans le Répertoire de Copains (Membres CdA, Sympathisants, Galerie, Grand Angle, Artistes), avec un filtre et une sélection rapide dans « Écrire ». Les artistes que la Programmation de Copains marque « La Boucherie » arrivent dans le groupe « Joue à La Boucherie ». Les origines visibles se règlent côté Copains (`$PARTAGE_PROJETS`). Mise en route : *Coordonnées et réglages* → adresse du site Copains + clé (identique à `$CLE_PARTAGE` de leur config.php).
-- **Écrire aux artistes** : un e-mail personnalisé (`{prenom}`) à une personne, à une sélection ou à tout un groupe ; historique des envois ; bouton « programme des prochaines expos » ; option « ouvrir dans ma messagerie »
+- **Écrire aux contacts** : un e-mail personnalisé (`{prenom}`) à une personne, à une sélection ou à tout un groupe ; historique des envois ; bouton « programme des prochaines expos » ; option « ouvrir dans ma messagerie »
 - **Newsletter** : inscription depuis l'accueil et le programme, envoi du programme aux inscrits avec lien de désinscription, export CSV
 - **Coordonnées et réglages** : adresse, téléphone, e-mails, réseaux sociaux, carte, mentions légales
 - **Comptes d'accès** : plusieurs personnes, changement de mot de passe

@@ -6,7 +6,7 @@ $list = data_load('newsletter', []);
 
 if (isset($_GET['export'])) {
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename="newsletter-la-boucherie-' . date('Y-m-d') . '.csv"');
+    header('Content-Disposition: attachment; filename="inscrits-programme-la-boucherie-' . date('Y-m-d') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF"); // pour Excel
     fputcsv($out, ['prenom', 'nom', 'email', 'date_inscription'], ';');
@@ -40,9 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $emails = implode(', ', array_column($list, 'email'));
-admin_start('Newsletter', 'newsletter.php');
+admin_start('Écrire', 'ecrire.php');
 ?>
-<p class="aide">Les personnes inscrites depuis le site (accueil et page Programme). Le bouton « Envoyer le programme aux inscrits » prépare un message avec les prochaines expos ; chaque inscrit le reçoit avec un lien de désinscription. Vous pouvez aussi exporter la liste vers un outil d'envoi (Brevo, Mailchimp…).</p>
+<?= onglets_ecrire('inscrits') ?>
+<p class="aide">Les personnes inscrites pour recevoir le programme depuis le site (accueil et page Programme). Le bouton « Envoyer le programme aux inscrits » prépare un message avec les prochaines expos ; chaque inscrit le reçoit avec un lien de désinscription. Vous pouvez aussi exporter la liste vers un outil d'envoi (Brevo, Mailchimp…).</p>
 
 <div class="outils">
   <a class="btn" href="?export=1"><?= icon('download') ?> Exporter (CSV pour Excel)</a>

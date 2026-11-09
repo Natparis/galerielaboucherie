@@ -267,7 +267,7 @@ function copains_artistes(array &$list, array $artistes, array $defaut, array &$
         if ($i === null) {
             $list[] = array_replace($defaut, [
                 'id' => new_id(), 'nom' => $ar['nom'], 'email' => $ar['email'] ?? '', 'telephone' => $ar['tel'] ?? '',
-                'style' => $ar['style'] ?? '', 'notes' => $note, 'groupes' => COPAINS_GROUPE_ARTISTES,
+                'style' => $ar['style'] ?? '', 'notes' => $note, 'groupes' => COPAINS_GROUPE_ARTISTES, 'artiste' => true,
                 'partage' => true, 'cda_artiste_id' => $ar['id'],
             ]);
             $stats['artistes_ajout']++;
@@ -276,6 +276,7 @@ function copains_artistes(array &$list, array $artistes, array $defaut, array &$
         $a = &$list[$i];
         $a['cda_artiste_id'] = $ar['id'];
         $a['groupes'] = avec_groupe((string)$a['groupes'], COPAINS_GROUPE_ARTISTES, true);
+        $a['artiste'] = true;
         foreach (['email' => 'email', 'telephone' => 'tel', 'style' => 'style'] as $loc => $dist) {
             if (trim((string)($a[$loc] ?? '')) === '' && ($ar[$dist] ?? '') !== '') {
                 $a[$loc] = $ar[$dist];

@@ -52,7 +52,7 @@ admin_start('Sauvegarde', 'sauvegarde.php');
 ?>
 <section class="bloc">
   <h2>Télécharger une sauvegarde complète</h2>
-  <p>L'archive contient tous les contenus du site (expositions, pages, presse, candidatures, newsletter) et toutes les images. Les mots de passe n'y sont pas inclus.</p>
+  <p>L'archive contient tous les contenus du site (expositions, pages, presse, candidatures, contacts, inscrits au programme) et toutes les images. Les mots de passe n'y sont pas inclus.</p>
   <p>Contenus : <?= $mo(taille_dossier(DATA_DIR)) ?> · Images : <?= $mo(taille_dossier(UPLOAD_DIR)) ?></p>
   <p><a class="btn" href="?telecharger=1"><?= icon('download') ?> Télécharger la sauvegarde (.zip)</a></p>
   <p class="aide">Conseil : une sauvegarde par mois, rangée sur votre ordinateur ou une clé USB. Pour restaurer, il suffit de recopier les dossiers <code>data</code> et <code>uploads</code> sur l'hébergement (par FTP).</p>

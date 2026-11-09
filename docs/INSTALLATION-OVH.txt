@@ -8,8 +8,8 @@ Le site comprend deux parties :
     exposer, le lieu, presse ;
   • l'ESPACE GALERIE (galerielaboucherie.com/admin) : on y gère tout
     sans toucher au code — expositions, textes des pages, presse,
-    candidatures, répertoire des artistes, envois d'e-mails,
-    newsletter, coordonnées, comptes, sauvegarde.
+    candidatures, répertoire des contacts, envois d'e-mails,
+    inscrits au programme, coordonnées, comptes, sauvegarde.
 
 Pas de base de données : tout est enregistré dans des fichiers,
 dans les dossiers « data » (les contenus) et « uploads » (les
@@ -118,7 +118,8 @@ Espace galerie > « Coordonnées et réglages » :
 Puis vérifiez :
   • page « Exposer » : envoyez une candidature d'essai, elle doit
     apparaître dans « Candidatures » (et arriver par e-mail) ;
-  • accueil : inscrivez-vous à la newsletter, puis « Newsletter »
+  • accueil : inscrivez-vous pour recevoir le programme, puis
+    « Écrire » > onglet « Inscrits au programme »
     > « Envoyer le programme aux inscrits » : le message doit
     arriver, avec un lien de désinscription en bas ;
   • supprimez ensuite ces essais.
@@ -133,7 +134,7 @@ ou supprimez-les librement depuis l'espace galerie. Deux fiches
 ÉTAPE 6 — Partager le répertoire avec Copains d'après
 ------------------------------------------------------------
 Facultatif. Les fiches « Galerie éphémère » du Répertoire de
-Copains d'après et le répertoire des artistes de la galerie se
+Copains d'après et le répertoire des contacts de la galerie se
 synchronisent alors dans les deux sens.
 
 1. Côté Copains d'après : la mise à jour « partage » doit être
@@ -142,7 +143,7 @@ synchronisent alors dans les deux sens.
 2. Ici : « Coordonnées et réglages » >
      Adresse du site Copains d'après : https://www.copainsdapres.org/
      Clé de partage : EXACTEMENT la même que dans leur config.php
-3. « Répertoire des artistes » : un bandeau vert « Partagé avec
+3. « Répertoire des contacts » : un bandeau vert « Partagé avec
    Copains d'après » confirme que tout marche.
 
 
@@ -181,7 +182,7 @@ EN CAS DE PROBLÈME
   recommencez (vous étiez resté longtemps sans rien faire).
 • Une image ne part pas : elle dépasse 8 Mo, réduisez-la.
 • Les e-mails n'arrivent pas : vérifiez l'adresse d'expédition
-  (étape 5) et les indésirables. Dans « Écrire aux artistes »,
+  (étape 5) et les indésirables. Dans « Écrire aux contacts »,
   le bouton « Ouvrir dans ma messagerie » dépanne en attendant.
 • Bandeau rouge dans le répertoire : la connexion avec Copains
   d'après ne marche pas (le message dit pourquoi : clé refusée,

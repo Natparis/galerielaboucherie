@@ -63,6 +63,7 @@ function icon(string $name): string
         'copy' => '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
         'download' => '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
         'menu' => '<path d="M3 6h18M3 12h18M3 18h18"/>',
+        'palette' => '<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.9 1.2-1.8-.5-1-.1-2.2 1.1-2.2H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/>',
     ][$name] ?? '';
     return '<svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $p . '</svg>';
 }
@@ -79,10 +80,10 @@ function admin_menu(): array
         ],
         'Modifier les pages du site' => [],
         'Contacts' => [
-            ['repertoire.php', 'Répertoire des artistes', 'users', 0],
-            ['ecrire.php', 'Écrire aux artistes', 'mail', 0],
+            ['repertoire.php?vue=artistes', 'Artistes', 'palette', 0],
+            ['repertoire.php', 'Répertoire des contacts', 'users', 0],
+            ['ecrire.php', 'Écrire', 'mail', 0],
             ['candidatures.php', 'Candidatures', 'inbox', $nouvelles],
-            ['newsletter.php', 'Newsletter', 'news', 0],
         ],
         'Réglages' => [
             ['page.php?p=reglages', 'Coordonnées et réglages', 'settings', 0],
@@ -394,6 +395,20 @@ function repertoire(): array
     return $list;
 }
 
+const GROUPES_ARTISTES = ['A exposé', 'Programmé', 'Candidat', 'Joue à La Boucherie'];
+
+/** Une fiche du répertoire est-elle un artiste ? */
+function est_artiste(array $a): bool
+{
+    if (!empty($a['artiste']) || trim((string)($a['discipline'] ?? '')) !== '' || trim((string)($a['style'] ?? '')) !== '') {
+        return true;
+    }
+    if (in_array('artistes', (array)($a['projets'] ?? []), true)) {
+        return true;
+    }
+    return (bool)array_intersect(groupes_de($a), GROUPES_ARTISTES);
+}
+
 function groupes_de(array $a): array
 {
     return array_values(array_filter(array_map('trim', explode(',', (string)$a['groupes'])), 'strlen'));
@@ -464,4 +479,16 @@ function apercu_panneau(): string
   <p class="apercu-note">Rien n\'est publié tant que vous n\'avez pas cliqué sur « Enregistrer ».</p>
 </aside>
 <button type="button" class="btn ligne apercu-ouvrir" data-apercu-ouvrir hidden>Voir l\'aperçu</button>';
+}
+
+/** Onglets communs de la rubrique « Écrire ». */
+function onglets_ecrire(string $actif): string
+{
+    $n = count(data_load('newsletter', []));
+    $o = ['ecrire' => ['ecrire.php', 'Écrire un message'], 'inscrits' => ['newsletter.php', 'Inscrits au programme (' . $n . ')']];
+    $h = '<nav class="onglets" aria-label="Rubrique Écrire">';
+    foreach ($o as $k => [$href, $label]) {
+        $h .= '<a href="' . $href . '"' . ($k === $actif ? ' aria-current="page"' : '') . '>' . e($label) . '</a>';
+    }
+    return $h . '</nav>';
 }
