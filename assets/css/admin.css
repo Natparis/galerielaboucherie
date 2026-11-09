@@ -190,3 +190,7 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 .bloc h2 small{font-family:var(--sans);font-size:15px;color:var(--gris)}
 .signature{margin:4px 0 0 30px;font:inherit;font-size:13px;color:var(--gris);white-space:pre-wrap}
 .ecrire .barre-actions{position:static;background:none;padding-bottom:0}
+.synchro{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:10px;border:1px solid #BFDCC8;background:#EEF7F1}
+.synchro.ko{border-color:#F0C7BE;background:#FDF1EE}
+.synchro form{margin:0}
+.etat.partage{background:#E2F0EC;color:#25584D}

@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/inc.php';
 require_login();
+require_once __DIR__ . '/copains.php';
 
 $c = (string)($_GET['c'] ?? '');
 $def = schema()['collections'][$c] ?? null;
@@ -41,6 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? 'enregistrer');
 
     if ($action === 'supprimer' && $idx !== null) {
+        if ($c === 'repertoire' && !empty($items[$idx]['cda_id']) && copains_actif()) {
+            // La fiche reste dans le Répertoire de Copains : on lui retire seulement le projet « galerie ».
+            if ($err = copains_retirer($items[$idx]['cda_id'])) {
+                flash('Attention : Copains d\'après n\'a pas pu être prévenu (' . $err . ').', 'err');
+            }
+        }
         array_splice($items, $idx, 1);
         data_save($c, array_values($items));
         flash('« ' . ($item[$def['title']] ?: 'Élément') . ' » a été supprimé.');
@@ -51,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $copy = $item;
         $copy['id'] = new_id();
         $copy['publie'] = false;
+        unset($copy['cda_id'], $copy['cda_sig'], $copy['sync_attente']);
         $copy[$def['title']] = $copy[$def['title']] . ' (copie)';
         if ($c === 'expositions') {
             $copy['slug'] = unique_slug($items, slugify($copy['artiste'] . '-' . substr($copy['date_debut'], 0, 4)), $copy['id']);
@@ -81,13 +89,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $new['slug'] = unique_slug($items, slugify($new['artiste'] . '-' . substr($new['date_debut'], 0, 4)), $new['id']);
             }
+            // Conserve les informations techniques non affichées (lien avec Copains d'après…)
+            if ($idx !== null) {
+                $new += array_diff_key($items[$idx], $def['fields']);
+            }
+            $msgCopains = null;
+            if ($c === 'repertoire' && copains_actif()) {
+                if (!empty($new['partage'])) {
+                    $new['sync_attente'] = true;
+                    $msgCopains = copains_envoyer($new) ? 'err' : 'ok';
+                } elseif (!empty($new['cda_id'])) {
+                    copains_retirer($new['cda_id']);
+                    $new['cda_id'] = $new['cda_sig'] = '';
+                    $new['sync_attente'] = false;
+                    $msgCopains = 'retire';
+                }
+            }
             if ($idx !== null) {
                 $items[$idx] = $new;
             } else {
                 $items[] = $new;
             }
             data_save($c, array_values($items));
-            flash('C\'est enregistré' . (empty($new['publie']) ? ' (en brouillon, non visible sur le site).' : ' et visible sur le site.'));
+            if (!empty($def['private'])) {
+                flash('C\'est enregistré' . ['ok' => ', et à jour dans le Répertoire de Copains d\'après.', 'retire' => ' et retiré du partage avec Copains d\'après.', 'err' => '. Copains d\'après n\'a pas pu être mis à jour pour l\'instant : ce sera refait automatiquement.', '' => '.'][$msgCopains ?? '']);
+            } else {
+                flash('C\'est enregistré' . (empty($new['publie']) ? ' (en brouillon, non visible sur le site).' : ' et visible sur le site.'));
+            }
             redirect($action === 'enregistrer_fermer' ? $listUrl : 'edition.php?c=' . $c . '&id=' . $new['id']);
         }
     } else {

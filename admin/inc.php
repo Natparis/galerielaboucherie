@@ -250,6 +250,10 @@ function render_field(string $key, array $f, $value, array $path): void
             render_list_item($f, [], array_merge($p, ['__I__']));
             echo '</template><button type="button" class="btn ligne petit" data-ajout>' . icon('plus') . ' ' . e($f['add'] ?? 'Ajouter') . '</button></fieldset>';
             break;
+        case 'secret':
+            $etat = $value ? 'Une clé est enregistrée.' : 'Aucune clé enregistrée.';
+            echo "<label for=\"$id\">$label</label>$help<input type=\"password\" id=\"$id\" name=\"" . e($name) . "\" value=\"\" autocomplete=\"new-password\" placeholder=\"" . e($etat) . "\"$describedby>";
+            break;
         default:
             $html = ['date' => 'date', 'time' => 'time', 'email' => 'email', 'tel' => 'tel', 'number' => 'number'][$type] ?? 'text';
             $extra = $type === 'url' ? ' inputmode="url" placeholder="https://…"' : '';

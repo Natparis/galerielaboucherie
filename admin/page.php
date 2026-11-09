@@ -15,6 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
     try {
         $new = collect_fields($def['fields'], (array)($_POST['data'] ?? []));
+        foreach ($def['fields'] as $k => $f) {
+            if (($f['type'] ?? '') === 'secret' && $new[$k] === '') {
+                $new[$k] = $values[$k]; // champ laissé vide : on garde la clé actuelle
+            }
+        }
         data_save($p, $new);
         flash('C\'est enregistré et visible sur le site.');
         redirect('page.php?p=' . $p);

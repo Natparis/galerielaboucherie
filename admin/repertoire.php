@@ -1,6 +1,21 @@
 <?php
 require __DIR__ . '/inc.php';
 require_login();
+require_once __DIR__ . '/copains.php';
+
+// Synchronisation avec le Répertoire de Copains d'après
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'synchroniser') {
+    csrf_check();
+    $st = copains_synchroniser();
+    $st['erreur'] ? flash('Synchronisation impossible : ' . $st['erreur'] . '.', 'err') : flash('Synchronisé avec Copains d\'après. ' . copains_resume($st));
+    redirect('repertoire.php');
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['export'])) {
+    $st = copains_synchro_auto();
+    if ($st && !$st['erreur'] && ($st['ajout'] || $st['maj'] || $st['detachees'])) {
+        flash('Mis à jour depuis Copains d\'après : ' . copains_resume($st));
+    }
+}
 
 $rep = repertoire();
 
@@ -62,6 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'impor
         $n[fusionner($list, ['nom' => $c['nom'], 'email' => $c['email'], 'telephone' => $c['telephone'], 'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien']], 'Candidat')]++;
     }
     data_save('repertoire', $list);
+    if (copains_actif()) {
+        copains_synchroniser();
+    }
     flash("Import terminé : {$n['ajout']} fiche(s) créée(s), {$n['maj']} complétée(s). Pensez à ajouter les e-mails manquants.");
     redirect('repertoire.php');
 }
@@ -90,6 +108,16 @@ admin_start('Répertoire des artistes', 'repertoire.php');
     <a class="btn ligne" href="?export=1"><?= icon('download') ?> Exporter (CSV)</a>
   </div>
 </div>
+<?php if (copains_actif()): $et = copains_etat(); ?>
+<div class="synchro <?= $et['ok'] === false ? 'ko' : 'ok' ?>">
+  <span><strong>Partagé avec Copains d'après</strong> · <?= (int)$et['partagees'] ?> fiche(s) en commun
+  <?php if ($et['date']): ?>· dernière synchronisation <?= date('d/m à H:i', strtotime($et['date'])) ?><?php endif ?>
+  <?php if ($et['ok'] === false): ?><br><small>Problème : <?= e($et['message']) ?></small><?php endif ?></span>
+  <form method="post"><?= csrf_field() ?><button class="btn ligne petit" name="action" value="synchroniser">Synchroniser maintenant</button></form>
+</div>
+<?php else: ?>
+<p class="aide">Pour partager ce répertoire avec celui de Copains d'après, renseignez l'adresse et la clé de partage dans <a href="page.php?p=reglages">Coordonnées et réglages</a>.</p>
+<?php endif ?>
 <p class="aide">Fiches privées, jamais affichées sur le site. <?= count($rep) ?> artiste<?= count($rep) > 1 ? 's' : '' ?><?= $sansEmail ? " · $sansEmail sans e-mail" : '' ?>.</p>
 
 <form class="filtres-adm" method="get">
@@ -120,7 +148,7 @@ admin_start('Répertoire des artistes', 'repertoire.php');
 <?php foreach ($aff as $a): ?>
     <tr>
       <td><input type="checkbox" class="coche" name="ids[]" value="<?= e($a['id']) ?>" aria-label="Sélectionner <?= e($a['nom']) ?>"<?= $a['email'] === '' ? ' disabled title="Pas d\'e-mail"' : '' ?>></td>
-      <td><a class="lien-fort" href="edition.php?c=repertoire&amp;id=<?= e($a['id']) ?>"><?= e($a['nom']) ?></a><?php if ($a['ville']): ?><br><small class="gris"><?= e($a['ville']) ?></small><?php endif ?></td>
+      <td><a class="lien-fort" href="edition.php?c=repertoire&amp;id=<?= e($a['id']) ?>"><?= e($a['nom']) ?></a><?php if (!empty($a['cda_id'])): ?> <span class="etat partage" title="Fiche commune avec le Répertoire de Copains d'après">Copains</span><?php elseif (!empty($a['sync_attente'])): ?> <span class="etat avenir" title="Sera envoyée à Copains d'après à la prochaine synchronisation">en attente</span><?php endif ?><?php if ($a['ville']): ?><br><small class="gris"><?= e($a['ville']) ?></small><?php endif ?></td>
       <td><?= e($a['discipline']) ?></td>
       <td class="contact"><?php if ($a['email']): ?><a href="mailto:<?= e($a['email']) ?>"><?= e($a['email']) ?></a><?php else: ?><span class="gris">pas d'e-mail</span><?php endif ?><?php if ($a['telephone']): ?><br><a href="<?= e(tel_href($a['telephone'])) ?>"><?= e($a['telephone']) ?></a><?php endif ?><?php if (!$a['abonne']): ?><br><span class="etat brouillon">ne veut plus d'envois</span><?php endif ?></td>
       <td><?php foreach (groupes_de($a) as $g): ?><a class="puce-adm" href="?groupe=<?= e(urlencode($g)) ?>"><?= e($g) ?></a> <?php endforeach ?></td>
