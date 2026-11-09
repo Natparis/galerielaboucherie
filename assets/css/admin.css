@@ -226,3 +226,25 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
   .apercu-direct{position:fixed;inset:12px;top:12px;height:auto;z-index:30;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 }
 .main:has(.avec-apercu) .contenu{padding-bottom:16px}
+
+/* Éditeur de courriers */
+.etape{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-right:8px;border-radius:50%;background:var(--brique);color:#fff;font:700 16px var(--sans);vertical-align:3px}
+.modeles-liste{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.modele{display:flex;flex-direction:column;gap:4px;text-align:left;padding:12px 14px;border:2px solid var(--filet);border-radius:10px;background:#fff;font:inherit;color:var(--nuit);cursor:pointer}
+.modele strong{font-size:15px}
+.modele span{font-size:13px;color:var(--gris);line-height:1.4}
+.modele:hover{border-color:var(--nuit)}
+.modele[aria-pressed=true]{border-color:var(--brique);background:#FDF4F1}
+.outils-editeur{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid #B7B0A5;border-bottom:0;border-radius:6px 6px 0 0;background:#FBF9F5}
+.outils-editeur button{min-height:34px;padding:0 10px;border:1px solid var(--filet);border-radius:6px;background:#fff;font:inherit;font-size:13px;color:var(--nuit);cursor:pointer}
+.outils-editeur button:hover{border-color:var(--nuit)}
+.outils-editeur .sep{width:1px;background:var(--filet);margin:0 4px}
+.outils-editeur [data-inserer]{background:#FDF4F1;border-color:#E9C3B9;color:var(--brique-f);font-weight:700}
+.editeur{min-height:360px;max-height:70vh;overflow:auto;padding:16px 18px;border:1px solid #B7B0A5;border-radius:0 0 6px 6px;background:#fff;font:16px/1.6 Arial,sans-serif;color:var(--nuit)}
+.editeur:focus{outline:2px solid var(--nuit);outline-offset:0}
+.editeur p{margin:0 0 12px}
+.editeur h2{font:400 26px/1.2 Georgia,serif;margin:16px 0 8px}
+.editeur img{max-width:100%;height:auto}
+.message-html img{max-width:100%;height:auto}
+.message-html{background:#fff;border:1px solid var(--filet)}
+.ecrire .liste-dest{max-height:280px}

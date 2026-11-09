@@ -128,25 +128,94 @@
     var q = filtre.value.toLowerCase();
     items.forEach(function (li) { li.hidden = q && li.textContent.toLowerCase().indexOf(q) === -1; });
   });
-  var ta = f.querySelector('#corps');
-  f.querySelectorAll('[data-inserer]').forEach(function (b) {
+  // ---- Éditeur de courrier ----
+  var ed = f.querySelector('[data-editeur]'), cache = f.querySelector('[data-corps]');
+  var sujet = f.querySelector('#sujet');
+  var plage = null, modifie = false;
+  function sync() { cache.value = ed.innerHTML; }
+  function signaler() { sync(); f.dispatchEvent(new Event('input', { bubbles: true })); }
+  try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch (e) {}
+  ed.addEventListener('input', function () { modifie = true; sync(); });
+  function garder() {
+    var sel = window.getSelection();
+    if (sel.rangeCount && ed.contains(sel.anchorNode)) plage = sel.getRangeAt(0).cloneRange();
+  }
+  ['keyup', 'mouseup', 'blur'].forEach(function (ev) { ed.addEventListener(ev, garder); });
+  function remettre() {
+    ed.focus();
+    if (plage) { var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(plage); }
+    else { var r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); var s2 = window.getSelection(); s2.removeAllRanges(); s2.addRange(r); }
+  }
+  // Coller : seulement le texte (évite les mises en forme parasites de Word ou des sites)
+  ed.addEventListener('paste', function (e) {
+    e.preventDefault();
+    var t = (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, t);
+  });
+  f.querySelectorAll('[data-cmd]').forEach(function (b) {
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
     b.addEventListener('click', function () {
-      var v = b.getAttribute('data-inserer'), s = ta.selectionStart, e = ta.selectionEnd;
-      ta.value = ta.value.slice(0, s) + v + ta.value.slice(e);
-      ta.focus(); ta.selectionStart = ta.selectionEnd = s + v.length;
+      remettre();
+      var c = b.getAttribute('data-cmd');
+      if (c === 'titre') document.execCommand('formatBlock', false, 'H2');
+      else if (c === 'para') document.execCommand('formatBlock', false, 'P');
+      else if (c === 'lien') {
+        var url = prompt('Adresse du lien (https://…) :', 'https://');
+        if (url && url !== 'https://') document.execCommand('createLink', false, url);
+      } else document.execCommand(c, false, null);
+      modifie = true; garder(); signaler();
     });
   });
+  f.querySelectorAll('[data-inserer]').forEach(function (b) {
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', function () {
+      var quoi = b.getAttribute('data-inserer');
+      remettre();
+      if (quoi === 'prenom') document.execCommand('insertText', false, '{prenom}');
+      else {
+        var tpl = document.querySelector('template[data-bloc="' + quoi + '"]');
+        if (tpl) document.execCommand('insertHTML', false, tpl.innerHTML + '<p><br></p>');
+      }
+      modifie = true; garder(); signaler();
+    });
+  });
+  // Modèles : remplissent l'objet et le message (et proposent les destinataires)
+  f.querySelectorAll('[data-modele]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-modele');
+      var tpl = document.querySelector('template[data-modele-tpl="' + k + '"]');
+      if (!tpl) return;
+      if (modifie && !confirm('Remplacer le message en cours par le modèle « ' + b.querySelector('strong').textContent + ' » ?')) return;
+      sujet.value = tpl.getAttribute('data-sujet');
+      ed.innerHTML = tpl.innerHTML;
+      modifie = false; plage = null;
+      f.querySelectorAll('[data-modele]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (tpl.getAttribute('data-pour') === 'newsletter' && !f.querySelector('.liste-dest input:checked')) {
+        var nl = f.querySelector('[data-choisir="newsletter"]');
+        if (nl) nl.click();
+      }
+      signaler();
+      ed.focus();
+    });
+  });
+  sujet.addEventListener('input', function () { modifie = true; });
+
   var envoi = f.querySelector('[data-confirmer-envoi]');
   envoi.addEventListener('click', function (e) {
+    sync();
     var n = f.querySelectorAll('.liste-dest input:checked').length;
-    if (n && !confirm('Envoyer ce message à ' + n + ' personne' + (n > 1 ? 's' : '') + ' ?')) e.preventDefault();
+    if (!n) { e.preventDefault(); alert('Choisissez au moins un destinataire (étape 3).'); return; }
+    if (!sujet.value.trim()) { e.preventDefault(); alert('Indiquez un objet.'); sujet.focus(); return; }
+    if (!ed.innerText.trim()) { e.preventDefault(); alert('Le message est vide.'); ed.focus(); return; }
+    if (!confirm('Envoyer ce message à ' + n + ' personne' + (n > 1 ? 's' : '') + ' ?')) e.preventDefault();
   });
+  f.addEventListener('submit', sync);
   f.querySelector('[data-mailto]').addEventListener('click', function () {
     var em = [].map.call(f.querySelectorAll('.liste-dest input:checked'), function (c) { return c.dataset.email; });
     if (!em.length) { alert('Choisissez au moins un destinataire.'); return; }
-    var corps = ta.value.replace(/\{prenom\}/g, em.length === 1 ? '' : '').replace(/Bonjour ,/g, 'Bonjour,');
+    var corps = ed.innerText.replace(/\{prenom\}/g, '').replace(/Bonjour ,/g, 'Bonjour,').replace(/\n{3,}/g, '\n\n');
     var url = 'mailto:' + (em.length === 1 ? em[0] : '') + '?' + (em.length > 1 ? 'bcc=' + encodeURIComponent(em.join(',')) + '&' : '') +
-      'subject=' + encodeURIComponent(f.querySelector('#sujet').value) + '&body=' + encodeURIComponent(corps);
+      'subject=' + encodeURIComponent(sujet.value) + '&body=' + encodeURIComponent(corps);
     window.location.href = url;
   });
 })();
@@ -173,7 +242,7 @@
       pan.style.height = 'calc(100vh - ' + (top + 16) + 'px)';
     } else { pan.style.top = ''; pan.style.height = ''; }
     var W = cadre.clientWidth, H = cadre.clientHeight;
-    var largeur = taille === 'mobile' ? 390 : 1280;
+    var largeur = taille === 'mobile' ? 390 : parseInt(pan.getAttribute('data-largeur') || '1280', 10);
     var echelle = Math.min(1, W / largeur);
     iframe.style.width = largeur + 'px';
     iframe.style.height = (H / echelle) + 'px';

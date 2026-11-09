@@ -437,6 +437,34 @@ function header_mot(string $s): string
     return preg_match('/[^\x20-\x7E]/', $s) ? '=?UTF-8?B?' . base64_encode($s) . '?=' : $s;
 }
 
+/**
+ * Envoie un e-mail mis en page (HTML) avec sa version texte (multipart/alternative).
+ * Retourne true si le serveur l'a accepté.
+ */
+function envoyer_mail_html(string $to, string $sujet, string $html, string $texte): bool
+{
+    $s = settings();
+    $from = $s['email_expediteur'] ?: ($s['email'] ?: 'no-reply@' . preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'localhost'));
+    $reply = $s['email'] ?: $from;
+    $clean = fn($v) => str_replace(["\r", "\n"], '', $v);
+    $frontiere = 'lb-' . bin2hex(random_bytes(8));
+    $headers = [
+        'From: ' . header_mot($s['nom']) . ' <' . $clean($from) . '>',
+        'Reply-To: ' . $clean($reply),
+        'MIME-Version: 1.0',
+        'Content-Type: multipart/alternative; boundary="' . $frontiere . '"',
+    ];
+    $corps = "--$frontiere\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
+        . chunk_split(base64_encode($texte))
+        . "--$frontiere\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
+        . chunk_split(base64_encode($html))
+        . "--$frontiere--\r\n";
+    if (!function_exists('mail')) {
+        return false;
+    }
+    return @mail($clean($to), header_mot($clean($sujet)), $corps, implode("\r\n", $headers), '-f' . $clean($from));
+}
+
 /** Envoie un e-mail texte en UTF-8. Retourne true si le serveur l'a accepté. */
 function envoyer_mail(string $to, string $sujet, string $corps): bool
 {
@@ -461,9 +489,9 @@ function envoyer_mail(string $to, string $sujet, string $corps): bool
 /* Aperçu en direct (formulaire à gauche, page du site à droite)       */
 /* ------------------------------------------------------------------ */
 
-function apercu_panneau(): string
+function apercu_panneau(int $largeur = 1280, string $titre = 'Aperçu de la page', string $note = 'Rien n\'est publié tant que vous n\'avez pas cliqué sur « Enregistrer ».'): string
 {
-    return '<aside class="apercu-direct" data-apercu-panneau aria-label="Aperçu de la page">
+    return '<aside class="apercu-direct" data-apercu-panneau data-largeur="' . $largeur . '" aria-label="' . e($titre) . '">
   <div class="apercu-barre">
     <strong>Aperçu en direct</strong>
     <span class="apercu-etat" data-apercu-etat aria-live="polite">à jour</span>
@@ -474,7 +502,7 @@ function apercu_panneau(): string
     </span>
   </div>
   <div class="apercu-cadre" data-apercu-cadre><iframe title="Aperçu de la page publique" data-apercu-iframe sandbox="allow-same-origin allow-scripts"></iframe></div>
-  <p class="apercu-note">Rien n\'est publié tant que vous n\'avez pas cliqué sur « Enregistrer ».</p>
+  <p class="apercu-note">' . e($note) . '</p>
 </aside>
 <button type="button" class="btn ligne apercu-ouvrir" data-apercu-ouvrir hidden>Voir l\'aperçu</button>';
 }
