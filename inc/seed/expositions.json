@@ -1,0 +1,77 @@
+[
+  {
+    "id": "a1b2c3d4e5f6",
+    "slug": "beatrice-sermondadaz",
+    "artiste": "Béatrice Sermondadaz",
+    "artiste_court": "",
+    "titre": "Se confronter aux arts du feu",
+    "discipline": "Céramique",
+    "technique": "Céramique, raku",
+    "date_debut": "2026-10-17",
+    "heure_debut": "18:00",
+    "heure_fin": "23:00",
+    "date_fin": "2026-11-11",
+    "telephone_rdv": "07 69 09 09 22",
+    "vernissage_note": "ouvert à tous, buffet servi",
+    "permanences": "Vendredi 6 novembre, 10 h – 17 h",
+    "image": "uploads/affiche-sermondadaz.webp",
+    "image_alt": "Affiche de l'exposition : un macareux et une baleine à bosse en raku",
+    "resume": "Il faut tout de même un certain tempérament pour confier des animaux marins à un four. Le raku n'a jamais promis d'être docile : la surface se craquelle, la fumée laisse sa trace.",
+    "accroche": "Il faut tout de même un certain tempérament pour confier des animaux marins à un four.",
+    "texte": "Béatrice Sermondadaz le fait. Elle prend de la terre, y met ses voyages, ses souvenirs, son regard sur le vivant. Puis elle allume le feu.\n\nÀ ce stade, la maîtrise rencontre l'imprévu : le raku n'a jamais promis d'être docile. La surface se craquelle, la fumée laisse sa trace, la matière affirme son caractère. Chaque pièce sort de l'épreuve avec sa propre histoire. Pour la perfection bien lisse et les séries bien rangées, il faudra repasser.\n\nNourri de rencontres avec les oiseaux et les mammifères marins, son travail porte un émerveillement tenace. Mais sous la beauté, quelque chose résiste : ces êtres sont puissants, et leur monde est fragile. Les fissures du raku donnent à cette vulnérabilité une présence saisissante.\n\nDe Saint-Satur à l'EMA-CNIFOP de Saint-Amand-en-Puisaye, où elle se forme en 2024-2025, Béatrice poursuit une recherche exigeante : donner au vivant une forme, une peau, une force.",
+    "chute": "À La Boucherie, la terre a du caractère. Et Béatrice n'est pas venue pour l'assagir.",
+    "mots_neon": "raku · terre · fumée",
+    "photos": [],
+    "lien": "",
+    "publie": true
+  },
+  {
+    "id": "b2c3d4e5f6a1", "slug": "marie-ella-stellfeld", "artiste": "Marie-Ella Stellfeld", "artiste_court": "", "titre": "",
+    "discipline": "Mosaïque", "technique": "Marbres et tesselles", "date_debut": "2026-11-14", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "", "image_alt": "",
+    "resume": "Sa pratique consiste à mettre en scène les pierres naturelles, notamment les marbres, avec des tesselles en céramique de créateurs, récupérées.",
+    "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "c3d4e5f6a1b2", "slug": "mireille-lemoine", "artiste": "Mireille Lemoine", "artiste_court": "", "titre": "",
+    "discipline": "Collage", "technique": "Collages", "date_debut": "2026-12-19", "heure_debut": "18:00", "heure_fin": "19:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "", "image_alt": "",
+    "resume": "Collages.", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "d4e5f6a1b2c3", "slug": "francoise-dubarry-et-bernard-conte", "artiste": "Françoise Dubarry et Bernard Conte", "artiste_court": "Dubarry et Conte", "titre": "",
+    "discipline": "Gravure", "technique": "Gravure et photo", "date_debut": "2027-01-16", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "", "image_alt": "",
+    "resume": "Photo et gravure : linogravure, gravure sur bois. Thème : paysage, nature.", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "e5f6a1b2c3d4", "slug": "philippe-guenin", "artiste": "Philippe Guenin", "artiste_court": "", "titre": "Visions polymorphes",
+    "discipline": "Performance", "technique": "Expo-performance", "date_debut": "2027-02-13", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "", "image_alt": "",
+    "resume": "Expo-performance « Visions polymorphes ».", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "f6a1b2c3d4e5", "slug": "yannick", "artiste": "Yannick", "artiste_court": "", "titre": "Par amour du bois",
+    "discipline": "Bois", "technique": "Par amour du bois", "date_debut": "2027-03-20", "heure_debut": "18:00", "heure_fin": "19:50", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "", "image_alt": "",
+    "resume": "Par amour du bois.", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "a7b8c9d0e1f2", "slug": "marie-christine-et-evelyne", "artiste": "Marie-Christine et Évelyne", "artiste_court": "", "titre": "",
+    "discipline": "Peinture", "technique": "Peinture intuitive, pouring", "date_debut": "2026-10-03", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "2026-10-14",
+    "telephone_rdv": "", "vernissage_note": "ouvert à tous", "permanences": "", "image": "uploads/marie-christine-evelyne.webp", "image_alt": "Œuvres de Marie-Christine et Évelyne",
+    "resume": "Peinture intuitive et pouring.", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": true
+  },
+  {
+    "id": "b8c9d0e1f2a7", "slug": "artiste-peinture-a-completer", "artiste": "[Artiste à compléter]", "artiste_court": "", "titre": "",
+    "discipline": "Peinture", "technique": "Peinture", "date_debut": "2026-09-19", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "", "permanences": "", "image": "uploads/peinture-vegetale.webp", "image_alt": "Grande peinture de feuillages blancs sur fond bleu canard",
+    "resume": "", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": false
+  },
+  {
+    "id": "c9d0e1f2a7b8", "slug": "artiste-sculpture-vegetale-a-completer", "artiste": "[Artiste à compléter]", "artiste_court": "", "titre": "",
+    "discipline": "Sculpture", "technique": "Sculpture végétale", "date_debut": "2026-08-22", "heure_debut": "18:00", "heure_fin": "23:00", "date_fin": "",
+    "telephone_rdv": "", "vernissage_note": "", "permanences": "", "image": "uploads/sculpture-vegetale.webp", "image_alt": "Courge sculptée d'une rosace",
+    "resume": "", "accroche": "", "texte": "", "chute": "", "mots_neon": "", "photos": [], "lien": "", "publie": false
+  }
+]

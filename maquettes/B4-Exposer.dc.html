@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Exposer — La Boucherie</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;family=DM+Sans:wght@400;500;700&amp;family=Yellowtail&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1E2A36}a:hover{color:#B5412C}
+.store{background:repeating-linear-gradient(90deg,#B5412C 0 30px,#F8F2E8 30px 33px,#B5412C 33px 38px,#F8F2E8 38px 58px)}
+.frange{height:18px;background:radial-gradient(circle at 50% 0,#B5412C 0 13px,transparent 14px) 0 0/29px 18px repeat-x}
+.neon{color:#FFE0CC;text-shadow:0 0 3px #FF7A45,0 0 10px #FF5A2A,0 0 24px #E8461E,0 0 48px #E8461E}
+.chevrons{background:linear-gradient(135deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(225deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(315deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,linear-gradient(45deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,#E8C08E}
+.nav a{text-decoration:none;padding-bottom:4px;border-bottom:3px solid transparent}.nav a:hover{border-bottom-color:#B5412C;color:#1E2A36}
+.piece{transition:transform .25s}.piece:hover{transform:translateY(-6px)}
+@media (max-width:760px){.cote{display:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; background: #FFFEFB; color: #1E2A36; font-family: 'DM Sans', sans-serif">
+
+<header>
+<div class="store" style="height: 64px; position: relative"><div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,42,54,.38) 0%, rgba(30,42,54,0) 40%, rgba(30,42,54,0) 62%, rgba(30,42,54,.26) 100%)"></div></div>
+<div class="store" style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 8px 48px; box-shadow: inset 0 9px 10px -6px rgba(255,255,255,.6), inset 0 -12px 14px -12px rgba(30,42,54,.35), 0 12px 16px -12px rgba(30,42,54,.45); z-index: 1">
+<span class="cote" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 22px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 14px">Galerie</span>
+<a href="V1-Bleu-nuit.dc.html" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 38px; line-height: 1.1; letter-spacing: 6px; color: #1E2A36; -webkit-text-stroke: 1px #1E2A36; text-transform: uppercase; text-decoration: none; background: #F8F2E8; padding: 2px 24px">La Boucherie</a>
+<span class="cote" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 22px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 14px">Léré</span>
+</div>
+<div class="frange" aria-hidden="true"></div>
+<nav class="nav" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; padding: 18px 24px 8px; font-weight: 500; font-size: 15px; letter-spacing: 1px; text-transform: uppercase"><a href="B1-Expo.dc.html">L'expo du mois</a><a href="B2-Programme.dc.html">Programme</a><a href="B3-Artistes.dc.html">Artistes</a><a href="B4-Exposer.dc.html" aria-current="page" style="border-bottom-color: #B5412C">Exposer</a><a href="B5-Lieu.dc.html">Le lieu</a><a href="B6-Presse.dc.html">Presse</a></nav>
+</header>
+
+<section style="padding: 56px 48px 40px; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 48px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #B5412C">Appel permanent aux artistes</p>
+<h1 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 92px; line-height: 0.95">Il reste de la place<br><span style="font-style: italic; color: #B5412C">sous le store.</span></h1>
+</div>
+<p style="margin: 0; font-size: 19px; line-height: 1.6">On est tous des artistes ! Mais comment rencontrer son public, exposer ses œuvres, échanger ? Cette galerie est faite pour vous : artistes grands et petits, locaux ou distants.</p>
+</section>
+
+<section style="padding: 40px 48px 88px; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 52px">Comment ça se passe</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px">
+<li style="background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6); display: flex; flex-direction: column"><div class="store" aria-hidden="true" style="height: 22px"></div><div style="padding: 24px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 56px; line-height: 1; color: #B5412C">1</span><h3 style="margin: 0; font-size: 19px">Vous candidatez</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4F5B66">Quelques mots, quelques photos et le mois qui vous tente. Réponse sous une semaine.</p></div></li>
+<li style="background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6); display: flex; flex-direction: column"><div class="store" aria-hidden="true" style="height: 22px"></div><div style="padding: 24px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 56px; line-height: 1; color: #B5412C">2</span><h3 style="margin: 0; font-size: 19px">Vous accrochez</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4F5B66">L'artiste réalise lui-même son accrochage.</p></div></li>
+<li style="background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6); display: flex; flex-direction: column"><div class="store" aria-hidden="true" style="height: 22px"></div><div style="padding: 24px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 56px; line-height: 1; color: #B5412C">3</span><h3 style="margin: 0; font-size: 19px">On vernit</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4F5B66">Vous participez à votre vernissage, un samedi à 18 h.</p></div></li>
+<li style="background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6); display: flex; flex-direction: column"><div class="store" aria-hidden="true" style="height: 22px"></div><div style="padding: 24px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 56px; line-height: 1; color: #B5412C">4</span><h3 style="margin: 0; font-size: 19px">Et si vous le souhaitez</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4F5B66">Vous organisez des journées ouvertes ou des ateliers pendant votre mois.</p></div></li>
+</ol>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: stretch">
+<div style="background: #1E2A36; color: #FFFEFB; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 72px; line-height: 1; color: #FFB58F">100 €</span><span style="flex: 1 1 220px; font-size: 17px; line-height: 1.6"><strong style="text-transform: uppercase; letter-spacing: 1px">Seule participation demandée</strong><br>Frais du vernissage pour environ 50 personnes : vins, softs, canapés…</span></div>
+<div style="border: 2px solid #1E2A36; padding: 32px; display: flex; flex-direction: column; justify-content: center; gap: 8px"><p style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 34px; line-height: 1.1">Pas de location de salle.<br><span style="font-style: italic; color: #B5412C">Le visiteur ne paye rien.</span></p></div>
+</div>
+</section>
+
+<section style="background: #1E2A36; padding: 88px 48px">
+<div style="max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px; color: #FFFEFB">
+<span class="neon" style="font-family: Yellowtail, cursive; font-size: 52px; line-height: 1">votre nom sous le store ?</span>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #D9CFC2">Réponse sous une semaine. Vous préférez en parler ? 06 73 98 32 61.</p>
+</div>
+<form style="background: #FFFEFB; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Nom et prénom<input type="text" autocomplete="name" style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">E-mail<input type="email" autocomplete="email" style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Téléphone<input type="tel" autocomplete="tel" style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Discipline<select style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"><option>Peinture</option><option>Céramique</option><option>Sculpture</option><option>Photographie</option><option>Gravure</option><option>Collage</option><option>Autre</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Mois souhaité<input type="month" style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Lien vers votre travail<input type="url" placeholder="site, Instagram…" style="height: 50px; padding: 0 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></label>
+<label style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Photos de vos œuvres (3 maximum)<input type="file" multiple accept="image/*" style="padding: 12px 0; font: inherit; font-weight: 400"></label>
+<label style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Parlez-nous de votre travail<textarea rows="5" style="padding: 12px 14px; border: 1px solid #8A97A3; border-radius: 4px; font: inherit; font-weight: 400"></textarea></label>
+<button type="submit" style="grid-column: 1 / -1; justify-self: start; min-height: 54px; padding: 0 32px; border: 0; border-radius: 54px; background: #B5412C; color: #FFFFFF; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer">Envoyer ma candidature</button>
+</form>
+</div>
+</section>
+
+<div class="chevrons" aria-hidden="true" style="height: 64px"></div>
+<footer style="background: #1E2A36; color: #FFFEFB; padding: 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; font-size: 15px"><span class="neon" style="font-family: Yellowtail, cursive; font-size: 34px">La boucherie</span><span>39 grande rue · 18240 Léré · 06 73 98 32 61</span><span>Instagram · Facebook · TikTok · YouTube</span></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

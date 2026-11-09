@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Accueil 11 — Bleu nuit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;family=DM+Sans:wght@400;500;700&amp;family=Yellowtail&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1E2A36}a:hover{color:#B5412C}
+.store{background:repeating-linear-gradient(90deg,#B5412C 0 30px,#F8F2E8 30px 33px,#B5412C 33px 38px,#F8F2E8 38px 58px)}
+.frange{height:18px;background:radial-gradient(circle at 50% 0,#B5412C 0 13px,transparent 14px) 0 0/29px 18px repeat-x}
+.frange-c{height:14px;background:radial-gradient(circle at 50% 0,#F8F2E8 0 10px,transparent 11px) 0 0/22px 14px repeat-x}
+.neon{color:#FFE0CC;text-shadow:0 0 3px #FF7A45,0 0 10px #FF5A2A,0 0 24px #E8461E,0 0 48px #E8461E}
+.mini{transition:transform .25s}.mini:hover{transform:translateY(-8px)}
+.chevrons{background:linear-gradient(135deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(225deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(315deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,linear-gradient(45deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,#E8C08E}
+</style>
+</helmet>
+<div style="width: 100%; background: #FFFEFB; color: #1E2A36; font-family: 'DM Sans', sans-serif">
+
+<header>
+<div class="store" style="height: 110px; position: relative"><div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,42,54,.38) 0%, rgba(30,42,54,0) 40%, rgba(30,42,54,0) 62%, rgba(30,42,54,.26) 100%)"></div></div>
+<div class="store" style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 48px; box-shadow: inset 0 9px 10px -6px rgba(255,255,255,.6), inset 0 -12px 14px -12px rgba(30,42,54,.35), 0 12px 16px -12px rgba(30,42,54,.45); z-index: 1">
+<span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 16px">Galerie</span>
+<a href="#" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 46px; line-height: 1.1; letter-spacing: 6px; color: #1E2A36; -webkit-text-stroke: 1.2px #1E2A36; text-transform: uppercase; text-decoration: none; background: #F8F2E8; padding: 4px 28px">La Boucherie</a>
+<span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 16px">Léré</span>
+</div>
+<div class="frange" aria-hidden="true"></div>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 36px; padding: 18px 24px 8px; font-weight: 500; font-size: 15px; letter-spacing: 1px; text-transform: uppercase"><a href="B1-Expo.dc.html" style="text-decoration: none">L'expo du mois</a><a href="B2-Programme.dc.html" style="text-decoration: none">Programme</a><a href="B3-Artistes.dc.html" style="text-decoration: none">Artistes</a><a href="B4-Exposer.dc.html" style="text-decoration: none">Exposer</a><a href="B5-Lieu.dc.html" style="text-decoration: none">Le lieu</a><a href="B6-Presse.dc.html" style="text-decoration: none">Presse</a></nav>
+</header>
+
+<section style="padding: 48px 48px 88px; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 56px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<p style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #B5412C">Galerie d'art · 39 grande rue · Léré</p>
+<h1 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 88px; line-height: 0.95">Sous le store,<br><span style="font-style: italic; color: #B5412C">un artiste par mois.</span></h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; max-width: 480px">Là où l'on vendait entrecôtes et paupiettes, on accroche désormais peintures, céramiques et gravures. Entrée libre, vernissage à 18 h.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px"><a href="B1-Expo.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border-radius: 52px; background: #B5412C; color: #FFFFFF; font-weight: 700; text-decoration: none">Voir l'expo du mois</a><a href="B2-Programme.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border-radius: 52px; border: 2px solid #1E2A36; font-weight: 700; text-decoration: none">Le programme</a></div>
+</div>
+<figure style="margin: 0"><div class="devanture" role="img" aria-label="Illustration de la devanture de La Boucherie : store rayé, lambrequin, vitrines et porte au néon" style="display: block; width: 100%; container-type: inline-size; box-sizing: border-box">
+<div aria-hidden="true">
+<div style="height: 7cqw; position: relative; background: repeating-linear-gradient(90deg, #B5412C 0 2.4cqw, #F8F2E8 2.4cqw 2.65cqw, #B5412C 2.65cqw 3.05cqw, #F8F2E8 3.05cqw 4.6cqw)"><div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,42,54,.4) 0%, rgba(30,42,54,0) 45%, rgba(30,42,54,0) 62%, rgba(30,42,54,.26) 100%)"></div></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 1cqw; height: 3.6cqw; box-shadow: inset 0 .7cqw .8cqw -.5cqw rgba(255,255,255,.6), inset 0 -.9cqw 1cqw -.9cqw rgba(30,42,54,.35); background: repeating-linear-gradient(90deg, #B5412C 0 2.4cqw, #F8F2E8 2.4cqw 2.65cqw, #B5412C 2.65cqw 3.05cqw, #F8F2E8 3.05cqw 4.6cqw)">
+</div>
+<div style="height: 1.6cqw; background: radial-gradient(circle at 50% 0, #B5412C 0 1.1cqw, transparent 1.2cqw) 0 0 / 2.5cqw 1.6cqw repeat-x"></div>
+<div style="margin-top: .8cqw; background: #2C3B4A; padding: 1.4cqw; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4cqw">
+<div style="background: linear-gradient(160deg, #2A3644 0%, #151D26 60%, #18222C 100%); padding: 2cqw; display: flex; flex-direction: column; align-items: center; gap: 1.2cqw">
+<span style="align-self: flex-start; font-family: Yellowtail, cursive; font-size: 2.6cqw; line-height: 1; color: #FFE6D6; text-shadow: 0 0 3px #FF7A45, 0 0 10px #FF5A2A, 0 0 22px #E8461E">en vitrine</span>
+<img src="/_blob/c23807a95f3c6d77aa088bbc5493775d" alt="" style="display: block; width: 58%; aspect-ratio: 2 / 3; object-fit: cover; box-shadow: 0 1.4cqw 2.8cqw -1cqw rgba(0,0,0,.8)">
+</div>
+<div style="position: relative; background: linear-gradient(160deg, #2A3644 0%, #151D26 60%, #18222C 100%); border: .5cqw solid #18222C; padding: 3cqw 2cqw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.8cqw; text-align: center">
+<span style="font-family: Yellowtail, cursive; font-size: 5.6cqw; line-height: .95; color: #FFE6D6; text-shadow: 0 0 3px #FF7A45, 0 0 10px #FF5A2A, 0 0 24px #E8461E, 0 0 50px #E8461E; transform: rotate(-5deg)">La<br>boucherie</span>
+<span style="font-family: 'DM Sans', Arial, sans-serif; font-size: 1.1cqw; letter-spacing: .25cqw; text-transform: uppercase; color: #EDE3D8">Entrée libre</span>
+<span style="display: inline-flex; align-items: center; padding: .9cqw 2cqw; border-radius: 4cqw; background: #B5412C; color: #FFFFFF; font-family: 'DM Sans', Arial, sans-serif; font-weight: 700; font-size: 1.25cqw">Pousser la porte</span>
+<span style="position: absolute; right: 1.4cqw; top: 50%; width: .6cqw; height: 4.4cqw; border-radius: .3cqw; background: #8A97A3"></span>
+</div>
+<div style="background: linear-gradient(160deg, #2A3644 0%, #151D26 60%, #18222C 100%); padding: 2cqw; display: flex; flex-direction: column; gap: .9cqw; color: #EDE3D8">
+<span style="font-family: Yellowtail, cursive; font-size: 2.6cqw; line-height: 1; color: #FFE6D6; text-shadow: 0 0 3px #FF7A45, 0 0 10px #FF5A2A, 0 0 22px #E8461E">prochainement</span>
+<span style="display: flex; justify-content: space-between; gap: 1cqw; padding: .8cqw 0; border-bottom: .1cqw solid #3A4A5A; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7cqw">Marie-Ella Stellfeld<b style="font-family: 'DM Sans', Arial, sans-serif; font-size: 1.2cqw; color: #FFB58F">14.11</b></span>
+<span style="display: flex; justify-content: space-between; gap: 1cqw; padding: .8cqw 0; border-bottom: .1cqw solid #3A4A5A; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7cqw">Mireille Lemoine<b style="font-family: 'DM Sans', Arial, sans-serif; font-size: 1.2cqw; color: #FFB58F">19.12</b></span>
+<span style="display: flex; justify-content: space-between; gap: 1cqw; padding: .8cqw 0; border-bottom: .1cqw solid #3A4A5A; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7cqw">Dubarry et Conte<b style="font-family: 'DM Sans', Arial, sans-serif; font-size: 1.2cqw; color: #FFB58F">16.01</b></span>
+<span style="display: flex; justify-content: space-between; gap: 1cqw; padding: .8cqw 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.7cqw">Philippe Guenin<b style="font-family: 'DM Sans', Arial, sans-serif; font-size: 1.2cqw; color: #FFB58F">13.02</b></span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #2C3B4A; padding: 0 1.4cqw 1.4cqw">
+<div style="height: 6cqw; background: linear-gradient(135deg, #C9733A 25%, transparent 25%) -1.4cqw 0 / 2.8cqw 2.8cqw, linear-gradient(225deg, #C9733A 25%, transparent 25%) -1.4cqw 0 / 2.8cqw 2.8cqw, linear-gradient(315deg, #C9733A 25%, transparent 25%) 0 0 / 2.8cqw 2.8cqw, linear-gradient(45deg, #C9733A 25%, transparent 25%) 0 0 / 2.8cqw 2.8cqw, #E8C08E"></div>
+<div style="height: 6cqw; background: #2C3B4A"></div>
+<div style="height: 6cqw; background: linear-gradient(135deg, #C9733A 25%, transparent 25%) -1.4cqw 0 / 2.8cqw 2.8cqw, linear-gradient(225deg, #C9733A 25%, transparent 25%) -1.4cqw 0 / 2.8cqw 2.8cqw, linear-gradient(315deg, #C9733A 25%, transparent 25%) 0 0 / 2.8cqw 2.8cqw, linear-gradient(45deg, #C9733A 25%, transparent 25%) 0 0 / 2.8cqw 2.8cqw, #E8C08E"></div>
+</div>
+</div>
+</div></figure>
+</section>
+
+<section style="background: #1E2A36; color: #FFFEFB; padding: 0 48px 96px">
+<div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px; align-items: start">
+<div style="display: flex; flex-direction: column">
+<div class="store" aria-hidden="true" style="height: 48px"></div>
+<div class="frange" aria-hidden="true"></div>
+<img src="/_blob/c23807a95f3c6d77aa088bbc5493775d" alt="Affiche de l'exposition Se confronter aux arts du feu de Béatrice Sermondadaz" style="display: block; width: 86%; margin: 12px auto 0; aspect-ratio: 2 / 3; object-fit: cover; box-shadow: 0 24px 48px -20px rgba(0,0,0,.7)">
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px; padding-top: 80px">
+<p class="neon" style="margin: 0; font-family: Yellowtail, cursive; font-size: 46px; line-height: 1">en ce moment</p>
+<h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 64px; line-height: 1">Béatrice Sermondadaz</h2>
+<p style="margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; color: #F2A27E">Se confronter aux arts du feu</p>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #D9CFC2">Il faut tout de même un certain tempérament pour confier des animaux marins à un four. Le raku n'a jamais promis d'être docile : la surface se craquelle, la fumée laisse sa trace.</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7">Jusqu'au 11 novembre · permanence ven. 6 nov., 10 h – 17 h<br>Rendez-vous : 07 69 09 09 22</p>
+</div>
+</div>
+</section>
+
+<section style="padding: 88px 48px; display: flex; flex-direction: column; gap: 40px">
+<h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 60px">Prochainement <span style="font-style: italic; color: #B5412C">sous le store</span></h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 24px">
+<li class="mini" style="background: #FFFFFF; box-shadow: 0 16px 32px -24px rgba(30,42,54,.5)"><div class="store" aria-hidden="true" style="height: 30px"></div><div class="frange-c" aria-hidden="true" style="background-color: #B5412C"></div><div style="padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 40px; line-height: 1; color: #B5412C">14 nov.</span><span style="font-weight: 700; font-size: 18px">Marie-Ella Stellfeld</span><span style="font-size: 14px; color: #4F5B66">Marbres et tesselles</span></div></li>
+<li class="mini" style="background: #FFFFFF; box-shadow: 0 16px 32px -24px rgba(30,42,54,.5)"><div class="store" aria-hidden="true" style="height: 30px"></div><div class="frange-c" aria-hidden="true" style="background-color: #B5412C"></div><div style="padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 40px; line-height: 1; color: #B5412C">19 déc.</span><span style="font-weight: 700; font-size: 18px">Mireille Lemoine</span><span style="font-size: 14px; color: #4F5B66">Collages</span></div></li>
+<li class="mini" style="background: #FFFFFF; box-shadow: 0 16px 32px -24px rgba(30,42,54,.5)"><div class="store" aria-hidden="true" style="height: 30px"></div><div class="frange-c" aria-hidden="true" style="background-color: #B5412C"></div><div style="padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 40px; line-height: 1; color: #B5412C">16 janv.</span><span style="font-weight: 700; font-size: 18px">Dubarry et Conte</span><span style="font-size: 14px; color: #4F5B66">Gravure et photo</span></div></li>
+<li class="mini" style="background: #FFFFFF; box-shadow: 0 16px 32px -24px rgba(30,42,54,.5)"><div class="store" aria-hidden="true" style="height: 30px"></div><div class="frange-c" aria-hidden="true" style="background-color: #B5412C"></div><div style="padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 40px; line-height: 1; color: #B5412C">13 févr.</span><span style="font-weight: 700; font-size: 18px">Philippe Guenin</span><span style="font-size: 14px; color: #4F5B66">Visions polymorphes</span></div></li>
+<li class="mini" style="background: #FFFFFF; box-shadow: 0 16px 32px -24px rgba(30,42,54,.5)"><div class="store" aria-hidden="true" style="height: 30px"></div><div class="frange-c" aria-hidden="true" style="background-color: #B5412C"></div><div style="padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 40px; line-height: 1; color: #B5412C">20 mars</span><span style="font-weight: 700; font-size: 18px">Yannick</span><span style="font-size: 14px; color: #4F5B66">Par amour du bois</span></div></li>
+</ol>
+</section>
+
+<div class="chevrons" aria-hidden="true" style="height: 80px"></div>
+<footer style="background: #1E2A36; color: #FFFEFB; padding: 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 15px"><span class="neon" style="font-family: Yellowtail, cursive; font-size: 34px">La boucherie</span><span>39 grande rue · 18240 Léré · 06 73 98 32 61</span></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

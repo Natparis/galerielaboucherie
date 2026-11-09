@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Artistes — La Boucherie</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;family=DM+Sans:wght@400;500;700&amp;family=Yellowtail&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1E2A36}a:hover{color:#B5412C}
+.store{background:repeating-linear-gradient(90deg,#B5412C 0 30px,#F8F2E8 30px 33px,#B5412C 33px 38px,#F8F2E8 38px 58px)}
+.frange{height:18px;background:radial-gradient(circle at 50% 0,#B5412C 0 13px,transparent 14px) 0 0/29px 18px repeat-x}
+.neon{color:#FFE0CC;text-shadow:0 0 3px #FF7A45,0 0 10px #FF5A2A,0 0 24px #E8461E,0 0 48px #E8461E}
+.chevrons{background:linear-gradient(135deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(225deg,#C9733A 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(315deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,linear-gradient(45deg,#C9733A 25%,transparent 25%) 0 0/40px 40px,#E8C08E}
+.nav a{text-decoration:none;padding-bottom:4px;border-bottom:3px solid transparent}.nav a:hover{border-bottom-color:#B5412C;color:#1E2A36}
+.piece{transition:transform .25s}.piece:hover{transform:translateY(-6px)}
+@media (max-width:760px){.cote{display:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; background: #FFFEFB; color: #1E2A36; font-family: 'DM Sans', sans-serif">
+
+<header>
+<div class="store" style="height: 64px; position: relative"><div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,42,54,.38) 0%, rgba(30,42,54,0) 40%, rgba(30,42,54,0) 62%, rgba(30,42,54,.26) 100%)"></div></div>
+<div class="store" style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 8px 48px; box-shadow: inset 0 9px 10px -6px rgba(255,255,255,.6), inset 0 -12px 14px -12px rgba(30,42,54,.35), 0 12px 16px -12px rgba(30,42,54,.45); z-index: 1">
+<span class="cote" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 22px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 14px">Galerie</span>
+<a href="V1-Bleu-nuit.dc.html" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 38px; line-height: 1.1; letter-spacing: 6px; color: #1E2A36; -webkit-text-stroke: 1px #1E2A36; text-transform: uppercase; text-decoration: none; background: #F8F2E8; padding: 2px 24px">La Boucherie</a>
+<span class="cote" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 22px; letter-spacing: 4px; color: #1E2A36; text-transform: uppercase; background: #F8F2E8; padding: 2px 14px">Léré</span>
+</div>
+<div class="frange" aria-hidden="true"></div>
+<nav class="nav" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; padding: 18px 24px 8px; font-weight: 500; font-size: 15px; letter-spacing: 1px; text-transform: uppercase"><a href="B1-Expo.dc.html">L'expo du mois</a><a href="B2-Programme.dc.html">Programme</a><a href="B3-Artistes.dc.html" aria-current="page" style="border-bottom-color: #B5412C">Artistes</a><a href="B4-Exposer.dc.html">Exposer</a><a href="B5-Lieu.dc.html">Le lieu</a><a href="B6-Presse.dc.html">Presse</a></nav>
+</header>
+
+<section style="padding: 56px 48px 24px; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #B5412C">Grands et petits, locaux ou distants</p>
+<h1 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 96px; line-height: 0.95">Les artistes</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; max-width: 680px">Léré et ses environs regorgent d'incroyables talents : artistes d'un jour, amateurs éclairés, et certains déjà reconnus, voire professionnels. Tous sont passés, ou passeront, sous le store.</p>
+</section>
+
+<section style="padding: 24px 48px 0; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px">
+<div role="group" aria-label="Filtrer par période" style="display: flex; flex-wrap: wrap; gap: 10px"><button style="min-height: 44px; padding: 0 20px; border-radius: 44px; border: 2px solid #1E2A36; background: #1E2A36; color: #FFFEFB; font: inherit; font-weight: 700; cursor: pointer">Tous</button><button style="min-height: 44px; padding: 0 20px; border-radius: 44px; border: 2px solid #1E2A36; background: transparent; color: #1E2A36; font: inherit; font-weight: 700; cursor: pointer">À venir</button><button style="min-height: 44px; padding: 0 20px; border-radius: 44px; border: 2px solid #1E2A36; background: transparent; color: #1E2A36; font: inherit; font-weight: 700; cursor: pointer">2026</button><button style="min-height: 44px; padding: 0 20px; border-radius: 44px; border: 2px solid #1E2A36; background: transparent; color: #1E2A36; font: inherit; font-weight: 700; cursor: pointer">2025</button><button style="min-height: 44px; padding: 0 20px; border-radius: 44px; border: 2px solid #1E2A36; background: transparent; color: #1E2A36; font: inherit; font-weight: 700; cursor: pointer">2024</button></div>
+<div role="group" aria-label="Filtrer par discipline" style="display: flex; flex-wrap: wrap; gap: 10px"><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Céramique</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Peinture</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Collage</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Gravure et photo</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Bois</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Mosaïque</button><button style="min-height: 44px; padding: 0 18px; border-radius: 44px; border: 2px solid #B5412C; background: transparent; color: #B5412C; font: inherit; font-weight: 700; cursor: pointer">Performance</button></div>
+</section>
+
+<section style="padding: 40px 48px 96px; max-width: 1180px; margin: 0 auto">
+<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 28px">
+<li class="piece"><a href="B1-Expo.dc.html" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><img src="/_blob/c23807a95f3c6d77aa088bbc5493775d" alt="" style="display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%"><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span class="neon" style="font-family: Yellowtail, cursive; font-size: 24px; line-height: 1; color: #B5412C; text-shadow: none">en ce moment</span><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Béatrice Sermondadaz</span><span style="font-size: 14px; color: #4F5B66">Céramique, raku · oct. – nov. 2026</span></div></a></li>
+<li class="piece"><a href="#" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><img src="/_blob/9f801c616aa5f2dcd13ddc6d85e8f724" alt="" style="display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top"><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Marie-Christine et Évelyne</span><span style="font-size: 14px; color: #4F5B66">Peinture intuitive, pouring · oct. 2026</span></div></a></li>
+<li class="piece"><a href="#" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><img src="/_blob/c4f182434281d21fc91bf94f602ea415" alt="" style="display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover"><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">[ARTISTE]</span><span style="font-size: 14px; color: #4F5B66">Peinture · [mois année]</span></div></a></li>
+<li class="piece"><a href="#" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><img src="/_blob/efa80d46bc4914636be59182e7a2fb21" alt="" style="display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover"><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">[ARTISTE]</span><span style="font-size: 14px; color: #4F5B66">Sculpture végétale · [mois année]</span></div></a></li>
+<li class="piece"><a href="B2-Programme.dc.html" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><div aria-hidden="true" style="aspect-ratio: 4 / 5; background: #EEF1F4"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #B5412C">À VENIR · 14.11</span><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Marie-Ella Stellfeld</span><span style="font-size: 14px; color: #4F5B66">Mosaïque, marbre</span></div></a></li>
+<li class="piece"><a href="B2-Programme.dc.html" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><div aria-hidden="true" style="aspect-ratio: 4 / 5; background: #EEF1F4"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #B5412C">À VENIR · 19.12</span><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Mireille Lemoine</span><span style="font-size: 14px; color: #4F5B66">Collage</span></div></a></li>
+<li class="piece"><a href="B2-Programme.dc.html" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><div aria-hidden="true" style="aspect-ratio: 4 / 5; background: #EEF1F4"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #B5412C">À VENIR · 16.01</span><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Dubarry et Conte</span><span style="font-size: 14px; color: #4F5B66">Gravure, photo</span></div></a></li>
+<li class="piece"><a href="B2-Programme.dc.html" style="display: flex; flex-direction: column; text-decoration: none; background: #FFFFFF; box-shadow: 0 18px 36px -28px rgba(30,42,54,.6)"><div class="store" aria-hidden="true" style="height: 22px"></div><div aria-hidden="true" style="aspect-ratio: 4 / 5; background: #EEF1F4"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #B5412C">À VENIR · 13.02</span><span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px">Philippe Guenin</span><span style="font-size: 14px; color: #4F5B66">Expo-performance</span></div></a></li>
+</ul>
+</section>
+
+<div class="chevrons" aria-hidden="true" style="height: 64px"></div>
+<footer style="background: #1E2A36; color: #FFFEFB; padding: 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; font-size: 15px"><span class="neon" style="font-family: Yellowtail, cursive; font-size: 34px">La boucherie</span><span>39 grande rue · 18240 Léré · 06 73 98 32 61</span><span>Instagram · Facebook · TikTok · YouTube</span></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

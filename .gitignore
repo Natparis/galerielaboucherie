@@ -1,0 +1,6 @@
+# Contenus saisis dans le back-office : ils vivent sur le serveur, pas dans Git.
+/data/*.json
+/data/*.tmp
+/data/candidatures/*
+!/data/candidatures/.gitkeep
+.DS_Store
