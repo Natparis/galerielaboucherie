@@ -37,6 +37,12 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 
 ## Installation chez un hébergeur
 
+**Notice complète pour OVH : `docs/INSTALLATION-OVH.txt`** (version imprimable : `docs/Notice installation OVH.pdf`,
+fabriquée à partir du .txt par `python3 docs/notice-html.py "docs/Notice installation OVH.html"`).
+Garder les deux synchronisées à chaque évolution.
+
+Résumé :
+
 Il faut **PHP 8.1 ou plus** (extensions `fileinfo`, `mbstring` ; `zip` pour la sauvegarde). Aucune base de données.
 
 1. Copier tous les fichiers par FTP à la racine du site (`www/` chez OVH, `public_html/` chez o2switch).

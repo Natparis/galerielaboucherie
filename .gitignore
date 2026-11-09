@@ -4,3 +4,6 @@
 /data/candidatures/*
 !/data/candidatures/.gitkeep
 .DS_Store
+
+# Archives d'envoi FTP (fabriquées hors git)
+laboucherie-*.zip

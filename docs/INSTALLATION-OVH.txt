@@ -1,0 +1,192 @@
+============================================================
+LA BOUCHERIE — galerie éphémère de Léré
+Mise en ligne du site et de l'espace galerie chez OVH
+============================================================
+
+Le site comprend deux parties :
+  • le site public : accueil, l'expo du mois, programme, artistes,
+    exposer, le lieu, presse ;
+  • l'ESPACE GALERIE (adresse du site + /admin) : on y gère tout
+    sans toucher au code — expositions, textes des pages, presse,
+    candidatures, répertoire des artistes, envois d'e-mails,
+    newsletter, coordonnées, comptes, sauvegarde.
+
+Pas de base de données : tout est enregistré dans des fichiers,
+dans les dossiers « data » (les contenus) et « uploads » (les
+images). Ces deux dossiers sont LE TRÉSOR du site.
+
+
+------------------------------------------------------------
+CE QU'IL FAUT
+------------------------------------------------------------
+• Un hébergement OVH mutualisé AVEC PHP (offre Perso, Pro…).
+  L'hébergement gratuit ne convient pas.
+• PHP en version 8.1 ou plus (le fichier « .ovhconfig » fourni
+  demande la 8.2).
+• Un nom de domaine (ex. laboucherie-lere.fr).
+• FileZilla (gratuit) pour envoyer les fichiers.
+
+Deux possibilités :
+  A. Un hébergement à part pour la galerie : le plus simple.
+  B. Le MÊME hébergement que Copains d'après, grâce au
+     « Multisite » d'OVH : la galerie a alors son propre dossier.
+     ⚠ Ne JAMAIS déposer les fichiers de la galerie dans le
+       dossier « www » de Copains d'après : on écraserait leur site.
+
+
+------------------------------------------------------------
+ÉTAPE 1 — Préparer l'emplacement
+------------------------------------------------------------
+Cas A (hébergement à part) : rien à faire, le site ira dans « www ».
+
+Cas B (avec Copains d'après) :
+  1. OVH > Web Cloud > Hébergements > votre hébergement >
+     onglet « Multisite » > « Ajouter un domaine ou sous-domaine ».
+  2. Domaine : celui de la galerie (ex. laboucherie-lere.fr).
+  3. Dossier racine : laboucherie   (un dossier À PART, pas www).
+  4. Cochez « SSL ». Validez et attendez que l'état passe à
+     « Activé » (jusqu'à une heure).
+
+
+------------------------------------------------------------
+ÉTAPE 2 — Activer le HTTPS (cadenas)
+------------------------------------------------------------
+OVH > Hébergements > votre hébergement > onglet « Multisite » :
+sur la ligne du domaine de la galerie, la colonne SSL doit être
+« Activé ». Sinon : bouton « … » > « Modifier » > cocher SSL,
+puis en haut « Commander un certificat SSL » (Let's Encrypt,
+gratuit).
+
+Le site passe tout seul en https : l'espace galerie ne doit
+jamais s'ouvrir sans le cadenas.
+
+
+------------------------------------------------------------
+ÉTAPE 3 — Envoyer les fichiers (FileZilla)
+------------------------------------------------------------
+1. Dézippez « laboucherie-site-complet.zip » sur votre ordinateur.
+   Il contient un dossier « www ».
+2. FileZilla : connectez-vous au FTP d'OVH (identifiants dans
+   OVH > Hébergements > onglet « FTP - SSH »).
+3. Menu « Serveur » > « Forcer l'affichage des fichiers cachés » :
+   indispensable pour envoyer « .htaccess » et « .ovhconfig ».
+4. Envoyez le CONTENU du dossier « www » de l'archive :
+     Cas A : dans le dossier « www » du serveur ;
+     Cas B : dans le dossier « laboucherie » créé à l'étape 1.
+5. Vérifiez que les dossiers « data » et « uploads » sont bien
+   arrivés, avec leurs fichiers « .htaccess ».
+
+Version de PHP : le fichier « .ovhconfig » demande PHP 8.2.
+  Cas B (avec Copains) : NE remplacez PAS le « .ovhconfig » qui
+  se trouve à la racine du FTP. Copains d'après fonctionne aussi
+  en PHP 8.2 ; vérifiez seulement dans OVH > Hébergements >
+  « Informations générales » que la « Version PHP globale » est
+  8.1 ou plus.
+
+
+------------------------------------------------------------
+ÉTAPE 4 — Créer le compte de la galerie
+------------------------------------------------------------
+1. Ouvrez https://votre-domaine.fr/admin/
+2. Première visite : la page « Bienvenue dans l'espace galerie »
+   demande un nom, un e-mail et un mot de passe (10 caractères
+   minimum). C'est le compte principal.
+3. D'autres personnes : menu « Comptes d'accès ».
+
+Mot de passe oublié : un autre compte peut en créer un nouveau
+pour vous. Si plus personne ne peut se connecter : par FTP,
+supprimez le fichier data/utilisateurs.json puis rouvrez /admin
+(on recrée le compte principal ; RIEN d'autre n'est effacé).
+
+
+------------------------------------------------------------
+ÉTAPE 5 — Les réglages à faire une fois
+------------------------------------------------------------
+Espace galerie > « Coordonnées et réglages » :
+  • téléphone, e-mail de contact, réseaux sociaux ;
+  • « E-mail qui reçoit les candidatures » ;
+  • « Adresse d'expédition des messages » : créez d'abord chez
+    OVH une adresse du domaine de la galerie
+    (OVH > Emails > votre domaine > « Créer une adresse e-mail »,
+    ex. contact@laboucherie-lere.fr) et indiquez-la ici.
+    Une adresse Gmail ne convient PAS comme expéditeur : les
+    messages arriveraient en indésirables. Elle peut en revanche
+    servir d'e-mail de contact (les réponses y arrivent).
+  • mentions légales.
+
+Puis vérifiez :
+  • page « Exposer » : envoyez une candidature d'essai, elle doit
+    apparaître dans « Candidatures » (et arriver par e-mail) ;
+  • accueil : inscrivez-vous à la newsletter, puis « Newsletter »
+    > « Envoyer le programme aux inscrits » : le message doit
+    arriver, avec un lien de désinscription en bas ;
+  • supprimez ensuite ces essais.
+
+Le site est livré avec les expositions et textes des maquettes
+(Béatrice Sermondadaz, programme jusqu'en mars…) : modifiez-les
+ou supprimez-les librement depuis l'espace galerie. Deux fiches
+« [Artiste à compléter] » sont en brouillon, invisibles du public.
+
+
+------------------------------------------------------------
+ÉTAPE 6 — Partager le répertoire avec Copains d'après
+------------------------------------------------------------
+Facultatif. Les fiches « Galerie éphémère » du Répertoire de
+Copains d'après et le répertoire des artistes de la galerie se
+synchronisent alors dans les deux sens.
+
+1. Côté Copains d'après : la mise à jour « partage » doit être
+   installée (fichier partage.php) et la clé ajoutée dans leur
+   config.php (voir leur notice).
+2. Ici : « Coordonnées et réglages » >
+     Adresse du site Copains d'après : https://www.copainsdapres.org/
+     Clé de partage : EXACTEMENT la même que dans leur config.php
+3. « Répertoire des artistes » : un bandeau vert « Partagé avec
+   Copains d'après » confirme que tout marche.
+
+
+------------------------------------------------------------
+LES MISES À JOUR DU SITE — règle d'or
+------------------------------------------------------------
+Pour une nouvelle version, utilisez l'archive
+« laboucherie-mise-a-jour.zip » : elle ne contient NI « data »
+NI « uploads ».
+
+⚠ Ne JAMAIS remplacer ni supprimer les dossiers « data » et
+  « uploads » sur le serveur : ce sont les expositions, les
+  textes, les images, les candidatures, les contacts et les
+  comptes. Les écraser = tout perdre.
+
+
+------------------------------------------------------------
+SAUVEGARDE
+------------------------------------------------------------
+Espace galerie > « Sauvegarde » > « Télécharger la sauvegarde »
+(un .zip avec tous les contenus et toutes les images, sans les
+mots de passe). Conseil : une fois par mois, sur l'ordinateur ou
+une clé USB.
+
+Restaurer : par FTP, recopier les dossiers « data » et « uploads »
+de la sauvegarde sur le serveur (garder data/utilisateurs.json
+existant pour conserver les comptes).
+
+
+------------------------------------------------------------
+EN CAS DE PROBLÈME
+------------------------------------------------------------
+• Page blanche ou « Erreur 500 » : version de PHP trop ancienne
+  (il faut 8.1 ou plus), voir l'étape 3.
+• « Session expirée » en enregistrant : rechargez la page et
+  recommencez (vous étiez resté longtemps sans rien faire).
+• Une image ne part pas : elle dépasse 8 Mo, réduisez-la.
+• Les e-mails n'arrivent pas : vérifiez l'adresse d'expédition
+  (étape 5) et les indésirables. Dans « Écrire aux artistes »,
+  le bouton « Ouvrir dans ma messagerie » dépanne en attendant.
+• Bandeau rouge dans le répertoire : la connexion avec Copains
+  d'après ne marche pas (le message dit pourquoi : clé refusée,
+  partage.php absent…).
+• Les dossiers data, inc et maquettes doivent rester
+  inaccessibles depuis le web : https://votre-domaine.fr/data/
+  doit afficher « Forbidden ». Sinon, le fichier .htaccess n'a
+  pas été envoyé (fichiers cachés, étape 3).
+============================================================

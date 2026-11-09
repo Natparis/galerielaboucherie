@@ -4,8 +4,14 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Toujours en HTTPS (connexion sécurisée, indispensable pour l'espace galerie)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
   # Dossiers privés : contenus, code interne, sources des maquettes
-  RewriteRule ^(data|inc|maquettes)(/|$) - [F,L]
+  RewriteRule ^(data|inc|maquettes|docs)(/|$) - [F,L]
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
   RewriteRule (^|/)\. - [F,L]
 </IfModule>
 
