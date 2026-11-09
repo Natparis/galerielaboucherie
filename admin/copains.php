@@ -1,12 +1,11 @@
 <?php
 /**
- * Partage du répertoire avec Copains d'après (partage.php sur leur site).
+ * Synchronisation du Répertoire des contacts avec le Répertoire de Copains d'après (partage.php).
  * Le Répertoire de Copains est la référence commune ; la galerie en garde une copie
  * enrichie (discipline, groupes, photo…) et synchronise nom, e-mail, téléphone, notes.
  */
 
 const COPAINS_INTERVALLE = 60; // secondes minimum entre deux synchronisations automatiques
-const COPAINS_GROUPE_ARTISTES = 'Joue à La Boucherie';
 
 /** Origines du Répertoire de Copains d'après (mêmes noms et couleurs que leur page Répertoire). */
 const ORIGINES = [
@@ -21,7 +20,10 @@ const ORIGINES = [
 function origines_de(array $a): array
 {
     $p = array_values(array_filter((array)($a['projets'] ?? []), 'is_string'));
-    return $p ?: ['galerie'];
+    if ($p || !empty($a['cda_id'])) {
+        return $p; // fiche du Répertoire de Copains : ses origines telles quelles
+    }
+    return ['galerie']; // fiche créée par la galerie
 }
 
 function badges_origine(array $a): string
@@ -139,7 +141,7 @@ function copains_etat(): array
  */
 function copains_synchroniser(): array
 {
-    $stats = ['ajout' => 0, 'maj' => 0, 'envoyees' => 0, 'detachees' => 0, 'artistes_ajout' => 0, 'artistes_retires' => 0, 'erreur' => null];
+    $stats = ['ajout' => 0, 'maj' => 0, 'envoyees' => 0, 'detachees' => 0, 'erreur' => null];
     if (!copains_actif()) {
         $stats['erreur'] = 'partage non configuré';
         return $stats;
@@ -161,8 +163,12 @@ function copains_synchroniser(): array
         $parNom[slugify($a['nom'])] = $i;
     }
     $vus = [];
+    $ignores = array_flip(data_load('copains_ignores', []));
     foreach ($distants as $c) {
         if (empty($c['id'])) continue;
+        if (isset($ignores[$c['id']])) {
+            continue; // fiche supprimée ici par la galerie : on ne la recrée pas
+        }
         $vus[$c['id']] = true;
         $sig = copains_sig($c['nom'] ?? '', $c['email'] ?? '', $c['tel'] ?? '', $c['note'] ?? '');
         $i = $parId[$c['id']] ?? null;
@@ -209,7 +215,6 @@ function copains_synchroniser(): array
         }
     }
     unset($a);
-    copains_artistes($list, (array)($d['artistes'] ?? []), $defaut, $stats);
     // Envoi des fiches locales nouvelles ou modifiées
     foreach ($list as &$a) {
         if (empty($a['partage'])) continue;
@@ -229,74 +234,6 @@ function copains_synchroniser(): array
     return $stats;
 }
 
-function avec_groupe(string $groupes, string $g, bool $present): string
-{
-    $l = array_values(array_filter(array_map('trim', explode(',', $groupes)), fn($x) => $x !== '' && $x !== $g));
-    if ($present) {
-        $l[] = $g;
-    }
-    return implode(', ', $l);
-}
-
-/**
- * Artistes de la Programmation de Copains cochés « La Boucherie » (lecture seule).
- * Ils arrivent dans le groupe « Joue à La Boucherie » ; on ne fait que compléter les champs vides.
- * Un artiste décoché là-bas perd ce groupe ici, sa fiche est gardée.
- */
-function copains_artistes(array &$list, array $artistes, array $defaut, array &$stats): void
-{
-    $vus = [];
-    foreach ($artistes as $ar) {
-        if (empty($ar['id']) || trim($ar['nom'] ?? '') === '') continue;
-        $vus[$ar['id']] = true;
-        $i = null;
-        foreach ($list as $k => $a) {
-            if (($a['cda_artiste_id'] ?? '') === $ar['id']) { $i = $k; break; }
-        }
-        if ($i === null && ($ar['email'] ?? '') !== '') {
-            foreach ($list as $k => $a) {
-                if (mb_strtolower($a['email']) === mb_strtolower($ar['email'])) { $i = $k; break; }
-            }
-        }
-        if ($i === null) {
-            foreach ($list as $k => $a) {
-                if (slugify($a['nom']) === slugify($ar['nom'])) { $i = $k; break; }
-            }
-        }
-        $note = trim(($ar['contact'] ?? '') !== '' ? 'Contact : ' . $ar['contact'] : '');
-        if ($i === null) {
-            $list[] = array_replace($defaut, [
-                'id' => new_id(), 'nom' => $ar['nom'], 'email' => $ar['email'] ?? '', 'telephone' => $ar['tel'] ?? '',
-                'style' => $ar['style'] ?? '', 'notes' => $note, 'groupes' => COPAINS_GROUPE_ARTISTES, 'artiste' => true,
-                'partage' => true, 'cda_artiste_id' => $ar['id'],
-            ]);
-            $stats['artistes_ajout']++;
-            continue;
-        }
-        $a = &$list[$i];
-        $a['cda_artiste_id'] = $ar['id'];
-        $a['groupes'] = avec_groupe((string)$a['groupes'], COPAINS_GROUPE_ARTISTES, true);
-        $a['artiste'] = true;
-        foreach (['email' => 'email', 'telephone' => 'tel', 'style' => 'style'] as $loc => $dist) {
-            if (trim((string)($a[$loc] ?? '')) === '' && ($ar[$dist] ?? '') !== '') {
-                $a[$loc] = $ar[$dist];
-            }
-        }
-        if (trim((string)$a['notes']) === '' && $note !== '') {
-            $a['notes'] = $note;
-        }
-        unset($a);
-    }
-    foreach ($list as &$a) {
-        if (!empty($a['cda_artiste_id']) && !isset($vus[$a['cda_artiste_id']])) {
-            $a['cda_artiste_id'] = '';
-            $a['groupes'] = avec_groupe((string)$a['groupes'], COPAINS_GROUPE_ARTISTES, false);
-            $stats['artistes_retires']++;
-        }
-    }
-    unset($a);
-}
-
 /** Synchronise si la dernière synchro date de plus d'une minute. */
 function copains_synchro_auto(): ?array
 {
@@ -313,7 +250,5 @@ function copains_resume(array $st): string
     if ($st['maj']) $parts[] = $st['maj'] . ' mise(s) à jour depuis Copains';
     if ($st['envoyees']) $parts[] = $st['envoyees'] . ' envoyée(s) à Copains';
     if ($st['detachees']) $parts[] = $st['detachees'] . ' retirée(s) du partage côté Copains';
-    if ($st['artistes_ajout']) $parts[] = $st['artistes_ajout'] . ' artiste(s) de la Programmation qui joue(nt) à La Boucherie';
-    if ($st['artistes_retires']) $parts[] = $st['artistes_retires'] . ' artiste(s) qui ne joue(nt) plus à La Boucherie';
     return $parts ? implode(', ', $parts) . '.' : 'Tout est déjà à jour.';
 }

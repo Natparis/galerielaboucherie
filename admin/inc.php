@@ -395,15 +395,13 @@ function repertoire(): array
     return $list;
 }
 
-const GROUPES_ARTISTES = ['A exposé', 'Programmé', 'Candidat', 'Joue à La Boucherie'];
+// Artistes de la GALERIE (jamais ceux de Copains d'après, qui ont leurs propres « Artistes »)
+const GROUPES_ARTISTES = ['A exposé', 'Programmé', 'Candidat'];
 
 /** Une fiche du répertoire est-elle un artiste ? */
 function est_artiste(array $a): bool
 {
-    if (!empty($a['artiste']) || trim((string)($a['discipline'] ?? '')) !== '' || trim((string)($a['style'] ?? '')) !== '') {
-        return true;
-    }
-    if (in_array('artistes', (array)($a['projets'] ?? []), true)) {
+    if (!empty($a['artiste']) || trim((string)($a['discipline'] ?? '')) !== '') {
         return true;
     }
     return (bool)array_intersect(groupes_de($a), GROUPES_ARTISTES);

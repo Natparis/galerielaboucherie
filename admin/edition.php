@@ -53,6 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($err = copains_retirer($items[$idx]['cda_id'])) {
                 flash('Attention : Copains d\'après n\'a pas pu être prévenu (' . $err . ').', 'err');
             }
+            // La fiche reste dans le Répertoire de Copains : on retient de ne plus la recopier ici.
+            $ign = data_load('copains_ignores', []);
+            $ign[] = $items[$idx]['cda_id'];
+            data_save('copains_ignores', array_values(array_unique($ign)));
         }
         array_splice($items, $idx, 1);
         data_save($c, array_values($items));

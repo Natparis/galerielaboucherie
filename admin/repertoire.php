@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'synch
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['export'])) {
     $st = copains_synchro_auto();
-    if ($st && !$st['erreur'] && ($st['ajout'] || $st['maj'] || $st['detachees'] || $st['artistes_ajout'] || $st['artistes_retires'])) {
+    if ($st && !$st['erreur'] && ($st['ajout'] || $st['maj'] || $st['detachees'])) {
         flash('Mis à jour depuis Copains d\'après : ' . copains_resume($st));
     }
 }
