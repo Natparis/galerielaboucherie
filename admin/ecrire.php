@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/inc.php';
 $moi = require_login();
+require_once __DIR__ . '/copains.php';
 
 $s = settings();
 $rep = repertoire();
@@ -10,11 +11,11 @@ $news = data_load('newsletter', []);
 $dest = [];
 foreach ($rep as $a) {
     if ($a['email'] !== '') {
-        $dest['a:' . $a['id']] = ['nom' => $a['nom'], 'email' => $a['email'], 'groupes' => groupes_de($a), 'abonne' => (bool)$a['abonne'], 'type' => 'artiste'];
+        $dest['a:' . $a['id']] = ['nom' => $a['nom'], 'email' => $a['email'], 'groupes' => groupes_de($a), 'origines' => origines_de($a), 'abonne' => (bool)$a['abonne'], 'type' => 'artiste'];
     }
 }
 foreach ($news as $n) {
-    $dest['n:' . $n['id']] = ['nom' => '', 'email' => $n['email'], 'groupes' => [], 'abonne' => true, 'type' => 'newsletter'];
+    $dest['n:' . $n['id']] = ['nom' => '', 'email' => $n['email'], 'groupes' => [], 'origines' => [], 'abonne' => true, 'type' => 'newsletter'];
 }
 
 /** Texte du programme à venir, prêt à coller dans un message. */
@@ -86,6 +87,11 @@ foreach ((array)($_GET['ids'] ?? []) as $id) {
 if (isset($_GET['groupe'])) {
     foreach ($dest as $k => $d) {
         if ($d['abonne'] && in_array($_GET['groupe'], $d['groupes'], true)) $coches[] = $k;
+    }
+}
+if (isset($_GET['origine'])) {
+    foreach ($dest as $k => $d) {
+        if ($d['abonne'] && in_array($_GET['origine'], $d['origines'], true)) $coches[] = $k;
     }
 }
 if (($_GET['tous'] ?? '') === 'newsletter') {
@@ -166,6 +172,9 @@ admin_start('Écrire aux artistes', 'ecrire.php');
 <?php else: ?>
       <div class="raccourcis" aria-label="Sélection rapide">
         <button type="button" class="puce-adm" data-choisir="artiste">Tous les artistes</button>
+<?php $nbO = []; foreach ($dest as $d) foreach ($d['origines'] as $o) $nbO[$o] = ($nbO[$o] ?? 0) + 1;
+      foreach (ORIGINES as $k => [$nom, $court, $coul]): if (empty($nbO[$k]) || count($nbO) < 2) continue; ?>        <button type="button" class="puce-adm origine-btn" style="--c:<?= $coul ?>" data-choisir-origine="<?= e($k) ?>"><?= e($nom) ?> (<?= $nbO[$k] ?>)</button>
+<?php endforeach ?>
 <?php foreach ($groupes as $g => $nb): ?>        <button type="button" class="puce-adm" data-choisir-groupe="<?= e($g) ?>"><?= e($g) ?> (<?= $nb ?>)</button>
 <?php endforeach ?>
 <?php if ($news): ?>        <button type="button" class="puce-adm" data-choisir="newsletter">Inscrits newsletter (<?= count($news) ?>)</button>
@@ -175,9 +184,9 @@ admin_start('Écrire aux artistes', 'ecrire.php');
       <input type="search" class="filtre-dest" placeholder="Chercher un nom…" aria-label="Chercher un destinataire" data-filtre-dest>
       <ul class="liste-dest">
 <?php foreach ($dest as $k => $d): ?>
-        <li data-type="<?= $d['type'] ?>" data-groupes="<?= e(json_encode($d['groupes'], JSON_UNESCAPED_UNICODE)) ?>" data-abonne="<?= $d['abonne'] ? '1' : '0' ?>">
+        <li data-type="<?= $d['type'] ?>" data-origines="<?= e(json_encode($d['origines'])) ?>" data-groupes="<?= e(json_encode($d['groupes'], JSON_UNESCAPED_UNICODE)) ?>" data-abonne="<?= $d['abonne'] ? '1' : '0' ?>">
           <label class="case"><input type="checkbox" name="dest[]" value="<?= e($k) ?>" data-email="<?= e($d['email']) ?>"<?= isset($coches[$k]) ? ' checked' : '' ?>>
-          <span><?= $d['nom'] ? '<strong>' . e($d['nom']) . '</strong> ' : '' ?><small><?= e($d['email']) ?><?= $d['type'] === 'newsletter' ? ' · newsletter' : '' ?><?= !$d['abonne'] ? ' · ne veut plus d\'envois groupés' : '' ?></small></span></label>
+          <span><?= $d['nom'] ? '<strong>' . e($d['nom']) . '</strong> ' : '' ?><?= $d['type'] === 'artiste' ? badges_origine(['projets' => $d['origines']]) : '' ?><small><?= e($d['email']) ?><?= $d['type'] === 'newsletter' ? ' · newsletter' : '' ?><?= !$d['abonne'] ? ' · ne veut plus d\'envois groupés' : '' ?></small></span></label>
         </li>
 <?php endforeach ?>
       </ul>

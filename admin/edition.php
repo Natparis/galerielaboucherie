@@ -127,6 +127,9 @@ $titre = $idx !== null ? ($item[$def['title']] ?: 'Sans titre') : 'Ajouter ' . $
 admin_start($titre, $listUrl);
 ?>
 <p class="fil"><a href="<?= e($listUrl) ?>">← <?= e($def['label']) ?></a></p>
+<?php if ($c === 'repertoire' && $idx !== null): ?>
+<p class="origines-fiche">Origine : <?= badges_origine($item) ?><?= !empty($item['cda_id']) ? ' · <span class="lie">⇄</span> fiche commune avec le Répertoire de Copains d\'après' : '' ?></p>
+<?php endif ?>
 <form method="post" enctype="multipart/form-data" class="formulaire" data-garde>
   <?= csrf_field() ?>
   <?php render_fields($def['fields'], $item) ?>

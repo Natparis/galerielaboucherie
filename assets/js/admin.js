@@ -111,13 +111,13 @@
   function boxes() { return f.querySelectorAll('.liste-dest input[type=checkbox]'); }
   function maj() { compte.textContent = '(' + f.querySelectorAll('.liste-dest input:checked').length + ')'; }
   f.addEventListener('change', function (e) { if (e.target.name === 'dest[]') maj(); });
-  f.querySelectorAll('[data-choisir],[data-choisir-groupe]').forEach(function (b) {
+  f.querySelectorAll('[data-choisir],[data-choisir-groupe],[data-choisir-origine]').forEach(function (b) {
     b.addEventListener('click', function () {
-      var t = b.getAttribute('data-choisir'), g = b.getAttribute('data-choisir-groupe');
+      var t = b.getAttribute('data-choisir'), g = b.getAttribute('data-choisir-groupe'), o = b.getAttribute('data-choisir-origine');
       items.forEach(function (li) {
         var cb = li.querySelector('input');
         if (t === 'aucun') { cb.checked = false; return; }
-        var ok = g ? JSON.parse(li.dataset.groupes).indexOf(g) > -1 : li.dataset.type === t;
+        var ok = o ? JSON.parse(li.dataset.origines).indexOf(o) > -1 : g ? JSON.parse(li.dataset.groupes).indexOf(g) > -1 : li.dataset.type === t;
         if (ok && li.dataset.abonne === '1') cb.checked = true;
       });
       maj();

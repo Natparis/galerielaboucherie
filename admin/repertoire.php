@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'synch
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['export'])) {
     $st = copains_synchro_auto();
-    if ($st && !$st['erreur'] && ($st['ajout'] || $st['maj'] || $st['detachees'])) {
+    if ($st && !$st['erreur'] && ($st['ajout'] || $st['maj'] || $st['detachees'] || $st['artistes_ajout'] || $st['artistes_retires'])) {
         flash('Mis à jour depuis Copains d\'après : ' . copains_resume($st));
     }
 }
@@ -88,13 +88,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'impor
 $q = trim((string)($_GET['q'] ?? ''));
 $gr = (string)($_GET['groupe'] ?? '');
 $di = (string)($_GET['discipline'] ?? '');
-$aff = array_filter($rep, function ($a) use ($q, $gr, $di) {
-    if ($q !== '' && mb_stripos($a['nom'] . ' ' . $a['email'] . ' ' . $a['ville'] . ' ' . $a['notes'] . ' ' . $a['groupes'], $q) === false) return false;
+$or = (string)($_GET['origine'] ?? '');
+$aff = array_filter($rep, function ($a) use ($q, $gr, $di, $or) {
+    if ($or !== '' && !in_array($or, origines_de($a), true)) return false;
+    if ($q !== '' && mb_stripos($a['nom'] . ' ' . $a['email'] . ' ' . $a['ville'] . ' ' . $a['notes'] . ' ' . $a['groupes'] . ' ' . $a['style'], $q) === false) return false;
     if ($gr !== '' && !in_array($gr, groupes_de($a), true)) return false;
     if ($di !== '' && $a['discipline'] !== $di) return false;
     return true;
 });
 $groupes = tous_groupes($rep);
+$nbOrig = [];
+foreach ($rep as $a) {
+    foreach (origines_de($a) as $p) $nbOrig[$p] = ($nbOrig[$p] ?? 0) + 1;
+}
 $disc = array_values(array_unique(array_filter(array_column($rep, 'discipline'))));
 sort($disc);
 $sansEmail = count(array_filter($rep, fn($a) => $a['email'] === ''));
@@ -122,12 +128,16 @@ admin_start('Répertoire des artistes', 'repertoire.php');
 
 <form class="filtres-adm" method="get">
   <label class="sr-only" for="q">Rechercher</label><input id="q" type="search" name="q" value="<?= e($q) ?>" placeholder="Nom, ville, note…">
+<?php if (count($nbOrig) > 1 || copains_actif()): ?>
+  <label class="sr-only" for="origine">Origine</label>
+  <select id="origine" name="origine"><option value="">Toutes origines</option><?php foreach (ORIGINES as $k => [$nom]): if (empty($nbOrig[$k])) continue; ?><option value="<?= e($k) ?>"<?= $or === $k ? ' selected' : '' ?>><?= e($nom) ?> (<?= $nbOrig[$k] ?>)</option><?php endforeach ?></select>
+<?php endif ?>
   <label class="sr-only" for="groupe">Groupe</label>
   <select id="groupe" name="groupe"><option value="">Tous les groupes</option><?php foreach ($groupes as $g => $nb): ?><option<?= $gr === $g ? ' selected' : '' ?> value="<?= e($g) ?>"><?= e($g) ?> (<?= $nb ?>)</option><?php endforeach ?></select>
   <label class="sr-only" for="discipline">Discipline</label>
   <select id="discipline" name="discipline"><option value="">Toutes disciplines</option><?php foreach ($disc as $d): ?><option<?= $di === $d ? ' selected' : '' ?>><?= e($d) ?></option><?php endforeach ?></select>
   <button class="btn ligne petit">Filtrer</button>
-  <?php if ($q !== '' || $gr !== '' || $di !== ''): ?><a href="repertoire.php">Tout afficher</a><?php endif ?>
+  <?php if ($q !== '' || $gr !== '' || $di !== '' || $or !== ''): ?><a href="repertoire.php">Tout afficher</a><?php endif ?>
 </form>
 
 <?php if (!$rep): ?>
@@ -140,16 +150,18 @@ admin_start('Répertoire des artistes', 'repertoire.php');
   <label class="case"><input type="checkbox" data-tout> <span>Tout sélectionner</span></label>
   <span data-compte aria-live="polite">0 sélectionné</span>
   <button class="btn petit" type="submit" disabled data-ecrire><?= icon('mail') ?> Écrire à la sélection</button>
+<?php if ($or !== ''): ?>  <a class="btn ligne petit" href="ecrire.php?origine=<?= e(urlencode($or)) ?>">Écrire à toute l'origine « <?= e(ORIGINES[$or][0] ?? $or) ?> »</a><?php endif ?>
 <?php if ($gr !== ''): ?>  <a class="btn ligne petit" href="ecrire.php?groupe=<?= e(urlencode($gr)) ?>">Écrire à tout le groupe « <?= e($gr) ?> »</a><?php endif ?>
 </div>
 <div class="table-wrap"><table class="tableau">
-  <thead><tr><th scope="col" style="width:44px"><span class="sr-only">Sélection</span></th><th scope="col">Nom</th><th scope="col">Discipline</th><th scope="col">Contact</th><th scope="col">Groupes</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+  <thead><tr><th scope="col" style="width:44px"><span class="sr-only">Sélection</span></th><th scope="col">Nom</th><th scope="col">Origine</th><th scope="col">Discipline</th><th scope="col">Contact</th><th scope="col">Groupes</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
   <tbody>
 <?php foreach ($aff as $a): ?>
     <tr>
       <td><input type="checkbox" class="coche" name="ids[]" value="<?= e($a['id']) ?>" aria-label="Sélectionner <?= e($a['nom']) ?>"<?= $a['email'] === '' ? ' disabled title="Pas d\'e-mail"' : '' ?>></td>
-      <td><a class="lien-fort" href="edition.php?c=repertoire&amp;id=<?= e($a['id']) ?>"><?= e($a['nom']) ?></a><?php if (!empty($a['cda_id'])): ?> <span class="etat partage" title="Fiche commune avec le Répertoire de Copains d'après">Copains</span><?php elseif (!empty($a['sync_attente'])): ?> <span class="etat avenir" title="Sera envoyée à Copains d'après à la prochaine synchronisation">en attente</span><?php endif ?><?php if ($a['ville']): ?><br><small class="gris"><?= e($a['ville']) ?></small><?php endif ?></td>
-      <td><?= e($a['discipline']) ?></td>
+      <td><a class="lien-fort" href="edition.php?c=repertoire&amp;id=<?= e($a['id']) ?>"><?= e($a['nom']) ?></a><?php if (!empty($a['cda_id'])): ?> <span class="lie" title="Fiche commune avec le Répertoire de Copains d'après">⇄<span class="sr-only"> fiche commune avec Copains d'après</span></span><?php elseif (!empty($a['sync_attente'])): ?> <span class="etat avenir" title="Sera envoyée à Copains d'après à la prochaine synchronisation">en attente</span><?php endif ?><?php if ($a['ville']): ?><br><small class="gris"><?= e($a['ville']) ?></small><?php endif ?></td>
+      <td><?= badges_origine($a) ?></td>
+      <td><?= e($a['discipline']) ?><?php if ($a['style']): ?><br><small class="gris"><?= e($a['style']) ?></small><?php endif ?></td>
       <td class="contact"><?php if ($a['email']): ?><a href="mailto:<?= e($a['email']) ?>"><?= e($a['email']) ?></a><?php else: ?><span class="gris">pas d'e-mail</span><?php endif ?><?php if ($a['telephone']): ?><br><a href="<?= e(tel_href($a['telephone'])) ?>"><?= e($a['telephone']) ?></a><?php endif ?><?php if (!$a['abonne']): ?><br><span class="etat brouillon">ne veut plus d'envois</span><?php endif ?></td>
       <td><?php foreach (groupes_de($a) as $g): ?><a class="puce-adm" href="?groupe=<?= e(urlencode($g)) ?>"><?= e($g) ?></a> <?php endforeach ?></td>
       <td class="actions-ligne">

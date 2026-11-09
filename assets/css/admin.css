@@ -194,3 +194,7 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 .synchro.ko{border-color:#F0C7BE;background:#FDF1EE}
 .synchro form{margin:0}
 .etat.partage{background:#E2F0EC;color:#25584D}
+.origine{display:inline-flex;align-items:center;padding:2px 8px;margin:1px 0;border:1px solid var(--c);color:var(--c);background:color-mix(in oklch,var(--c) 9%,#fff);font-size:12px;font-weight:700;white-space:nowrap}
+.origine-btn{border-color:var(--c);color:var(--c);background:color-mix(in oklch,var(--c) 9%,#fff)}
+.lie{color:#25584D;font-weight:700;margin-left:4px}
+.liste-dest .origine{font-size:11px;padding:0 6px;margin-right:4px}
