@@ -75,12 +75,14 @@ function admin_menu(): array
         'Tableau de bord' => [['index.php', 'Accueil', 'home', 0]],
         'Contenus' => [
             ['liste.php?c=expositions', $sc['collections']['expositions']['label'], 'calendar', 0],
-            ['liste.php?c=presse', $sc['collections']['presse']['label'], 'news', 0],
+            ['liste.php?c=presse', $sc['collections']['presse']['label'], 'page', 0],
         ],
         'Pages du site' => [],
         'Contacts' => [
+            ['repertoire.php', 'Répertoire des artistes', 'users', 0],
+            ['ecrire.php', 'Écrire aux artistes', 'mail', 0],
             ['candidatures.php', 'Candidatures', 'inbox', $nouvelles],
-            ['newsletter.php', 'Newsletter', 'mail', 0],
+            ['newsletter.php', 'Newsletter', 'news', 0],
         ],
         'Réglages' => [
             ['page.php?p=reglages', 'Coordonnées et réglages', 'settings', 0],
@@ -374,4 +376,66 @@ function missing_required(array $fields, array $values): array
         }
     }
     return $m;
+}
+
+/* ------------------------------------------------------------------ */
+/* Répertoire et envoi de messages                                     */
+/* ------------------------------------------------------------------ */
+
+function repertoire(): array
+{
+    $def = defaults_of(schema()['collections']['repertoire']['fields']);
+    $list = array_map(fn($x) => array_replace($def, $x), collection('repertoire'));
+    usort($list, fn($a, $b) => strcoll(mb_strtolower($a['nom']), mb_strtolower($b['nom'])));
+    return $list;
+}
+
+function groupes_de(array $a): array
+{
+    return array_values(array_filter(array_map('trim', explode(',', (string)$a['groupes'])), 'strlen'));
+}
+
+function tous_groupes(array $rep): array
+{
+    $g = [];
+    foreach ($rep as $a) {
+        foreach (groupes_de($a) as $x) {
+            $g[$x] = ($g[$x] ?? 0) + 1;
+        }
+    }
+    uksort($g, 'strcoll');
+    return $g;
+}
+
+/** Remplace {prenom}, {nom} dans un texte. */
+function personnaliser(string $txt, array $a): string
+{
+    $nom = trim($a['nom']);
+    $prenom = explode(' ', $nom)[0];
+    return strtr($txt, ['{prenom}' => $prenom, '{nom}' => $nom, '{Prenom}' => $prenom, '{Nom}' => $nom]);
+}
+
+function header_mot(string $s): string
+{
+    return preg_match('/[^\x20-\x7E]/', $s) ? '=?UTF-8?B?' . base64_encode($s) . '?=' : $s;
+}
+
+/** Envoie un e-mail texte en UTF-8. Retourne true si le serveur l'a accepté. */
+function envoyer_mail(string $to, string $sujet, string $corps): bool
+{
+    $s = settings();
+    $from = $s['email_expediteur'] ?: ($s['email'] ?: 'no-reply@' . preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'localhost'));
+    $reply = $s['email'] ?: $from;
+    $clean = fn($v) => str_replace(["\r", "\n"], '', $v);
+    $headers = [
+        'From: ' . header_mot($s['nom']) . ' <' . $clean($from) . '>',
+        'Reply-To: ' . $clean($reply),
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=utf-8',
+        'Content-Transfer-Encoding: 8bit',
+    ];
+    if (!function_exists('mail')) {
+        return false;
+    }
+    return @mail($clean($to), header_mot($clean($sujet)), str_replace("\n", "\r\n", $corps), implode("\r\n", $headers), '-f' . $clean($from));
 }

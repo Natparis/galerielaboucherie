@@ -365,3 +365,36 @@ function redirect(string $to): never
     header('Location: ' . $to);
     exit;
 }
+
+/* ------------------------------------------------------------------ */
+/* Désinscription de la newsletter                                     */
+/* ------------------------------------------------------------------ */
+
+function app_secret(): string
+{
+    $s = data_load('secret', []);
+    if (empty($s['cle'])) {
+        $s = ['cle' => bin2hex(random_bytes(32))];
+        data_save('secret', $s);
+    }
+    return $s['cle'];
+}
+
+function jeton_desinscription(string $email): string
+{
+    return substr(hash_hmac('sha256', mb_strtolower($email), app_secret()), 0, 24);
+}
+
+/** Adresse absolue du site (ex. https://laboucherie.fr/). */
+function site_url(): string
+{
+    $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
+    $dir = preg_replace('#/admin$#', '', $dir);
+    return ($https ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . $dir . '/';
+}
+
+function lien_desinscription(string $email): string
+{
+    return site_url() . 'desinscription.php?e=' . rawurlencode($email) . '&t=' . jeton_desinscription($email);
+}

@@ -56,6 +56,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $idx !== null) {
         flash('Candidature mise à jour.');
         redirect('candidatures.php?id=' . $id);
     }
+    if ($action === 'repertoire') {
+        $c = $list[$idx];
+        $rep = collection('repertoire');
+        foreach ($rep as $a) {
+            if (mb_strtolower($a['email'] ?? '') === mb_strtolower($c['email'])) {
+                flash($c['nom'] . ' est déjà dans le répertoire.');
+                redirect('edition.php?c=repertoire&id=' . $a['id']);
+            }
+        }
+        $opts = schema()['collections']['repertoire']['fields']['discipline']['options'];
+        $a = array_replace(defaults_of(schema()['collections']['repertoire']['fields']), [
+            'id' => new_id(), 'nom' => $c['nom'], 'email' => $c['email'], 'telephone' => $c['telephone'],
+            'discipline' => in_array($c['discipline'], $opts, true) ? $c['discipline'] : '', 'lien' => $c['lien'], 'groupes' => 'Candidat',
+            'notes' => 'Candidature du ' . fr_date(substr($c['date'], 0, 10), 'dmy') . ' : ' . mb_substr($c['message'], 0, 500),
+        ]);
+        $rep[] = $a;
+        data_save('repertoire', $rep);
+        flash($c['nom'] . ' a été ajouté·e au répertoire.');
+        redirect('edition.php?c=repertoire&id=' . $a['id']);
+    }
     if ($action === 'creer_expo') {
         $c = $list[$idx];
         $expos = collection('expositions');
@@ -123,6 +143,7 @@ if ($idx !== null) {
       <div class="barre-actions">
         <button class="btn" name="action" value="maj">Enregistrer</button>
         <button class="btn ligne" name="action" value="creer_expo">Créer l'exposition</button>
+        <button class="btn ligne" name="action" value="repertoire">Ajouter au répertoire</button>
         <button class="btn danger" name="action" value="supprimer" data-confirmer="Supprimer cette candidature et ses photos ?"><?= icon('trash') ?> Supprimer</button>
       </div>
     </form>

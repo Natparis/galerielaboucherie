@@ -84,3 +84,69 @@
   });
   window.addEventListener('beforeunload', function (e) { if (sale) { e.preventDefault(); e.returnValue = ''; } });
 })();
+
+// Répertoire : sélection multiple
+(function () {
+  var f = document.querySelector('form[data-selection]');
+  if (!f) return;
+  var coches = f.querySelectorAll('input.coche:not(:disabled)');
+  var tout = f.querySelector('[data-tout]'), compte = f.querySelector('[data-compte]'), btn = f.querySelector('[data-ecrire]');
+  function maj() {
+    var n = f.querySelectorAll('input.coche:checked').length;
+    compte.textContent = n + (n > 1 ? ' sélectionnés' : ' sélectionné');
+    btn.disabled = n === 0;
+    tout.checked = n > 0 && n === coches.length;
+  }
+  tout.addEventListener('change', function () { coches.forEach(function (c) { c.checked = tout.checked; }); maj(); });
+  coches.forEach(function (c) { c.addEventListener('change', maj); });
+  maj();
+})();
+
+// Écrire : destinataires, insertions, messagerie
+(function () {
+  var f = document.querySelector('form.ecrire');
+  if (!f) return;
+  var items = f.querySelectorAll('.liste-dest li');
+  var compte = f.querySelector('[data-compte-dest]');
+  function boxes() { return f.querySelectorAll('.liste-dest input[type=checkbox]'); }
+  function maj() { compte.textContent = '(' + f.querySelectorAll('.liste-dest input:checked').length + ')'; }
+  f.addEventListener('change', function (e) { if (e.target.name === 'dest[]') maj(); });
+  f.querySelectorAll('[data-choisir],[data-choisir-groupe]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.getAttribute('data-choisir'), g = b.getAttribute('data-choisir-groupe');
+      items.forEach(function (li) {
+        var cb = li.querySelector('input');
+        if (t === 'aucun') { cb.checked = false; return; }
+        var ok = g ? JSON.parse(li.dataset.groupes).indexOf(g) > -1 : li.dataset.type === t;
+        if (ok && li.dataset.abonne === '1') cb.checked = true;
+      });
+      maj();
+    });
+  });
+  var filtre = f.querySelector('[data-filtre-dest]');
+  if (filtre) filtre.addEventListener('input', function () {
+    var q = filtre.value.toLowerCase();
+    items.forEach(function (li) { li.hidden = q && li.textContent.toLowerCase().indexOf(q) === -1; });
+  });
+  var ta = f.querySelector('#corps');
+  f.querySelectorAll('[data-inserer]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-inserer'), s = ta.selectionStart, e = ta.selectionEnd;
+      ta.value = ta.value.slice(0, s) + v + ta.value.slice(e);
+      ta.focus(); ta.selectionStart = ta.selectionEnd = s + v.length;
+    });
+  });
+  var envoi = f.querySelector('[data-confirmer-envoi]');
+  envoi.addEventListener('click', function (e) {
+    var n = f.querySelectorAll('.liste-dest input:checked').length;
+    if (n && !confirm('Envoyer ce message à ' + n + ' personne' + (n > 1 ? 's' : '') + ' ?')) e.preventDefault();
+  });
+  f.querySelector('[data-mailto]').addEventListener('click', function () {
+    var em = [].map.call(f.querySelectorAll('.liste-dest input:checked'), function (c) { return c.dataset.email; });
+    if (!em.length) { alert('Choisissez au moins un destinataire.'); return; }
+    var corps = ta.value.replace(/\{prenom\}/g, em.length === 1 ? '' : '').replace(/Bonjour ,/g, 'Bonjour,');
+    var url = 'mailto:' + (em.length === 1 ? em[0] : '') + '?' + (em.length > 1 ? 'bcc=' + encodeURIComponent(em.join(',')) + '&' : '') +
+      'subject=' + encodeURIComponent(f.querySelector('#sujet').value) + '&body=' + encodeURIComponent(corps);
+    window.location.href = url;
+  });
+})();

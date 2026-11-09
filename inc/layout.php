@@ -122,3 +122,11 @@ function affiche(?array $x, string $altDefaut = ''): void
 </div>
 <?php
 }
+
+/** Message de confirmation affiché dans le bloc newsletter. */
+function news_msg(): string
+{
+    $m = $_SESSION['news_msg'] ?? null;
+    unset($_SESSION['news_msg']);
+    return $m ? '<p class="news-msg ' . e($m[0]) . '" role="status">' . e($m[1]) . '</p>' : '';
+}

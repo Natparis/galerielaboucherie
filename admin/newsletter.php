@@ -42,11 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $emails = implode(', ', array_column($list, 'email'));
 admin_start('Newsletter', 'newsletter.php');
 ?>
-<p class="aide">Les personnes inscrites depuis le site (page Programme). Pour envoyer le programme du mois : copiez les adresses ci-dessous et collez-les dans le champ <strong>Cci</strong> de votre messagerie, ou exportez la liste vers votre outil d'envoi (Brevo, Mailchimp…).</p>
+<p class="aide">Les personnes inscrites depuis le site (accueil et page Programme). Le bouton « Envoyer le programme aux inscrits » prépare un message avec les prochaines expos ; chaque inscrit le reçoit avec un lien de désinscription. Vous pouvez aussi exporter la liste vers un outil d'envoi (Brevo, Mailchimp…).</p>
 
 <div class="outils">
   <a class="btn" href="?export=1"><?= icon('download') ?> Exporter (CSV pour Excel)</a>
-<?php if ($list): ?>  <button class="btn ligne" type="button" data-copier="#tous-emails">Copier toutes les adresses</button>
+<?php if ($list): ?>  <a class="btn" href="ecrire.php?tous=newsletter"><?= icon('mail') ?> Envoyer le programme aux inscrits</a>
+  <button class="btn ligne" type="button" data-copier="#tous-emails">Copier toutes les adresses</button>
 <?php endif ?>
 </div>
 <textarea id="tous-emails" class="sr-only" readonly><?= e($emails) ?></textarea>

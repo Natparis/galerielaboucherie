@@ -59,6 +59,20 @@ page_start('', 'accueil', ['jsonld' => [
 </section>
 <?php endif ?>
 
+<section class="lettre lettre-accueil" id="newsletter">
+  <div class="grille">
+    <div style="display:flex;flex-direction:column;gap:10px"><p class="neon-clair" style="font-size:46px"><?= e($p['newsletter_titre']) ?></p><p class="lead" style="font-size:18px"><?= inline($p['newsletter_texte']) ?></p></div>
+    <form method="post" action="newsletter.php">
+      <?= csrf_field() ?>
+      <input type="hidden" name="retour" value="index.php#newsletter">
+      <label class="hp" aria-hidden="true">Ne pas remplir<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
+      <label>Votre adresse e-mail<input type="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr"></label>
+      <?= news_msg() ?>
+      <button class="btn" type="submit">Recevoir le programme</button>
+    </form>
+  </div>
+</section>
+
 <?php if (trim($p['galerie_texte'])): ?>
 <section class="quoi sombre">
   <div class="grille">

@@ -168,3 +168,25 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
   .barre-actions .btn.danger{margin-left:0}
 }
 @media (max-width:520px){.voir{display:none}}
+
+/* Répertoire et envois */
+.btns-l{display:flex;flex-wrap:wrap;gap:10px}
+.gris{color:var(--gris)}
+.filtres-adm{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filtres-adm input,.filtres-adm select{min-height:42px;padding:0 12px;border:1px solid var(--filet);border-radius:8px;font:inherit;background:#fff}
+.barre-selection{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;padding:10px 4px 14px}
+.barre-selection .btn[disabled]{opacity:.45;cursor:not-allowed}
+.coche{width:20px;height:20px;accent-color:var(--brique)}
+.contact{font-size:14px}
+.puce-adm{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;margin:2px 0;border-radius:30px;border:1px solid var(--filet);background:var(--creme);color:var(--nuit);font:inherit;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer}
+.puce-adm:hover{border-color:var(--nuit)}
+.puce-adm.vider{background:#fff}
+.raccourcis,.insertions{display:flex;flex-wrap:wrap;gap:6px}
+.filtre-dest{min-height:40px;padding:0 12px;border:1px solid var(--filet);border-radius:8px;font:inherit}
+.liste-dest{list-style:none;margin:0;padding:0;max-height:460px;overflow-y:auto;border:1px solid var(--filet);border-radius:8px}
+.liste-dest li{padding:4px 12px;border-bottom:1px solid #EEE9E1}
+.liste-dest li:last-child{border-bottom:0}
+.liste-dest small{color:var(--gris)}
+.bloc h2 small{font-family:var(--sans);font-size:15px;color:var(--gris)}
+.signature{margin:4px 0 0 30px;font:inherit;font-size:13px;color:var(--gris);white-space:pre-wrap}
+.ecrire .barre-actions{position:static;background:none;padding-bottom:0}

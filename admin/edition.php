@@ -22,7 +22,7 @@ if ($id !== '' && $idx === null) {
     redirect('liste.php?c=' . $c);
 }
 $item = $idx !== null ? array_replace(defaults_of($def['fields']), $items[$idx]) : defaults_of($def['fields']);
-$listUrl = 'liste.php?c=' . $c;
+$listUrl = $def['list_url'] ?? 'liste.php?c=' . $c;
 
 /** Adresse unique d'une exposition : nom de l'artiste + année. */
 function unique_slug(array $items, string $base, string $selfId): string
@@ -108,6 +108,9 @@ admin_start($titre, $listUrl);
 <?php if ($idx !== null): ?>
 <?php if ($c === 'expositions' && !empty($item['slug'])): ?>
     <a class="btn ligne" href="../expo.php?slug=<?= e(urlencode($item['slug'])) ?>" target="_blank" rel="noopener"><?= icon('eye') ?> Voir</a>
+<?php endif ?>
+<?php if ($c === 'repertoire' && !empty($item['email'])): ?>
+    <a class="btn ligne" href="ecrire.php?ids[]=<?= e($item['id']) ?>"><?= icon('mail') ?> Écrire</a>
 <?php endif ?>
     <button class="btn ligne" type="submit" name="action" value="dupliquer" formnovalidate><?= icon('copy') ?> Dupliquer</button>
     <button class="btn danger" type="submit" name="action" value="supprimer" formnovalidate data-confirmer="Supprimer définitivement « <?= e($titre) ?> » ?"><?= icon('trash') ?> Supprimer</button>

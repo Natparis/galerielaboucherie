@@ -52,6 +52,7 @@ page_start('Programme', 'programme');
       <label class="hp" aria-hidden="true">Ne pas remplir<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
       <label>Votre adresse e-mail<input type="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr"></label>
       <button class="btn" type="submit">S'inscrire</button>
+      <?= news_msg() ?>
     </form>
   </div>
 </section>

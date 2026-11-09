@@ -27,7 +27,9 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 - **Articles de presse** : scan, PDF, lien, citation, « à la une »
 - **Pages du site** : tous les textes de chaque page (titres, paragraphes, étapes, frise, photos…)
 - **Candidatures** : lecture, photos jointes (privées), statut, note interne, création de l'exposition en un clic
-- **Newsletter** : inscrits, ajout manuel, copie des adresses, export CSV pour Excel
+- **Répertoire des artistes** : fiches privées (contact, discipline, groupes, notes), import automatique depuis les expositions et candidatures, export CSV
+- **Écrire aux artistes** : un e-mail personnalisé (`{prenom}`) à une personne, à une sélection ou à tout un groupe ; historique des envois ; bouton « programme des prochaines expos » ; option « ouvrir dans ma messagerie »
+- **Newsletter** : inscription depuis l'accueil et le programme, envoi du programme aux inscrits avec lien de désinscription, export CSV
 - **Coordonnées et réglages** : adresse, téléphone, e-mails, réseaux sociaux, carte, mentions légales
 - **Comptes d'accès** : plusieurs personnes, changement de mot de passe
 - **Sauvegarde** : archive .zip de tous les contenus et images
@@ -39,7 +41,9 @@ Il faut **PHP 8.1 ou plus** (extensions `fileinfo`, `mbstring` ; `zip` pour la s
 1. Copier tous les fichiers par FTP à la racine du site (`www/` chez OVH, `public_html/` chez o2switch).
 2. Vérifier que les dossiers `data/` et `uploads/` sont accessibles en écriture (droits 755 ou 775).
 3. Ouvrir `https://votre-domaine.fr/admin/` et créer le compte de la galerie.
-4. Dans *Coordonnées et réglages*, renseigner l'e-mail qui reçoit les candidatures.
+4. Dans *Coordonnées et réglages*, renseigner l'e-mail qui reçoit les candidatures et l'**adresse d'expédition** des messages
+   (une adresse du nom de domaine du site, créée chez l'hébergeur, pour éviter les indésirables).
+   Les envois utilisent la fonction mail de l'hébergeur : prévoir un outil dédié (Brevo…) au-delà de quelques centaines d'envois par mois.
 
 Les contenus saisis sont stockés dans `data/` (fichiers JSON) et les images dans `uploads/`.
 **Lors d'une mise à jour du code, ne pas écraser ces deux dossiers.**
