@@ -198,3 +198,30 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 .origine-btn{border-color:var(--c);color:var(--c);background:color-mix(in oklch,var(--c) 9%,#fff)}
 .lie{color:#25584D;font-weight:700;margin-left:4px}
 .liste-dest .origine{font-size:11px;padding:0 6px;margin-right:4px}
+
+/* Aperçu en direct */
+.contenu:has(.avec-apercu){max-width:none}
+.main:has(.avec-apercu) .contenu{max-width:none}
+.avec-apercu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:24px;align-items:start}
+.avec-apercu>form{min-width:0}
+.apercu-ouvrir[hidden]{display:none}
+.avec-apercu .champ.half,.avec-apercu .champ.third{grid-column:span 6}
+.avec-apercu.sans-apercu{grid-template-columns:minmax(0,1fr);max-width:1100px}
+.apercu-direct{position:sticky;top:96px;height:calc(100vh - 116px);display:flex;flex-direction:column;background:#fff;border:1px solid var(--filet);border-radius:12px;overflow:hidden}
+.apercu-direct[hidden]{display:none}
+.apercu-barre{display:flex;align-items:center;gap:12px;padding:8px 10px 8px 16px;border-bottom:1px solid var(--filet);background:#FBF9F5}
+.apercu-barre strong{font-size:14px}
+.apercu-etat{font-size:12px;color:var(--vert);font-weight:700}
+.apercu-etat.attente{color:#8A6A1A}
+.apercu-etat.erreur{color:#A3271A}
+.apercu-outils{margin-left:auto;display:flex;gap:6px}
+.apercu-outils .ico{width:36px;height:36px}
+.apercu-outils .ico[aria-pressed=true]{background:var(--nuit);color:#fff;border-color:var(--nuit)}
+.apercu-cadre{position:relative;flex:1;overflow:hidden;background:repeating-linear-gradient(45deg,#F4F1EC 0 10px,#EFEBE4 10px 20px)}
+.apercu-cadre iframe{position:absolute;top:0;left:0;border:0;background:#fff;transform-origin:0 0}
+.apercu-note{margin:0;padding:8px 16px;font-size:12px;color:var(--gris);border-top:1px solid var(--filet)}
+.apercu-ouvrir{position:fixed;right:20px;bottom:20px;z-index:8;box-shadow:0 10px 24px -10px rgba(30,42,54,.5);background:#fff}
+@media (max-width:1100px){
+  .avec-apercu{grid-template-columns:minmax(0,1fr)}
+  .apercu-direct{position:fixed;inset:12px;top:12px;height:auto;z-index:30;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+}

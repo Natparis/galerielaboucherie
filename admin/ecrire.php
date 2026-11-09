@@ -15,7 +15,7 @@ foreach ($rep as $a) {
     }
 }
 foreach ($news as $n) {
-    $dest['n:' . $n['id']] = ['nom' => '', 'email' => $n['email'], 'groupes' => [], 'origines' => [], 'abonne' => true, 'type' => 'newsletter'];
+    $dest['n:' . $n['id']] = ['nom' => trim(($n['prenom'] ?? '') . ' ' . ($n['nom'] ?? '')), 'email' => $n['email'], 'groupes' => [], 'origines' => [], 'abonne' => true, 'type' => 'newsletter'];
 }
 
 /** Texte du programme à venir, prêt à coller dans un message. */
@@ -99,7 +99,7 @@ if (($_GET['tous'] ?? '') === 'newsletter') {
         if ($d['type'] === 'newsletter') $coches[] = $k;
     }
     $sujet = 'Le programme de ' . $s['nom'];
-    $corps = "Bonjour,\n\nVoici les prochains rendez-vous sous le store :\n\n" . texte_programme() . "\n\nAu plaisir de vous y retrouver !\n";
+    $corps = "Bonjour {prenom},\n\nVoici les prochains rendez-vous sous le store :\n\n" . texte_programme() . "\n\nAu plaisir de vous y retrouver !\n";
 }
 if (isset($_GET['reprendre'])) {
     foreach ($historique as $h) {

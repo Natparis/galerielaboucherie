@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 admin_start(($def['group'] ?? '') === 'Pages' ? 'Page « ' . $def['label'] . ' »' : $def['label'], 'page.php?p=' . $p);
 ?>
 <?php if (!empty($def['help'])): ?><p class="aide"><?= e($def['help']) ?></p><?php endif ?>
-<form method="post" enctype="multipart/form-data" class="formulaire" data-garde>
+<div class="avec-apercu">
+<form method="post" enctype="multipart/form-data" class="formulaire" data-garde data-apercu="apercu.php?p=<?= e($p) ?>">
   <?= csrf_field() ?>
   <?php render_fields($def['fields'], $values) ?>
   <div class="barre-actions">
@@ -40,4 +41,6 @@ admin_start(($def['group'] ?? '') === 'Pages' ? 'Page « ' . $def['label'] . ' �
     <a class="btn ligne" href="../<?= e($voir) ?>" target="_blank" rel="noopener"><?= icon('eye') ?> Voir la page</a>
   </div>
 </form>
+<?= apercu_panneau() ?>
+</div>
 <?php admin_end();

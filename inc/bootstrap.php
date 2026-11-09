@@ -145,7 +145,7 @@ function single(string $name): array
         if (!$def) {
             throw new InvalidArgumentException("Page inconnue : $name");
         }
-        $cache[$name] = array_replace(defaults_of($def['fields']), data_load($name, []));
+        $cache[$name] = array_replace(defaults_of($def['fields']), data_load($name, []), $GLOBALS['APERCU_PAGE'][$name] ?? []);
     }
     return $cache[$name];
 }
@@ -157,7 +157,22 @@ function settings(): array
 
 function collection(string $name): array
 {
-    return data_load($name, []);
+    $list = data_load($name, []);
+    // Aperçu en direct du back-office : la fiche en cours de saisie remplace l'enregistrée.
+    if (isset($GLOBALS['APERCU_FICHE'][$name])) {
+        $f = $GLOBALS['APERCU_FICHE'][$name];
+        $trouve = false;
+        foreach ($list as $i => $x) {
+            if (($x['id'] ?? '') === $f['id']) {
+                $list[$i] = $f;
+                $trouve = true;
+            }
+        }
+        if (!$trouve) {
+            $list[] = $f;
+        }
+    }
+    return $list;
 }
 
 /* ------------------------------------------------------------------ */
@@ -285,7 +300,7 @@ function fr_periode(array $x): string
 
 function url(string $path): string
 {
-    if (preg_match('#^(https?:|mailto:|tel:|\#|/)#', $path)) {
+    if (preg_match('#^(https?:|mailto:|tel:|data:|\#|/)#', $path)) {
         return $path;
     }
     return $GLOBALS['BASE'] . $path;
@@ -315,6 +330,10 @@ function save_upload(array $file, array $allowed = ['image/jpeg' => 'jpg', 'imag
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
     if (!isset($allowed[$mime])) {
         throw new RuntimeException('Format non accepté pour « ' . $file['name'] . ' ».');
+    }
+    if (!empty($GLOBALS['APERCU'])) {
+        // Aperçu : l'image est montrée sans être enregistrée sur le serveur.
+        return 'data:' . $mime . ';base64,' . base64_encode((string)file_get_contents($file['tmp_name']));
     }
     if (!is_dir($dir)) {
         mkdir($dir, 0775, true);

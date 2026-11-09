@@ -7,7 +7,11 @@ $def = defaults_of(schema()['collections']['presse']['fields']);
 $articles = array_map(fn($a) => array_replace($def, $a), array_filter(collection('presse'), fn($a) => !empty($a['publie'])));
 usort($articles, fn($a, $b) => strcmp($b['date'], $a['date']));
 $une = null;
+$enCours = $GLOBALS['APERCU_FICHE']['presse']['id'] ?? null; // aperçu du back-office
 foreach ($articles as $a) {
+    if ($enCours && $a['id'] === $enCours) { $une = $a; break; }
+}
+foreach ($une ? [] : $articles as $a) {
     if ($a['une']) { $une = $a; break; }
 }
 $une ??= $articles[0] ?? null;

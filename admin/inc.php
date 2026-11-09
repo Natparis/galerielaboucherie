@@ -443,3 +443,25 @@ function envoyer_mail(string $to, string $sujet, string $corps): bool
     }
     return @mail($clean($to), header_mot($clean($sujet)), str_replace("\n", "\r\n", $corps), implode("\r\n", $headers), '-f' . $clean($from));
 }
+
+/* ------------------------------------------------------------------ */
+/* Aperçu en direct (formulaire à gauche, page du site à droite)       */
+/* ------------------------------------------------------------------ */
+
+function apercu_panneau(): string
+{
+    return '<aside class="apercu-direct" data-apercu-panneau aria-label="Aperçu de la page">
+  <div class="apercu-barre">
+    <strong>Aperçu en direct</strong>
+    <span class="apercu-etat" data-apercu-etat aria-live="polite">à jour</span>
+    <span class="apercu-outils" role="group" aria-label="Taille de l\'aperçu">
+      <button type="button" class="ico" data-apercu-taille="ordi" aria-pressed="true" title="Comme sur un ordinateur"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg><span class="sr-only">Ordinateur</span></button>
+      <button type="button" class="ico" data-apercu-taille="mobile" aria-pressed="false" title="Comme sur un téléphone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span class="sr-only">Téléphone</span></button>
+      <button type="button" class="ico" data-apercu-fermer title="Masquer l\'aperçu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="sr-only">Masquer l\'aperçu</span></button>
+    </span>
+  </div>
+  <div class="apercu-cadre" data-apercu-cadre><iframe title="Aperçu de la page publique" data-apercu-iframe sandbox="allow-same-origin allow-scripts"></iframe></div>
+  <p class="apercu-note">Rien n\'est publié tant que vous n\'avez pas cliqué sur « Enregistrer ».</p>
+</aside>
+<button type="button" class="btn ligne apercu-ouvrir" data-apercu-ouvrir hidden>Voir l\'aperçu</button>';
+}

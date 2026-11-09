@@ -9,9 +9,9 @@ if (isset($_GET['export'])) {
     header('Content-Disposition: attachment; filename="newsletter-la-boucherie-' . date('Y-m-d') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF"); // pour Excel
-    fputcsv($out, ['email', 'date_inscription'], ';');
+    fputcsv($out, ['prenom', 'nom', 'email', 'date_inscription'], ';');
     foreach ($list as $r) {
-        fputcsv($out, [$r['email'], substr($r['date'], 0, 10)], ';');
+        fputcsv($out, [$r['prenom'] ?? '', $r['nom'] ?? '', $r['email'], substr($r['date'], 0, 10)], ';');
     }
     exit;
 }
@@ -60,7 +60,7 @@ admin_start('Newsletter', 'newsletter.php');
 <?php else: ?>
     <ul class="simple emails">
 <?php foreach (array_reverse($list) as $r): ?>
-      <li><span><?= e($r['email']) ?> <small>depuis le <?= fr_date(substr($r['date'], 0, 10), 'dmy') ?></small></span>
+      <li><span><?php if (!empty($r['prenom']) || !empty($r['nom'])): ?><strong><?= e(trim(($r['prenom'] ?? '') . ' ' . ($r['nom'] ?? ''))) ?></strong> <?php endif ?><?= e($r['email']) ?> <small>depuis le <?= fr_date(substr($r['date'], 0, 10), 'dmy') ?></small></span>
         <form method="post"><?= csrf_field() ?><input type="hidden" name="id" value="<?= e($r['id']) ?>"><button class="ico danger" name="action" value="supprimer" title="Retirer" data-confirmer="Retirer <?= e($r['email']) ?> de la liste ?"><?= icon('trash') ?><span class="sr-only">Retirer <?= e($r['email']) ?></span></button></form></li>
 <?php endforeach ?>
     </ul>

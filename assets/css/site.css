@@ -23,6 +23,13 @@ p{margin:0}
 .frange{height:18px;background:radial-gradient(circle at 50% 0,var(--brique) 0 13px,transparent 14px) 0 0/29px 18px repeat-x}
 .frange-c{height:14px;background:radial-gradient(circle at 50% 0,var(--creme) 0 10px,transparent 11px) 0 0/22px 14px repeat-x;background-color:var(--brique)}
 .neon{font-family:var(--script);font-weight:400;color:#FFE0CC;text-shadow:0 0 3px #FF7A45,0 0 10px #FF5A2A,0 0 24px #E8461E,0 0 48px #E8461E;line-height:1}
+/* Tube néon qui scintille : allumé la plupart du temps, quelques ratés irréguliers */
+.neon-clignote{animation:neon-tube 6s infinite}
+@keyframes neon-tube{
+  0%,18%,22%,25%,53%,57%,100%{opacity:1;text-shadow:0 0 3px #FF7A45,0 0 10px #FF5A2A,0 0 24px #E8461E,0 0 48px #E8461E}
+  20%,24%,55%{opacity:.35;text-shadow:none}
+  21%{opacity:.8;text-shadow:0 0 3px #FF7A45,0 0 8px #FF5A2A}
+}
 .neon-clair{font-family:var(--script);color:var(--brique);line-height:1}
 .chevrons{height:64px;background:linear-gradient(135deg,var(--ocre) 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(225deg,var(--ocre) 25%,transparent 25%) -20px 0/40px 40px,linear-gradient(315deg,var(--ocre) 25%,transparent 25%) 0 0/40px 40px,linear-gradient(45deg,var(--ocre) 25%,transparent 25%) 0 0/40px 40px,var(--ocre-clair)}
 
@@ -161,13 +168,13 @@ p{margin:0}
 .lettre .grille{max-width:1180px;margin:0 auto;gap:40px;align-items:center}
 .lettre .neon{font-size:44px}
 .lettre form{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
-.lettre label{flex:1 1 260px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.lettre label{flex:1 1 180px;display:flex;flex-direction:column;gap:6px;font-size:14px}
 .news-msg{flex-basis:100%;order:3;margin:0;padding:12px 16px;border-radius:6px;font-weight:700}
 .news-msg.ok{background:#E6F2EA;color:#1E4D2E}.news-msg.err{background:#FBE9E5;color:#7A2414}
 .lettre-accueil{background:var(--creme);border-top:1px solid #EADFCF;border-bottom:1px solid #EADFCF}
 .lettre-accueil label{color:var(--nuit);font-weight:700}
-.lettre-accueil input[type=email]{border:1px solid #8A97A3!important}
-.lettre input[type=email]{height:52px;padding:0 16px;border:0;border-radius:4px;font:inherit;font-size:17px}
+.lettre-accueil input[type=text],.lettre-accueil input[type=email]{border:1px solid #8A97A3!important}
+.lettre input[type=text],.lettre input[type=email]{height:52px;padding:0 16px;border:0;border-radius:4px;font:inherit;font-size:17px}
 
 /* ---------- Artistes ---------- */
 .filtres{display:flex;flex-direction:column;gap:12px;padding-top:24px}
@@ -285,4 +292,4 @@ p{margin:0}
   .form-cand{padding:20px}
   .infos th{width:110px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.neon-clignote{animation:none}}

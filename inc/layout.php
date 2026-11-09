@@ -57,7 +57,7 @@ function page_start(string $title, string $current = '', array $opt = []): void
   </nav>
 </header>
 <main id="contenu">
-<?php foreach (flash() as [$type, $msg]): ?>
+<?php foreach (empty($GLOBALS['APERCU']) ? flash() : [] as [$type, $msg]): ?>
 <div class="flash <?= e($type) ?>" role="status"><?= e($msg) ?></div>
 <?php endforeach;
 }

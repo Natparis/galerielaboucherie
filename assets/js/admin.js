@@ -150,3 +150,93 @@
     window.location.href = url;
   });
 })();
+
+// Aperçu en direct : la vraie page du site, mise à jour pendant la saisie
+(function () {
+  var form = document.querySelector('form[data-apercu]');
+  var pan = document.querySelector('[data-apercu-panneau]');
+  if (!form || !pan) return;
+  var iframe = pan.querySelector('[data-apercu-iframe]');
+  var cadre = pan.querySelector('[data-apercu-cadre]');
+  var etat = pan.querySelector('[data-apercu-etat]');
+  var ouvrir = document.querySelector('[data-apercu-ouvrir]');
+  var zone = form.closest('.avec-apercu');
+  var taille = 'ordi', minuteur = null, enCours = null, scroll = 0, versionDemandee = 0, versionAffichee = 0;
+
+  // Mise à l'échelle : la page est rendue en largeur réelle (1280 px ou 390 px) puis réduite pour tenir dans le cadre.
+  function ajuster() {
+    var W = cadre.clientWidth, H = cadre.clientHeight;
+    var largeur = taille === 'mobile' ? 390 : 1280;
+    var echelle = Math.min(1, W / largeur);
+    iframe.style.width = largeur + 'px';
+    iframe.style.height = (H / echelle) + 'px';
+    iframe.style.transform = 'scale(' + echelle + ')';
+    iframe.style.left = Math.max(0, (W - largeur * echelle) / 2) + 'px';
+  }
+  window.addEventListener('resize', ajuster);
+
+  function rafraichir() {
+    clearTimeout(minuteur);
+    minuteur = setTimeout(envoyer, 450);
+    etat.textContent = 'mise à jour…';
+    etat.className = 'apercu-etat attente';
+  }
+  function envoyer() {
+    if (pan.hidden) return;
+    var v = ++versionDemandee;
+    if (enCours) enCours.abort();
+    enCours = new AbortController();
+    var donnees = new FormData(form);
+    donnees.delete('action');
+    fetch(form.getAttribute('data-apercu'), { method: 'POST', body: donnees, credentials: 'same-origin', signal: enCours.signal })
+      .then(function (r) { return r.text().then(function (t) { return { ok: r.ok, t: t }; }); })
+      .then(function (r) {
+        if (v < versionAffichee) return;
+        if (!r.ok) { etat.textContent = r.t || 'aperçu indisponible'; etat.className = 'apercu-etat erreur'; return; }
+        try { scroll = iframe.contentWindow.scrollY || 0; } catch (e) {}
+        versionAffichee = v;
+        iframe.srcdoc = r.t;
+        etat.textContent = 'à jour';
+        etat.className = 'apercu-etat';
+      })
+      .catch(function (e) { if (e.name !== 'AbortError') { etat.textContent = 'aperçu indisponible'; etat.className = 'apercu-etat erreur'; } });
+  }
+  // On garde l'endroit de la page où l'on regardait.
+  iframe.addEventListener('load', function () {
+    try {
+      var w = iframe.contentWindow;
+      w.scrollTo(0, scroll);
+      w.addEventListener('scroll', function () { scroll = w.scrollY; });
+      // les images arrivent après : on reste au même endroit
+      setTimeout(function () { w.scrollTo(0, scroll); }, 300);
+    } catch (e) {}
+  });
+
+  form.addEventListener('input', rafraichir);
+  form.addEventListener('change', rafraichir);
+  form.addEventListener('click', function (e) {
+    if (e.target.closest('[data-ajout],[data-haut],[data-bas],[data-suppr]')) setTimeout(rafraichir, 50);
+  });
+
+  pan.querySelectorAll('[data-apercu-taille]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      taille = b.getAttribute('data-apercu-taille');
+      pan.querySelectorAll('[data-apercu-taille]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      ajuster();
+    });
+  });
+  function montrer(oui) {
+    pan.hidden = !oui;
+    if (ouvrir) ouvrir.hidden = oui;
+    zone.classList.toggle('sans-apercu', !oui);
+    try { localStorage.setItem('lb_apercu', oui ? '1' : '0'); } catch (e) {}
+    if (oui) { ajuster(); envoyer(); }
+  }
+  pan.querySelector('[data-apercu-fermer]').addEventListener('click', function () { montrer(false); });
+  if (ouvrir) ouvrir.addEventListener('click', function () { montrer(true); });
+
+  var pref = null;
+  try { pref = localStorage.getItem('lb_apercu'); } catch (e) {}
+  var petitEcran = window.matchMedia('(max-width: 1100px)').matches;
+  montrer(pref === null ? !petitEcran : pref === '1');
+})();

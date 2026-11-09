@@ -50,6 +50,8 @@ page_start('Programme', 'programme');
       <?= csrf_field() ?>
       <input type="hidden" name="retour" value="programme.php#newsletter">
       <label class="hp" aria-hidden="true">Ne pas remplir<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
+      <label>Prénom<input type="text" name="prenom" required autocomplete="given-name" maxlength="80"></label>
+      <label>Nom<input type="text" name="nom" required autocomplete="family-name" maxlength="80"></label>
       <label>Votre adresse e-mail<input type="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr"></label>
       <button class="btn" type="submit">S'inscrire</button>
       <?= news_msg() ?>

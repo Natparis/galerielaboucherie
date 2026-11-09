@@ -34,7 +34,7 @@ page_start('', 'accueil', ['jsonld' => [
   <div class="grille">
     <?php affiche($cur, 'Affiche de l\'exposition de ' . $cur['artiste']) ?>
     <div class="txt">
-      <p class="neon" style="font-size:46px"><?= expo_est_en_cours($cur) ? 'en ce moment' : 'dernièrement' ?></p>
+      <p class="neon neon-clignote" style="font-size:46px"><?= expo_est_en_cours($cur) ? 'en ce moment' : 'dernièrement' ?></p>
       <h2 class="h-1" style="font-size:64px"><?= e($cur['artiste']) ?></h2>
 <?php if ($cur['titre']): ?>      <p class="titre-expo"><?= e($cur['titre']) ?></p>
 <?php endif ?>
@@ -66,6 +66,8 @@ page_start('', 'accueil', ['jsonld' => [
       <?= csrf_field() ?>
       <input type="hidden" name="retour" value="index.php#newsletter">
       <label class="hp" aria-hidden="true">Ne pas remplir<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
+      <label>Prénom<input type="text" name="prenom" required autocomplete="given-name" maxlength="80"></label>
+      <label>Nom<input type="text" name="nom" required autocomplete="family-name" maxlength="80"></label>
       <label>Votre adresse e-mail<input type="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr"></label>
       <?= news_msg() ?>
       <button class="btn" type="submit">Recevoir le programme</button>

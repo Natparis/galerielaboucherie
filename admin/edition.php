@@ -130,7 +130,9 @@ admin_start($titre, $listUrl);
 <?php if ($c === 'repertoire' && $idx !== null): ?>
 <p class="origines-fiche">Origine : <?= badges_origine($item) ?><?= !empty($item['cda_id']) ? ' · <span class="lie">⇄</span> fiche commune avec le Répertoire de Copains d\'après' : '' ?></p>
 <?php endif ?>
-<form method="post" enctype="multipart/form-data" class="formulaire" data-garde>
+<?php $apercu = in_array($c, ['expositions', 'presse'], true); ?>
+<?php if ($apercu): ?><div class="avec-apercu"><?php endif ?>
+<form method="post" enctype="multipart/form-data" class="formulaire" data-garde<?= $apercu ? ' data-apercu="apercu.php?c=' . e($c) . '&amp;id=' . e($item['id'] ?? '') . '"' : '' ?>>
   <?= csrf_field() ?>
   <?php render_fields($def['fields'], $item) ?>
   <div class="barre-actions">
@@ -148,4 +150,5 @@ admin_start($titre, $listUrl);
 <?php endif ?>
   </div>
 </form>
+<?php if ($apercu): ?><?= apercu_panneau() ?></div><?php endif ?>
 <?php admin_end();
