@@ -1,12 +1,12 @@
 ============================================================
 LA BOUCHERIE — galerie éphémère de Léré
-Mise en ligne du site et de l'espace galerie chez OVH
+Mise en ligne de galerielaboucherie.com chez OVH
 ============================================================
 
 Le site comprend deux parties :
   • le site public : accueil, l'expo du mois, programme, artistes,
     exposer, le lieu, presse ;
-  • l'ESPACE GALERIE (adresse du site + /admin) : on y gère tout
+  • l'ESPACE GALERIE (galerielaboucherie.com/admin) : on y gère tout
     sans toucher au code — expositions, textes des pages, presse,
     candidatures, répertoire des artistes, envois d'e-mails,
     newsletter, coordonnées, comptes, sauvegarde.
@@ -23,7 +23,7 @@ CE QU'IL FAUT
   L'hébergement gratuit ne convient pas.
 • PHP en version 8.1 ou plus (le fichier « .ovhconfig » fourni
   demande la 8.2).
-• Un nom de domaine (ex. laboucherie-lere.fr).
+• Le nom de domaine de la galerie : galerielaboucherie.com
 • FileZilla (gratuit) pour envoyer les fichiers.
 
 Deux possibilités :
@@ -42,7 +42,8 @@ Cas A (hébergement à part) : rien à faire, le site ira dans « www ».
 Cas B (avec Copains d'après) :
   1. OVH > Web Cloud > Hébergements > votre hébergement >
      onglet « Multisite » > « Ajouter un domaine ou sous-domaine ».
-  2. Domaine : celui de la galerie (ex. laboucherie-lere.fr).
+  2. Domaine : galerielaboucherie.com (ajoutez aussi
+     www.galerielaboucherie.com, même dossier).
   3. Dossier racine : laboucherie   (un dossier À PART, pas www).
   4. Cochez « SSL ». Validez et attendez que l'état passe à
      « Activé » (jusqu'à une heure).
@@ -87,7 +88,7 @@ Version de PHP : le fichier « .ovhconfig » demande PHP 8.2.
 ------------------------------------------------------------
 ÉTAPE 4 — Créer le compte de la galerie
 ------------------------------------------------------------
-1. Ouvrez https://votre-domaine.fr/admin/
+1. Ouvrez https://galerielaboucherie.com/admin/
 2. Première visite : la page « Bienvenue dans l'espace galerie »
    demande un nom, un e-mail et un mot de passe (10 caractères
    minimum). C'est le compte principal.
@@ -108,7 +109,7 @@ Espace galerie > « Coordonnées et réglages » :
   • « Adresse d'expédition des messages » : créez d'abord chez
     OVH une adresse du domaine de la galerie
     (OVH > Emails > votre domaine > « Créer une adresse e-mail »,
-    ex. contact@laboucherie-lere.fr) et indiquez-la ici.
+    ex. contact@galerielaboucherie.com) et indiquez-la ici.
     Une adresse Gmail ne convient PAS comme expéditeur : les
     messages arriveraient en indésirables. Elle peut en revanche
     servir d'e-mail de contact (les réponses y arrivent).
@@ -186,7 +187,7 @@ EN CAS DE PROBLÈME
   d'après ne marche pas (le message dit pourquoi : clé refusée,
   partage.php absent…).
 • Les dossiers data, inc et maquettes doivent rester
-  inaccessibles depuis le web : https://votre-domaine.fr/data/
+  inaccessibles depuis le web : https://galerielaboucherie.com/data/
   doit afficher « Forbidden ». Sinon, le fichier .htaccess n'a
   pas été envoyé (fichiers cachés, étape 3).
 ============================================================

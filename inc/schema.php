@@ -113,7 +113,7 @@ return [
                 'ville' => ['label' => 'Ville', 'type' => 'text', 'default' => 'Léré', 'col' => 'half'],
                 'telephone' => ['label' => 'Téléphone de la galerie', 'type' => 'tel', 'default' => '06 73 98 32 61', 'col' => 'half'],
                 'email' => ['label' => 'E-mail de contact (affiché)', 'type' => 'email', 'col' => 'half'],
-                'email_expediteur' => ['label' => 'Adresse d\'expédition des messages aux artistes', 'type' => 'email', 'help' => 'Idéalement une adresse du nom de domaine du site (ex. contact@laboucherie-lere.fr), sinon les messages risquent d\'arriver en indésirables. Les réponses arrivent à l\'e-mail de contact.'],
+                'email_expediteur' => ['label' => 'Adresse d\'expédition des messages aux artistes', 'type' => 'email', 'help' => 'Idéalement une adresse du nom de domaine du site (ex. contact@galerielaboucherie.com), sinon les messages risquent d\'arriver en indésirables. Les réponses arrivent à l\'e-mail de contact.'],
                 'signature' => ['label' => 'Signature des messages', 'type' => 'textarea', 'rows' => 3, 'default' => "La galerie éphémère — La Boucherie\n39 grande rue, 18240 Léré\n06 73 98 32 61"],
                 'email_notification' => ['label' => 'E-mail qui reçoit les candidatures', 'type' => 'email', 'help' => 'Un message est envoyé à chaque nouvelle candidature (si l\'hébergeur autorise l\'envoi de mails).'],
                 'copains_url' => ['label' => 'Adresse du site Copains d\'après', 'type' => 'url', 'help' => 'Pour partager le répertoire des artistes. Ex. : https://www.copainsdapres.org/ — laisser vide pour ne pas partager.'],
