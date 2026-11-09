@@ -25,7 +25,7 @@ page_start('', 'accueil', ['jsonld' => [
     <div class="btns"><a class="btn" href="expo.php">Voir l'expo du mois</a><a class="btn btn-ligne" href="programme.php">Le programme</a></div>
   </div>
 <?php if ($p['photo']): ?>
-  <figure style="margin:0"><img class="photo" src="<?= e(url($p['photo'])) ?>" alt="La devanture de <?= e($s['nom']) ?> au <?= e($s['adresse']) ?> : store rayé rouge et crème, enseigne Ets Fumey, néon « Galerie éphémère La boucherie » derrière la porte vitrée" width="1000" height="667"></figure>
+  <figure style="margin:0"><img class="photo" src="<?= e(url($p['photo'])) ?>" alt="La devanture de <?= e($s['nom']) ?> au <?= e($s['adresse']) ?>"></figure>
 <?php else: devanture($cur, $next); endif ?>
 </section>
 
@@ -76,7 +76,11 @@ page_start('', 'accueil', ['jsonld' => [
 <?php if (trim($p['galerie_texte'])): ?>
 <section class="quoi sombre">
   <div class="grille">
-    <?php devanture($cur, $next) ?>
+<?php if ($p['galerie_photo']): ?>
+    <figure class="photo-store"><div class="store" aria-hidden="true"></div><div class="frange" aria-hidden="true"></div><img src="<?= e(url($p['galerie_photo'])) ?>" alt="<?= e($p['galerie_photo_alt']) ?>" loading="lazy"></figure>
+<?php elseif ($p['photo']): devanture($cur, $next); else: ?>
+    <div></div>
+<?php endif ?>
     <div class="txt">
       <h2 class="h-2" style="color:var(--papier)"><?= e($p['galerie_titre']) ?></h2>
       <?= paras($p['galerie_texte']) ?>
