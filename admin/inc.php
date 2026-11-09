@@ -77,7 +77,7 @@ function admin_menu(): array
             ['liste.php?c=expositions', $sc['collections']['expositions']['label'], 'calendar', 0],
             ['liste.php?c=presse', $sc['collections']['presse']['label'], 'page', 0],
         ],
-        'Pages du site' => [],
+        'Modifier les pages du site' => [],
         'Contacts' => [
             ['repertoire.php', 'Répertoire des artistes', 'users', 0],
             ['ecrire.php', 'Écrire aux artistes', 'mail', 0],
@@ -92,7 +92,7 @@ function admin_menu(): array
     ];
     foreach ($sc['singletons'] as $k => $d) {
         if (($d['group'] ?? '') === 'Pages') {
-            $m['Pages du site'][] = ['page.php?p=' . $k, $d['label'], 'page', 0];
+            $m['Modifier les pages du site'][] = ['page.php?p=' . $k, $d['label'], 'page', 0];
         }
     }
     return $m;

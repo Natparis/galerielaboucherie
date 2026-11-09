@@ -225,3 +225,4 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
   .avec-apercu{grid-template-columns:minmax(0,1fr)}
   .apercu-direct{position:fixed;inset:12px;top:12px;height:auto;z-index:30;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 }
+.main:has(.avec-apercu) .contenu{padding-bottom:16px}

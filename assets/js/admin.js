@@ -165,6 +165,13 @@
 
   // Mise à l'échelle : la page est rendue en largeur réelle (1280 px ou 390 px) puis réduite pour tenir dans le cadre.
   function ajuster() {
+    // le panneau reste collé juste sous la barre de titre, sans passer dessous
+    var barre = document.querySelector('.barre');
+    if (barre && window.matchMedia('(min-width: 1101px)').matches) {
+      var top = barre.offsetHeight + 16;
+      pan.style.top = top + 'px';
+      pan.style.height = 'calc(100vh - ' + (top + 16) + 'px)';
+    } else { pan.style.top = ''; pan.style.height = ''; }
     var W = cadre.clientWidth, H = cadre.clientHeight;
     var largeur = taille === 'mobile' ? 390 : 1280;
     var echelle = Math.min(1, W / largeur);
@@ -201,19 +208,98 @@
       })
       .catch(function (e) { if (e.name !== 'AbortError') { etat.textContent = 'aperçu indisponible'; etat.className = 'apercu-etat erreur'; } });
   }
-  // On garde l'endroit de la page où l'on regardait.
+  // ---- L'aperçu suit le formulaire ----
+  var cible = null;          // texte (ou image) du champ en cours de modification
+  var dernierChamp = 0;      // moment de la dernière action dans un champ
+  function norm(t) { return (t || '').replace(/[*_]/g, '').replace(/\s+/g, ' ').trim().toLowerCase(); }
+
+  // Extrait reconnaissable du champ : le paragraphe où se trouve le curseur, ou le début du texte.
+  function extrait(champ) {
+    if (champ.type === 'file') return champ.files && champ.files[0] ? { image: true } : null;
+    if (champ.type === 'checkbox' || champ.tagName === 'SELECT' && !champ.value) return null;
+    var v = champ.value || '';
+    if (champ.tagName === 'TEXTAREA') {
+      var pos = champ.selectionStart || 0, debut = 0;
+      v.split(/\n\s*\n/).some(function (para) {
+        if (pos <= debut + para.length) { v = para; return true; }
+        debut += para.length + 2; return false;
+      });
+    }
+    v = norm(v);
+    if (v.length < 3) return null;
+    // un morceau du milieu évite les débuts trop communs (« la », « le »…)
+    return { texte: v.length > 40 ? v.slice(0, 40) : v };
+  }
+
+  function chercher(doc, c) {
+    if (c.image) {
+      var imgs = [].slice.call(doc.querySelectorAll('img[src^="data:"]'));
+      return imgs[imgs.length - 1] || null;
+    }
+    var meilleur = null, taille = Infinity;
+    doc.querySelectorAll('h1,h2,h3,p,li,span,strong,em,a,td,th,blockquote,figcaption,b').forEach(function (el) {
+      var t = norm(el.textContent);
+      if (t.indexOf(c.texte) !== -1 && t.length < taille && el.offsetParent !== null) { meilleur = el; taille = t.length; }
+    });
+    return meilleur;
+  }
+
+  function allerA(c, surligner) {
+    try {
+      var w = iframe.contentWindow, doc = iframe.contentDocument;
+      var el = c && chercher(doc, c);
+      if (!el) return false;
+      var r = el.getBoundingClientRect();
+      w.scrollTo({ top: Math.max(0, r.top + w.scrollY - w.innerHeight / 3), behavior: 'smooth' });
+      if (surligner) {
+        el.style.outline = '3px solid #B5412C'; el.style.outlineOffset = '4px';
+        setTimeout(function () { el.style.outline = ''; el.style.outlineOffset = ''; }, 1400);
+      }
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // Défilement proportionnel : le haut du formulaire montre le haut de la page, le bas montre le bas.
+  function suivreDefilement() {
+    if (Date.now() - dernierChamp < 2500) return; // on vient d'aller à un champ précis
+    try {
+      var w = iframe.contentWindow, d = iframe.contentDocument.documentElement;
+      var haut = form.getBoundingClientRect().top + window.scrollY;
+      var course = Math.max(1, form.offsetHeight - window.innerHeight * 0.6);
+      var ratio = Math.min(1, Math.max(0, (window.scrollY - haut + 120) / course));
+      w.scrollTo(0, ratio * Math.max(0, d.scrollHeight - w.innerHeight));
+    } catch (e) {}
+  }
+  var raf = null;
+  window.addEventListener('scroll', function () {
+    if (pan.hidden || raf) return;
+    raf = requestAnimationFrame(function () { raf = null; suivreDefilement(); });
+  }, { passive: true });
+
+  form.addEventListener('focusin', function (e) {
+    var c = e.target.matches('input,textarea,select') ? extrait(e.target) : null;
+    if (c && !c.image && allerA(c, true)) { cible = c; dernierChamp = Date.now(); }
+  });
+
+  // Après chaque rafraîchissement : on montre l'endroit modifié, sinon on garde la position.
   iframe.addEventListener('load', function () {
     try {
       var w = iframe.contentWindow;
       w.scrollTo(0, scroll);
       w.addEventListener('scroll', function () { scroll = w.scrollY; });
-      // les images arrivent après : on reste au même endroit
-      setTimeout(function () { w.scrollTo(0, scroll); }, 300);
+      setTimeout(function () {
+        if (!(cible && Date.now() - dernierChamp < 4000 && allerA(cible, false))) w.scrollTo(0, scroll);
+      }, 250);
     } catch (e) {}
   });
 
-  form.addEventListener('input', rafraichir);
-  form.addEventListener('change', rafraichir);
+  function noterChamp(e) {
+    if (!e.target.matches || !e.target.matches('input,textarea,select')) return;
+    var c = extrait(e.target);
+    if (c) { cible = c; dernierChamp = Date.now(); }
+  }
+  form.addEventListener('input', function (e) { noterChamp(e); rafraichir(); });
+  form.addEventListener('change', function (e) { noterChamp(e); rafraichir(); });
   form.addEventListener('click', function (e) {
     if (e.target.closest('[data-ajout],[data-haut],[data-bas],[data-suppr]')) setTimeout(rafraichir, 50);
   });

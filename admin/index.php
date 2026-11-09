@@ -69,7 +69,7 @@ admin_start('Tableau de bord', 'index.php');
   <h2>Mode d'emploi express</h2>
   <ul>
     <li><strong>Une nouvelle expo ?</strong> Menu <em>Expositions</em> → « Nouvelle exposition ». Renseignez l'artiste, la date du vernissage et l'affiche : l'accueil, « L'expo du mois », le programme et la page Artistes se mettent à jour tout seuls, selon les dates.</li>
-    <li><strong>Changer un texte du site ?</strong> Menu <em>Pages du site</em>, choisissez la page. Une ligne vide entre deux paragraphes ; <code>**gras**</code> et <code>*italique*</code> fonctionnent.</li>
+    <li><strong>Changer un texte du site ?</strong> Menu <em>Modifier les pages du site</em>, choisissez la page : l'aperçu à droite montre le résultat en direct. Une ligne vide entre deux paragraphes ; <code>**gras**</code> et <code>*italique*</code> fonctionnent.</li>
     <li><strong>Un article de presse ?</strong> Menu <em>Articles de presse</em>. Cochez « à la une » pour l'afficher en grand.</li>
     <li><strong>Téléphone, adresse, réseaux sociaux ?</strong> Menu <em>Coordonnées et réglages</em>.</li>
   </ul>
