@@ -148,6 +148,33 @@ synchronisent alors dans les deux sens.
 
 
 ------------------------------------------------------------
+ÉTAPE 7 — Se faire connaître de Google
+------------------------------------------------------------
+Le site est préparé pour le référencement : titres et
+descriptions par page, plan du site, informations pour Google
+(adresse, expositions, vernissages), pages rapides et adaptées
+aux téléphones. Trois démarches gratuites font la différence :
+
+1. Google Search Console (search.google.com/search-console) :
+   ajoutez « galerielaboucherie.com », puis dans « Sitemaps »
+   indiquez : sitemap.php
+   Google connaîtra chaque nouvelle exposition.
+2. Fiche d'établissement Google (google.com/business) : créez
+   la fiche « La Boucherie — galerie d'art » avec l'adresse, le
+   téléphone, des photos et le lien du site. C'est elle qui
+   apparaît sur Google Maps et pour « galerie d'art Léré ».
+3. Faites pointer vers le site : mairie de Léré, office de
+   tourisme, Copains d'après, Instagram et Facebook de la
+   galerie (à renseigner dans « Coordonnées et réglages »),
+   sites des artistes exposés.
+
+Dans l'espace galerie, chaque page a deux champs « Référencement »
+(titre et description dans Google), déjà remplis. Pour une
+exposition, un « Résumé court » soigné et une affiche font le
+meilleur effet dans Google et lors des partages.
+
+
+------------------------------------------------------------
 LES MISES À JOUR DU SITE — règle d'or
 ------------------------------------------------------------
 Pour une nouvelle version, utilisez l'archive

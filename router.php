@@ -13,4 +13,11 @@ if ($path === '/admin') {
     header('Location: /admin/');
     exit;
 }
+// Adresse inconnue : la page 404 du site (comme ErrorDocument sur le vrai serveur)
+$fichier = __DIR__ . $path;
+if ($path !== '/' && !is_file($fichier) && !(is_dir($fichier) && is_file(rtrim($fichier, '/') . '/index.php'))) {
+    $_SERVER['SCRIPT_NAME'] = '/404.php';
+    require __DIR__ . '/404.php';
+    return true;
+}
 return false;

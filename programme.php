@@ -4,7 +4,7 @@ require __DIR__ . '/inc/layout.php';
 $p = single('programme');
 $next = expos_a_venir();
 
-page_start('Programme', 'programme');
+page_start('Programme', 'programme', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description'], 'jsonld' => array_map('ld_expo', array_slice($next, 0, 6))]);
 ?>
 <section class="wrap tete tete-flex">
   <div style="display:flex;flex-direction:column;gap:14px">
@@ -23,7 +23,7 @@ page_start('Programme', 'programme');
 <?php foreach ($next as $x): ?>
     <li id="<?= e($x['slug']) ?>">
       <div class="visuel"><div class="store" aria-hidden="true"></div><div class="frange" aria-hidden="true"></div>
-<?php if ($x['image']): ?>        <img src="<?= e(url($x['image'])) ?>" alt="<?= e($x['image_alt'] ?: 'Visuel de ' . $x['artiste']) ?>" loading="lazy">
+<?php if ($x['image']): ?>        <img src="<?= e(url($x['image'])) ?>"<?= dims($x['image']) ?> alt="<?= e($x['image_alt'] ?: 'Visuel de ' . $x['artiste']) ?>" loading="lazy">
 <?php else: ?>        <div class="placeholder" aria-hidden="true"><?= e(mb_strtoupper($x['technique'] ?: $x['discipline'] ?: 'Visuel à venir')) ?></div>
 <?php endif ?>
       </div>

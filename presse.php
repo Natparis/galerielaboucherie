@@ -22,7 +22,7 @@ function lien_article(array $a): string
     return $a['fichier'] ?: ($a['lien'] ?: ($a['image'] ?: ''));
 }
 
-page_start('La presse en parle', 'presse');
+page_start('La presse en parle', 'presse', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description']]);
 ?>
 <section class="wrap tete">
   <p class="sur"><?= e($p['surtitre']) ?></p>
@@ -33,7 +33,7 @@ page_start('La presse en parle', 'presse');
 <section class="wrap grille" style="padding-top:48px;padding-bottom:88px;gap:64px;align-items:center">
   <<?= $l ? 'a href="' . e(url($l)) . '" target="_blank" rel="noopener"' : 'div' ?> class="carte une-scan">
     <div class="store" aria-hidden="true"></div>
-<?php if ($une['image']): ?>    <img src="<?= e(url($une['image'])) ?>" alt="Article de <?= e($une['journal']) ?> du <?= fr_date($une['date'], 'dmy') ?>">
+<?php if ($une['image']): ?>    <img src="<?= e(url($une['image'])) ?>"<?= dims($une['image']) ?> alt="Article de <?= e($une['journal']) ?> du <?= fr_date($une['date'], 'dmy') ?>">
 <?php else: ?>    <div class="placeholder" aria-hidden="true"><?= e($une['journal']) ?></div>
 <?php endif ?>
 <?php if ($l): ?>    <span class="lire">Lire l'article →</span>

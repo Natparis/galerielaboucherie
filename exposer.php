@@ -7,7 +7,7 @@ $disciplines = schema()['collections']['expositions']['fields']['discipline']['o
 $old = $_SESSION['cand_old'] ?? [];
 unset($_SESSION['cand_old']);
 
-page_start('Exposer chez nous', 'exposer');
+page_start('Exposer chez nous', 'exposer', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description']]);
 ?>
 <section class="wrap grille tete" style="align-items:end;gap:48px;padding-bottom:40px">
   <div style="display:flex;flex-direction:column;gap:14px">

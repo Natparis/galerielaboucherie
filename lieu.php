@@ -7,7 +7,7 @@ $adresse = $s['adresse'] . ', ' . $s['code_postal'] . ' ' . $s['ville'];
 $lat = (float)$s['latitude'];
 $lon = (float)$s['longitude'];
 
-page_start('Le lieu', 'lieu');
+page_start('Le lieu', 'lieu', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description']]);
 ?>
 <section class="wrap tete">
   <p class="sur"><?= e($p['surtitre']) ?></p>
@@ -31,7 +31,7 @@ page_start('Le lieu', 'lieu');
 <?php $photos = array_filter($p['photos'], fn($ph) => !empty($ph['image'])); if ($photos): ?>
     <div class="photos-lieu">
 <?php foreach ($photos as $ph): ?>
-      <figure><img src="<?= e(url($ph['image'])) ?>" alt="<?= e(($ph['alt'] ?? '') ?: ($ph['legende'] ?? '')) ?>" loading="lazy" data-zoom><?php if (!empty($ph['legende'])): ?><figcaption><?= e($ph['legende']) ?></figcaption><?php endif ?></figure>
+      <figure><img src="<?= e(url($ph['image'])) ?>"<?= dims($ph['image']) ?> alt="<?= e(($ph['alt'] ?? '') ?: ($ph['legende'] ?? '')) ?>" loading="lazy" data-zoom><?php if (!empty($ph['legende'])): ?><figcaption><?= e($ph['legende']) ?></figcaption><?php endif ?></figure>
 <?php endforeach ?>
     </div>
 <?php endif ?>

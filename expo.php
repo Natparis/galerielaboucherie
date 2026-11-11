@@ -20,7 +20,7 @@ if ($x) {
 }
 
 if (!$x) {
-    page_start('L\'expo du mois', 'expo');
+    page_start('L\'expo du mois', 'expo', ['noindex' => true]);
     ?>
 <section class="wrap tete section">
   <p class="sur"><?= e($p['surtitre']) ?></p>
@@ -39,16 +39,11 @@ $avenir = $x['date_debut'] > today();
 $sur = $avenir ? 'Prochainement · vernissage le ' . fr_date($x['date_debut'], 'long') : ($passe ? 'Exposition passée · ' . fr_periode($x) : $p['surtitre'] . ' ' . fr_periode($x));
 
 page_start($x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''), $estCourante ? 'expo' : 'artistes', [
-    'description' => trim(strip_tags($x['resume'] ?: $x['accroche'])) ?: null,
+    'titre_seo' => seo_expo($x)[0],
+    'description' => seo_expo($x)[1],
     'image' => $x['image'] ?: null,
-    'jsonld' => [
-        '@context' => 'https://schema.org', '@type' => 'ExhibitionEvent',
-        'name' => $x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''),
-        'startDate' => $x['date_debut'] . 'T' . ($x['heure_debut'] ?: '18:00'),
-        'endDate' => expo_fin($x),
-        'isAccessibleForFree' => true,
-        'location' => ['@type' => 'Place', 'name' => $s['nom'], 'address' => $s['adresse'] . ', ' . $s['code_postal'] . ' ' . $s['ville']],
-    ],
+    'jsonld' => ld_expo($x),
+    'parent' => $estCourante ? null : ['Les artistes', 'artistes.php'],
 ]);
 ?>
 <section class="wrap tete expo-tete">
@@ -59,7 +54,7 @@ page_start($x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''), $estCoura
 </section>
 
 <section class="wrap grille expo-corps">
-  <?php affiche($x, 'Affiche de l\'exposition de ' . $x['artiste']) ?>
+  <?php affiche($x, 'Affiche de l\'exposition de ' . $x['artiste'], true) ?>
   <article class="article">
 <?php if ($x['accroche']): ?>    <p class="accroche"><?= inline($x['accroche']) ?></p>
 <?php endif ?>
@@ -77,7 +72,7 @@ page_start($x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''), $estCoura
     <div class="haut"><h2 class="h-1" style="font-size:56px"><?= e($p['pieces_titre']) ?></h2><?php if ($x['mots_neon']): ?><span class="neon"><?= e($x['mots_neon']) ?></span><?php endif ?></div>
     <ul>
 <?php foreach ($photos as $ph): ?>
-      <li class="lift"><figure><img src="<?= e(url($ph['image'])) ?>" alt="<?= e($ph['legende'] ?: 'Œuvre de ' . $x['artiste']) ?>" loading="lazy" data-zoom><?php if ($ph['legende']): ?><figcaption><?= e($ph['legende']) ?></figcaption><?php endif ?></figure></li>
+      <li class="lift"><figure><img src="<?= e(url($ph['image'])) ?>"<?= dims($ph['image']) ?> alt="<?= e($ph['legende'] ?: 'Œuvre de ' . $x['artiste']) ?>" loading="lazy" data-zoom><?php if ($ph['legende']): ?><figcaption><?= e($ph['legende']) ?></figcaption><?php endif ?></figure></li>
 <?php endforeach ?>
     </ul>
   </div>

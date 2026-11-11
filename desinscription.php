@@ -11,7 +11,7 @@ if ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
     data_save('newsletter', array_values(array_filter(data_load('newsletter', []), fn($r) => $r['email'] !== $email)));
     $fait = true;
 }
-page_start('Désinscription');
+page_start('Désinscription', '', ['noindex' => true]);
 ?>
 <section class="wrap tete section" style="max-width:860px">
 <?php if ($fait): ?>

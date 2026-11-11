@@ -24,7 +24,7 @@ rsort($annees);
 $disc = array_values(array_unique(array_filter(array_map(fn($x) => $x['discipline'], $liste))));
 sort($disc);
 
-page_start('Les artistes', 'artistes');
+page_start('Les artistes', 'artistes', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description']]);
 ?>
 <section class="wrap tete">
   <p class="sur"><?= e($p['surtitre']) ?></p>
@@ -56,7 +56,7 @@ page_start('Les artistes', 'artistes');
     <li class="lift" data-periode="<?= $fut ? 'avenir' : e(substr($x['date_debut'], 0, 4)) ?>" data-discipline="<?= e($x['discipline']) ?>">
       <a class="carte" href="expo.php?slug=<?= e(urlencode($x['slug'])) ?>">
         <div class="store" aria-hidden="true"></div>
-<?php if ($x['image']): ?>        <img src="<?= e(url($x['image'])) ?>" alt="" loading="lazy">
+<?php if ($x['image']): ?>        <img src="<?= e(url($x['image'])) ?>"<?= dims($x['image']) ?> alt="" loading="lazy">
 <?php else: ?>        <div class="vide" aria-hidden="true"></div>
 <?php endif ?>
         <div class="corps">

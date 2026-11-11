@@ -36,6 +36,14 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 - **Comptes d'accès** : plusieurs personnes, changement de mot de passe
 - **Sauvegarde** : archive .zip de tous les contenus et images
 
+## Référencement et responsive
+
+- Titres et descriptions par page (champs « Référencement » du back-office), générés automatiquement pour chaque exposition
+- Données structurées schema.org : `ArtGallery`, `WebSite`, `ExhibitionEvent` (vernissages), `BreadcrumbList`
+- `robots.txt`, `sitemap.php` (toujours à jour), adresse canonique, balises de partage (Open Graph), page 404
+- Images avec dimensions (pas de saut de mise en page), affiche chargée en priorité, compression et cache (`.htaccess`)
+- Typographie fluide (`clamp`) : testé de 320 à 1920 px, site public et back-office
+
 ## Installation chez un hébergeur
 
 **Notice complète pour OVH : `docs/INSTALLATION-OVH.txt`** (version imprimable : `docs/Notice installation OVH.pdf`,

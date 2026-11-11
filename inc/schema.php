@@ -8,7 +8,7 @@
 
 $disciplines = ['Peinture', 'Céramique', 'Sculpture', 'Photographie', 'Gravure', 'Collage', 'Mosaïque', 'Bois', 'Performance', 'Dessin', 'Textile', 'Autre'];
 
-return [
+$schema = [
 
     /* ============================ COLLECTIONS ============================ */
     'collections' => [
@@ -125,7 +125,7 @@ return [
                 'facebook' => ['label' => 'Facebook (lien)', 'type' => 'url', 'col' => 'half'],
                 'tiktok' => ['label' => 'TikTok (lien)', 'type' => 'url', 'col' => 'half'],
                 'youtube' => ['label' => 'YouTube (lien)', 'type' => 'url', 'col' => 'half'],
-                'meta_description' => ['label' => 'Description pour Google', 'type' => 'textarea', 'rows' => 2, 'default' => 'La Boucherie, galerie d\'art éphémère au 39 grande rue à Léré (Cher) : un artiste par mois, vernissage à 18 h, entrée libre et gratuite.'],
+                'meta_description' => ['label' => 'Description pour Google', 'type' => 'textarea', 'rows' => 2, 'default' => 'La Boucherie, galerie d\'art éphémère à Léré (Cher), près de Cosne-sur-Loire et de Sancerre : un artiste par mois, vernissage à 18 h, entrée libre.', 'help' => 'Utilisée pour l\'accueil et quand une page n\'a pas la sienne. Idéal : 140 à 160 caractères.'],
                 'mentions' => ['label' => 'Mentions légales', 'type' => 'textarea', 'rows' => 6, 'default' => "Éditeur du site : La galerie éphémère — La Boucherie, 39 grande rue, 18240 Léré.\n\nLes données envoyées par les formulaires (newsletter, candidatures) servent uniquement à la galerie et ne sont jamais transmises à des tiers. Pour les consulter ou les faire effacer, contactez la galerie."],
             ],
         ],
@@ -260,3 +260,25 @@ return [
         ],
     ],
 ];
+
+/* ============================ RÉFÉRENCEMENT (Google) ============================
+ * Chaque page a son titre et sa description pour les moteurs de recherche, modifiables
+ * dans le back-office. Le titre s'affiche dans l'onglet et en bleu dans Google ;
+ * la description est le petit texte en dessous.
+ */
+$seo = [
+    'accueil' => ['La Boucherie — galerie d\'art éphémère à Léré (Cher)', ''],
+    'programme' => ['Programme des expositions et vernissages — La Boucherie, Léré', 'Les prochaines expositions de la galerie La Boucherie à Léré (Cher) : un artiste par mois, vernissage le samedi à 18 h, entrée libre et gratuite.'],
+    'artistes' => ['Les artistes exposés — La Boucherie, galerie d\'art à Léré', 'Peintres, céramistes, graveurs, photographes, sculpteurs : tous les artistes exposés ou attendus à la galerie La Boucherie, à Léré dans le Cher.'],
+    'exposer' => ['Exposer à Léré : appel aux artistes — galerie La Boucherie', 'Artistes, exposez à La Boucherie, galerie éphémère de Léré (Cher), près de Cosne et Sancerre : un mois d\'exposition, sans location de salle. Candidature en ligne.'],
+    'lieu' => ['Le lieu, son histoire et l\'accès — La Boucherie, galerie à Léré', 'Une ancienne boucherie devenue galerie d\'art, au 39 grande rue à Léré (Cher) : son histoire, les jours d\'ouverture et le plan d\'accès.'],
+    'page_presse' => ['La presse en parle — La Boucherie, galerie d\'art à Léré', 'Articles et revue de presse de la galerie éphémère La Boucherie à Léré (Cher), et contact pour les journalistes.'],
+];
+foreach ($seo as $page => [$titre, $description]) {
+    $schema['singletons'][$page]['fields']['seo_titre'] = ['label' => 'Référencement : titre de la page dans Google', 'type' => 'text', 'default' => $titre,
+        'help' => 'Affiché dans l\'onglet du navigateur et en bleu dans Google. Idéal : 50 à 60 caractères, avec « Léré » dedans.'];
+    $schema['singletons'][$page]['fields']['seo_description'] = ['label' => 'Référencement : description dans Google', 'type' => 'textarea', 'rows' => 2, 'default' => $description,
+        'help' => 'Le petit texte sous le titre dans Google. Idéal : 140 à 160 caractères.' . ($page === 'accueil' ? ' Vide = la description générale des réglages.' : '')];
+}
+
+return $schema;

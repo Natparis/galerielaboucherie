@@ -6,16 +6,31 @@ $s = settings();
 $cur = expo_courante();
 $next = expos_a_venir();
 
-page_start('', 'accueil', ['jsonld' => [
+$site = site_url();
+$reseaux = array_values(array_filter([$s['instagram'], $s['facebook'], $s['tiktok'], $s['youtube']]));
+$galerie = [
     '@context' => 'https://schema.org',
     '@type' => 'ArtGallery',
+    '@id' => $site . '#galerie',
     'name' => $s['nom'],
+    'alternateName' => 'La galerie éphémère — ' . $s['nom'],
     'description' => $s['meta_description'],
+    'url' => $site,
     'telephone' => $s['telephone'],
-    'address' => ['@type' => 'PostalAddress', 'streetAddress' => $s['adresse'], 'postalCode' => $s['code_postal'], 'addressLocality' => $s['ville'], 'addressCountry' => 'FR'],
-    'geo' => ['@type' => 'GeoCoordinates', 'latitude' => $s['latitude'], 'longitude' => $s['longitude']],
+    'address' => ['@type' => 'PostalAddress', 'streetAddress' => $s['adresse'], 'postalCode' => $s['code_postal'], 'addressLocality' => $s['ville'], 'addressRegion' => 'Centre-Val de Loire', 'addressCountry' => 'FR'],
+    'geo' => ['@type' => 'GeoCoordinates', 'latitude' => (float)$s['latitude'], 'longitude' => (float)$s['longitude']],
     'isAccessibleForFree' => true,
-]]);
+    'publicAccess' => true,
+    'priceRange' => 'Entrée gratuite',
+];
+if ($s['email']) $galerie['email'] = $s['email'];
+if ($reseaux) $galerie['sameAs'] = $reseaux;
+if ($cur && $cur['image']) $galerie['image'] = $site . $cur['image'];
+$ld = [$galerie, ['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => $s['nom'], 'url' => $site, 'inLanguage' => 'fr-FR']];
+foreach (array_slice($next, 0, 3) as $x) {
+    $ld[] = ld_expo($x); // les prochains vernissages, pour l'agenda de Google
+}
+page_start('', 'accueil', ['titre_seo' => $p['seo_titre'] ?: null, 'description' => $p['seo_description'], 'jsonld' => $ld]);
 ?>
 <section class="hero">
   <div class="txt">
@@ -25,7 +40,7 @@ page_start('', 'accueil', ['jsonld' => [
     <div class="btns"><a class="btn" href="expo.php">Voir l'expo du mois</a><a class="btn btn-ligne" href="programme.php">Le programme</a></div>
   </div>
 <?php if ($p['photo']): ?>
-  <figure style="margin:0"><img class="photo" src="<?= e(url($p['photo'])) ?>" alt="La devanture de <?= e($s['nom']) ?> au <?= e($s['adresse']) ?>"></figure>
+  <figure style="margin:0"><img class="photo" src="<?= e(url($p['photo'])) ?>"<?= dims($p['photo']) ?> alt="La devanture de <?= e($s['nom']) ?> au <?= e($s['adresse']) ?>"></figure>
 <?php else: devanture($cur, $next); endif ?>
 </section>
 
@@ -79,7 +94,7 @@ page_start('', 'accueil', ['jsonld' => [
 <section class="quoi sombre">
   <div class="grille">
 <?php if ($p['galerie_photo']): ?>
-    <figure class="photo-store"><div class="store" aria-hidden="true"></div><div class="frange" aria-hidden="true"></div><img src="<?= e(url($p['galerie_photo'])) ?>" alt="<?= e($p['galerie_photo_alt']) ?>" loading="lazy"></figure>
+    <figure class="photo-store"><div class="store" aria-hidden="true"></div><div class="frange" aria-hidden="true"></div><img src="<?= e(url($p['galerie_photo'])) ?>"<?= dims($p['galerie_photo']) ?> alt="<?= e($p['galerie_photo_alt']) ?>" loading="lazy"></figure>
 <?php elseif ($p['photo']): devanture($cur, $next); else: ?>
     <div></div>
 <?php endif ?>

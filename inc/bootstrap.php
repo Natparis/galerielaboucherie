@@ -290,6 +290,10 @@ function fr_periode(array $x): string
     if (!$f || $f === $d) {
         return 'le ' . fr_date($d, 'dmy');
     }
+    if (substr($d, 0, 7) === substr($f, 0, 7)) { // même mois : « du 3 au 14 octobre 2026 »
+        $j = (int)substr($d, 8, 2);
+        return 'du ' . ($j === 1 ? '1er' : $j) . ' au ' . fr_date($f, 'dmy');
+    }
     $same = substr($d, 0, 4) === substr($f, 0, 4);
     return 'du ' . fr_date($d, $same ? 'dm' : 'dmy') . ' au ' . fr_date($f, 'dmy');
 }
