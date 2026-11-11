@@ -80,7 +80,7 @@ code{background:var(--creme);padding:1px 5px;border-radius:3px;font-size:.9em}
 .aide-bloc ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px}
 
 /* Tableau */
-.table-wrap{overflow-x:auto;background:#fff;border:1px solid var(--filet);border-radius:12px}
+.table-wrap{position:relative;max-width:100%;overflow-x:auto;background:#fff;border:1px solid var(--filet);border-radius:12px}
 .tableau{width:100%;border-collapse:collapse;font-size:15px}
 .tableau th{text-align:left;padding:12px 16px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);border-bottom:1px solid var(--filet);white-space:nowrap}
 .tableau td{padding:10px 16px;border-bottom:1px solid #EEE9E1;vertical-align:middle}
@@ -155,7 +155,7 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 
 /* Mobile */
 @media (max-width:900px){
-  .shell{grid-template-columns:1fr}
+  .shell{grid-template-columns:minmax(0,1fr)}
   .side{position:fixed;inset:0 auto 0 0;width:280px;z-index:20;transform:translateX(-100%);transition:transform .2s;box-shadow:0 0 40px rgba(0,0,0,.4)}
   .side.ouvert{transform:none}
   .menu-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--filet);border-radius:8px;background:#fff;cursor:pointer;color:var(--nuit)}
@@ -248,3 +248,4 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 .message-html img{max-width:100%;height:auto}
 .message-html{background:#fff;border:1px solid var(--filet)}
 .ecrire .liste-dest{max-height:280px}
+form[data-selection]{min-width:0}

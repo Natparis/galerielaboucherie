@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /desinscription.php
+Disallow: /agenda.php
+
+Sitemap: https://galerielaboucherie.com/sitemap.php

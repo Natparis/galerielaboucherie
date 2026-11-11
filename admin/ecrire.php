@@ -113,8 +113,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         @set_time_limit(300);
         $sig = $avecSignature && trim($s['signature']) !== '' ? "\n\n-- \n" . $s['signature'] : '';
         $log = [];
+        $dejaEcrit = [];
         foreach ($coches as $k) {
             $d = $dest[$k];
+            // Une même adresse (présente au répertoire ET inscrite au programme) ne reçoit qu'un message.
+            if (isset($dejaEcrit[mb_strtolower($d['email'])])) {
+                continue;
+            }
+            $dejaEcrit[mb_strtolower($d['email'])] = true;
             $perso = personnaliser_html($corps, $d['nom']);
             $objet = personnaliser($sujet, ['nom' => $d['nom']]);
             $desinscription = $d['type'] === 'newsletter' ? lien_desinscription($d['email']) : '';

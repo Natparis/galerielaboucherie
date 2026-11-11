@@ -331,6 +331,9 @@ function save_upload(array $file, array $allowed = ['image/jpeg' => 'jpg', 'imag
     if (!isset($allowed[$mime])) {
         throw new RuntimeException('Format non accepté pour « ' . $file['name'] . ' ».');
     }
+    if (str_starts_with($mime, 'image/') && @getimagesize($file['tmp_name']) === false) {
+        throw new RuntimeException('« ' . $file['name'] . ' » n\'est pas une image lisible.');
+    }
     if (!empty($GLOBALS['APERCU'])) {
         // Aperçu : l'image est montrée sans être enregistrée sur le serveur.
         return 'data:' . $mime . ';base64,' . base64_encode((string)file_get_contents($file['tmp_name']));

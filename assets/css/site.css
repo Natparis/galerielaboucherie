@@ -88,6 +88,8 @@ p{margin:0}
 .affiche-store .store{height:48px}
 .affiche-store img,.affiche-store .placeholder{display:block;width:86%;margin:12px auto 0;aspect-ratio:2/3;object-fit:cover;box-shadow:0 24px 48px -20px rgba(0,0,0,.7)}
 .encemoment .txt{display:flex;flex-direction:column;gap:20px;padding-top:80px}
+.nom-artiste{font-size:clamp(34px,10vw,64px)!important}
+h1,h2,h3{overflow-wrap:break-word}
 .encemoment .titre-expo{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--peche-2)}
 .encemoment .resume{color:var(--sable);line-height:1.7}
 .minis{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:24px}

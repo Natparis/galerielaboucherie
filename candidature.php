@@ -18,6 +18,8 @@ if ($in['nom'] === '') $err[] = 'Indiquez votre nom.';
 if (!filter_var($in['email'], FILTER_VALIDATE_EMAIL)) $err[] = 'L\'adresse e-mail ne semble pas valide.';
 if ($in['message'] === '') $err[] = 'Dites-nous quelques mots de votre travail.';
 if ($in['lien'] !== '' && !preg_match('#^https?://#i', $in['lien'])) $in['lien'] = 'https://' . $in['lien'];
+// Une vraie adresse a un nom de domaine (instagram.com, mon-site.fr…) ; sinon on l'ignore.
+if ($in['lien'] !== '' && !preg_match('/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i', (string)parse_url($in['lien'], PHP_URL_HOST))) $in['lien'] = '';
 if (empty($_POST['rgpd'])) $err[] = 'Merci d\'accepter la conservation de vos informations.';
 
 $id = date('Ymd-His') . '-' . substr(new_id(), 0, 6);

@@ -26,7 +26,17 @@ function page_start(string $title, string $current = '', array $opt = []): void
 <meta name="description" content="<?= e($desc) ?>">
 <meta property="og:title" content="<?= e($full) ?>">
 <meta property="og:description" content="<?= e($desc) ?>">
-<?php if (!empty($opt['image'])): ?><meta property="og:image" content="<?= e($opt['image']) ?>">
+<?php
+    // Image affichée quand on partage la page (réseaux sociaux, messageries) : celle de la page, sinon l'affiche en cours.
+    $img = $opt['image'] ?? (expo_courante()['image'] ?? '');
+    $ici = site_url() . ltrim(basename($_SERVER['SCRIPT_NAME'] ?? ''), '/') . (!empty($_GET['slug']) ? '?slug=' . urlencode((string)$_GET['slug']) : '');
+    if (str_ends_with($ici, '/index.php')) { $ici = site_url(); }
+?>
+<?php if ($img && empty($GLOBALS['APERCU'])): ?><meta property="og:image" content="<?= e(preg_match('#^https?:#', $img) ? $img : site_url() . $img) ?>">
+<?php endif ?>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<?php if (empty($GLOBALS['APERCU']) && http_response_code() === 200): ?><link rel="canonical" href="<?= e($ici) ?>">
 <?php endif ?>
 <meta name="theme-color" content="#1E2A36">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23F8F2E8'/><path d='M0 0h6v20H0zM10 0h6v20h-6zM20 0h6v20h-6z' fill='%23B5412C'/><circle cx='3' cy='22' r='3' fill='%23B5412C'/><circle cx='13' cy='22' r='3' fill='%23B5412C'/><circle cx='23' cy='22' r='3' fill='%23B5412C'/></svg>">

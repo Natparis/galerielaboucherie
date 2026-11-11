@@ -40,6 +40,7 @@ $sur = $avenir ? 'Prochainement · vernissage le ' . fr_date($x['date_debut'], '
 
 page_start($x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''), $estCourante ? 'expo' : 'artistes', [
     'description' => trim(strip_tags($x['resume'] ?: $x['accroche'])) ?: null,
+    'image' => $x['image'] ?: null,
     'jsonld' => [
         '@context' => 'https://schema.org', '@type' => 'ExhibitionEvent',
         'name' => $x['artiste'] . ($x['titre'] ? ' — ' . $x['titre'] : ''),
