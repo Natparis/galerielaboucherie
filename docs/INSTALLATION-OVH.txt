@@ -92,10 +92,18 @@ Version de PHP : le fichier « .ovhconfig » demande PHP 8.2.
 2. Première visite : la page « Bienvenue dans l'espace galerie »
    demande un nom, un e-mail et un mot de passe (10 caractères
    minimum). C'est le compte principal.
-3. D'autres personnes : menu « Comptes d'accès ».
+3. D'autres personnes : menu « Comptes d'accès » > « Donner un
+   accès ». Deux sortes de comptes :
+     • responsable : gère le site ET peut donner, modifier ou
+       retirer des accès (cochez la case, ou plus tard le bouton
+       « Autoriser à donner des accès ») ;
+     • accès simple : gère tout le site, sauf les accès.
+   Le premier compte créé est responsable. Il en faut toujours
+   au moins un.
 
-Mot de passe oublié : un autre compte peut en créer un nouveau
-pour vous. Si plus personne ne peut se connecter : par FTP,
+Mot de passe oublié : un responsable en enregistre un nouveau
+(bouton « Nouveau mot de passe » en face du nom) et le transmet
+de vive voix. Si plus personne ne peut se connecter : par FTP,
 supprimez le fichier data/utilisateurs.json puis rouvrez /admin
 (on recrée le compte principal ; RIEN d'autre n'est effacé).
 

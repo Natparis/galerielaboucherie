@@ -12,7 +12,18 @@ header('X-Robots-Tag: noindex, nofollow');
 
 function users(): array
 {
-    return data_load('utilisateurs', []);
+    $list = data_load('utilisateurs', []);
+    // Il y a toujours au moins un responsable : à défaut, le premier compte créé.
+    if ($list && !array_filter($list, fn($u) => !empty($u['admin']))) {
+        $list[0]['admin'] = true;
+    }
+    return $list;
+}
+
+/** Un responsable peut donner, modifier et retirer les accès au back-office. */
+function est_responsable(?array $u): bool
+{
+    return !empty($u['admin']);
 }
 
 function current_user(): ?array

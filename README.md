@@ -33,7 +33,7 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 - **Écrire** : éditeur de courriers avec modèles pré-rédigés (message libre, newsletter « prochain accrochage » déjà rédigée avec l'affiche et la date du vernissage, invitation, programme, réponse à une candidature), mise en forme (gras, italique, titre, liste, lien), blocs à insérer, e-mails aux couleurs de la galerie (HTML + version texte), personnalisation `{prenom}`, envoi individuel ou groupé, aperçu en direct, historique ; onglet « Inscrits au programme » (inscriptions du site, export, désinscription)
 - **Newsletter** : inscription depuis l'accueil et le programme, envoi du programme aux inscrits avec lien de désinscription, export CSV
 - **Coordonnées et réglages** : adresse, téléphone, e-mails, réseaux sociaux, carte, mentions légales
-- **Comptes d'accès** : plusieurs personnes, changement de mot de passe
+- **Comptes d'accès** : responsables (donnent, modifient et retirent les accès, redonnent un mot de passe) et accès simples ; chacun change son mot de passe
 - **Sauvegarde** : archive .zip de tous les contenus et images
 
 ## Référencement et responsive

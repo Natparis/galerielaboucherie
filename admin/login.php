@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($mdp !== (string)($_POST['mdp2'] ?? '')) {
             $erreur = 'Les deux mots de passe ne sont pas identiques.';
         } else {
-            $u = ['id' => new_id(), 'nom' => $nom, 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'cree' => date('c')];
+            $u = ['id' => new_id(), 'nom' => $nom, 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'admin' => true, 'cree' => date('c')];
             data_save('utilisateurs', [$u]);
             session_regenerate_id(true);
             $_SESSION['uid'] = $u['id'];

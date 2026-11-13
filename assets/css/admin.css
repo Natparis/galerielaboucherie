@@ -249,3 +249,18 @@ input[type=file]:focus-visible+.nom-fichier,.media-actions:focus-within .btn-fic
 .message-html{background:#fff;border:1px solid var(--filet)}
 .ecrire .liste-dest{max-height:280px}
 form[data-selection]{min-width:0}
+
+/* Comptes d'accès */
+.comptes li{display:flex;flex-direction:column;gap:10px;padding:14px 0}
+.compte-ligne{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+.compte-ligne small{color:var(--gris);margin-left:6px}
+.compte-actions{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px}
+.compte-actions form{margin:0}
+.compte-actions details{flex:0 1 auto}
+.compte-actions summary{list-style:none;cursor:pointer}
+.compte-actions summary::-webkit-details-marker{display:none}
+.compte-actions details[open]{flex-basis:100%;order:5}
+.mdp-autre{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin-top:10px;padding:12px;background:#FBF9F5;border:1px solid var(--filet);border-radius:8px}
+.mdp-autre label{flex-basis:100%;font-size:14px;font-weight:700}
+.mdp-autre input{flex:1 1 220px;min-height:40px;padding:8px 10px;border:1px solid #B7B0A5;border-radius:6px;font:inherit}
+.bloc .barre-actions{position:static;background:none;padding:4px 0 0}
