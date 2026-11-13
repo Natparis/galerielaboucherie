@@ -21,7 +21,7 @@ L'accueil, « L'expo du mois », le programme et la page Artistes **se mettent �
 
 ## L'espace galerie (`/admin`)
 
-À la première visite de `/admin`, on crée le compte principal. Ensuite tout se gère sans toucher au code :
+À la première visite de `/admin`, on crée le compte principal (sauf si un premier compte a été livré dans `data/utilisateurs.json` avec l'archive d'installation). Connexion par identifiant ou e-mail ; un mot de passe donné par un responsable est « provisoire » jusqu'à ce que la personne le change. Ensuite tout se gère sans toucher au code :
 
 - **Expositions** : artiste, dates, affiche, textes, photos des pièces, brouillon/publié, duplication
 - **Articles de presse** : scan, PDF, lien, citation, « à la une »

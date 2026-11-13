@@ -32,11 +32,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($users as &$u) {
                 if ($u['id'] === $moi['id']) {
                     $u['hash'] = password_hash($mdp, PASSWORD_DEFAULT);
+                    $u['provisoire'] = false;
                 }
             }
             unset($u);
             data_save('utilisateurs', $users);
             flash('Votre mot de passe a été changé.');
+        }
+    } elseif ($action === 'moi') {
+        // Chacun règle son nom, son identifiant et son e-mail
+        $nom = trim((string)($_POST['nom'] ?? ''));
+        $ident = slugify((string)($_POST['identifiant'] ?? ''));
+        $email = mb_strtolower(trim((string)($_POST['email'] ?? '')));
+        $autres = array_filter($users, fn($u) => $u['id'] !== $moi['id']);
+        $pris = array_merge(array_map(fn($u) => mb_strtolower($u['identifiant'] ?? ''), $autres), array_column($autres, 'email'));
+        if ($nom === '' || $ident === 'element') {
+            flash('Indiquez votre nom et un identifiant.', 'err');
+        } elseif ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            flash('Cette adresse e-mail ne semble pas valide.', 'err');
+        } elseif (in_array($ident, $pris, true) || ($email !== '' && in_array($email, $pris, true))) {
+            flash('Cet identifiant ou cet e-mail est déjà utilisé par un autre compte.', 'err');
+        } else {
+            foreach ($users as &$u) {
+                if ($u['id'] === $moi['id']) {
+                    $u['nom'] = $nom;
+                    $u['identifiant'] = $ident;
+                    $u['email'] = $email;
+                }
+            }
+            unset($u);
+            data_save('utilisateurs', $users);
+            flash('Vos informations sont enregistrées. Vous pouvez vous connecter avec « ' . $ident . ' »' . ($email ? ' ou « ' . $email . ' »' : '') . '.');
         }
     } elseif (!$responsable) {
         // Tout le reste est réservé aux responsables
@@ -44,17 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'ajouter') {
         $nom = trim((string)($_POST['nom'] ?? ''));
         $email = mb_strtolower(trim((string)($_POST['email'] ?? '')));
-        if ($nom === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash('Indiquez un nom et une adresse e-mail valide.', 'err');
-        } elseif (in_array($email, array_column($users, 'email'), true)) {
-            flash('Un compte existe déjà avec cette adresse.', 'err');
+        $ident = slugify((string)($_POST['identifiant'] ?? '') ?: explode(' ', $nom)[0]);
+        $pris = array_merge(array_map(fn($u) => mb_strtolower($u['identifiant'] ?? ''), $users), array_filter(array_column($users, 'email')));
+        if ($nom === '' || ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL))) {
+            flash('Indiquez un nom, et une adresse e-mail valide si vous en donnez une.', 'err');
+        } elseif (in_array($ident, $pris, true) || ($email !== '' && in_array($email, $pris, true))) {
+            flash('Un compte existe déjà avec cet identifiant ou cette adresse.', 'err');
         } elseif (mb_strlen($mdp) < 10) {
             flash('Le mot de passe doit faire au moins 10 caractères.', 'err');
         } else {
             $resp = !empty($_POST['admin']);
-            $users[] = ['id' => new_id(), 'nom' => $nom, 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'admin' => $resp, 'cree' => date('c'), 'cree_par' => $moi['nom']];
+            $users[] = ['id' => new_id(), 'nom' => $nom, 'identifiant' => $ident, 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'admin' => $resp, 'provisoire' => true, 'cree' => date('c'), 'cree_par' => $moi['nom']];
             data_save('utilisateurs', $users);
-            flash('Compte créé pour ' . $nom . ($resp ? ', qui pourra aussi donner des accès' : '') . '. Transmettez-lui son mot de passe de vive voix : il pourra le changer ensuite.');
+            flash('Compte créé pour ' . $nom . ($resp ? ', qui pourra aussi donner des accès' : '') . '. Identifiant : « ' . $ident . ' ». Transmettez-lui son mot de passe provisoire de vive voix : le site lui demandera de le changer.');
         }
     } elseif ($cible === null) {
         flash('Compte introuvable.', 'err');
@@ -72,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('Le mot de passe doit faire au moins 10 caractères.', 'err');
         } else {
             $users[$cible]['hash'] = password_hash($mdp, PASSWORD_DEFAULT);
+            $users[$cible]['provisoire'] = true;
             data_save('utilisateurs', $users);
             flash('Nouveau mot de passe enregistré pour ' . $users[$cible]['nom'] . '. Transmettez-le-lui de vive voix.');
         }
@@ -100,7 +129,7 @@ admin_start('Comptes d\'accès', 'comptes.php');
 <?php foreach ($users as $u): $lui = $u['id'] === $moi['id']; ?>
       <li>
         <div class="compte-ligne">
-          <span><strong><?= e($u['nom']) ?></strong> <small><?= e($u['email']) ?><?= $lui ? ' · vous' : '' ?></small></span>
+          <span><strong><?= e($u['nom']) ?></strong> <small><?= e(implode(' · ', array_filter([$u['identifiant'] ?? '', $u['email'] ?? '']))) ?><?= $lui ? ' · vous' : '' ?><?= !empty($u['provisoire']) ? ' · mot de passe provisoire' : '' ?></small></span>
           <span class="etat <?= est_responsable($u) ? 'encours' : 'passe' ?>"><?= est_responsable($u) ? 'Responsable' : 'Accès simple' ?></span>
         </div>
 <?php if ($responsable && !$lui): ?>
@@ -127,8 +156,9 @@ admin_start('Comptes d\'accès', 'comptes.php');
     <form method="post" class="formulaire">
       <?= csrf_field() ?>
       <div class="champs">
-        <div class="champ half"><label for="nom">Prénom et nom</label><input id="nom" name="nom" required></div>
-        <div class="champ half"><label for="email">E-mail (identifiant)</label><input id="email" type="email" name="email" required></div>
+        <div class="champ full"><label for="nom">Prénom et nom</label><input id="nom" name="nom" required></div>
+        <div class="champ half"><label for="identifiant">Identifiant de connexion</label><p class="aide">Vide = le prénom, en minuscules.</p><input id="identifiant" name="identifiant" autocapitalize="none" autocomplete="off"></div>
+        <div class="champ half"><label for="email">E-mail (facultatif)</label><p class="aide">Permet aussi de se connecter.</p><input id="email" type="email" name="email"></div>
         <div class="champ full"><label for="mdp">Mot de passe provisoire (10 caractères minimum)</label><input id="mdp" type="text" name="mdp" required minlength="10" autocomplete="off"></div>
         <div class="champ full"><label class="case"><input type="checkbox" name="admin" value="1"> <span>Responsable : cette personne pourra aussi donner et retirer des accès</span></label></div>
       </div>
@@ -138,8 +168,23 @@ admin_start('Comptes d\'accès', 'comptes.php');
     <p class="aide">Pour ajouter une personne ou retrouver un mot de passe, adressez-vous à un responsable.</p>
 <?php endif ?>
   </section>
+  <div style="display:flex;flex-direction:column;gap:24px">
   <section class="bloc">
+    <h2>Mon compte</h2>
+    <form method="post" class="formulaire">
+      <?= csrf_field() ?>
+      <div class="champs">
+        <div class="champ full"><label for="mon-nom">Prénom et nom</label><input id="mon-nom" name="nom" required value="<?= e($moi['nom']) ?>"></div>
+        <div class="champ half"><label for="mon-ident">Identifiant de connexion</label><input id="mon-ident" name="identifiant" required autocapitalize="none" value="<?= e($moi['identifiant'] ?? '') ?>"></div>
+        <div class="champ half"><label for="mon-email">E-mail</label><input id="mon-email" type="email" name="email" value="<?= e($moi['email'] ?? '') ?>"></div>
+      </div>
+      <div class="barre-actions"><button class="btn ligne" name="action" value="moi">Enregistrer</button></div>
+    </form>
+  </section>
+  <section class="bloc" id="mon-mdp">
     <h2>Changer mon mot de passe</h2>
+<?php if (!empty($moi['provisoire'])): ?>    <div class="flash err">Votre mot de passe actuel est provisoire : choisissez le vôtre, connu de vous seul.</div>
+<?php endif ?>
     <form method="post" class="formulaire">
       <?= csrf_field() ?>
       <div class="champs">
@@ -149,5 +194,6 @@ admin_start('Comptes d\'accès', 'comptes.php');
       <div class="barre-actions"><button class="btn" name="action" value="mdp">Changer</button></div>
     </form>
   </section>
+  </div>
 </div>
 <?php admin_end();

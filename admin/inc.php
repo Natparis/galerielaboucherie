@@ -149,6 +149,9 @@ function admin_start(string $title, string $active = ''): void
       <a class="voir" href="../index.php" target="_blank" rel="noopener"><?= icon('eye') ?> Voir le site</a>
     </header>
     <main class="contenu">
+<?php if (!empty($u['provisoire']) && basename($_SERVER['SCRIPT_NAME'] ?? '') !== 'comptes.php'): ?>
+      <div class="flash err" role="status">Votre mot de passe est provisoire : <a href="comptes.php#mon-mdp">choisissez le vôtre maintenant</a>, connu de vous seul.</div>
+<?php endif ?>
 <?php foreach (flash() as [$type, $msg]): ?>
       <div class="flash <?= e($type) ?>" role="status"><?= e($msg) ?></div>
 <?php endforeach ?>

@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $log[] = ['nom' => $d['nom'], 'email' => $d['email'], 'ok' => $ok];
             usleep(150000); // ne pas saturer le serveur d'envoi
         }
-        if ($copie && filter_var($moi['email'], FILTER_VALIDATE_EMAIL)) {
+        if ($copie && filter_var($moi['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
             $perso = personnaliser_html($corps, $moi['nom']);
             envoyer_mail_html($moi['email'], '[Copie] ' . $sujet, email_html($perso, $sujet, $avecSignature), html_vers_texte($perso) . $sig);
         }
@@ -191,7 +191,11 @@ admin_start('Écrire', 'ecrire.php');
         <p class="aide"><code>{prenom}</code> est remplacé par le prénom de chaque destinataire. Les blocs insérés se modifient comme le reste du texte.</p>
       </div>
       <div class="champ full"><label class="case"><input type="checkbox" name="signature" value="1"<?= $avecSignature ? ' checked' : '' ?>> <span>Ajouter la signature de la galerie</span></label></div>
+<?php if (!empty($moi['email'])): ?>
       <div class="champ full"><label class="case"><input type="checkbox" name="copie" value="1"<?= $copie ? ' checked' : '' ?>> <span>M'envoyer une copie (<?= e($moi['email']) ?>)</span></label></div>
+<?php else: ?>
+      <p class="aide">Pour recevoir une copie de vos envois, ajoutez votre e-mail dans <a href="comptes.php">Comptes d'accès</a>.</p>
+<?php endif ?>
     </div>
   </section>
 

@@ -86,20 +86,30 @@ Version de PHP : le fichier « .ovhconfig » demande PHP 8.2.
 
 
 ------------------------------------------------------------
-ÉTAPE 4 — Créer le compte de la galerie
+ÉTAPE 4 — Se connecter à l'espace galerie
 ------------------------------------------------------------
 1. Ouvrez https://galerielaboucherie.com/admin/
-2. Première visite : la page « Bienvenue dans l'espace galerie »
-   demande un nom, un e-mail et un mot de passe (10 caractères
-   minimum). C'est le compte principal.
+2. On se connecte avec son IDENTIFIANT (son prénom en minuscules,
+   ex. « olivier ») ou son adresse e-mail, et son mot de passe.
+
+   • Si un premier compte a été préparé avec l'installation
+     (ex. celui d'Olivier) : connectez-vous avec l'identifiant
+     et le mot de passe provisoire qui vous ont été transmis.
+     Un bandeau rappelle de choisir aussitôt un mot de passe
+     personnel (menu « Comptes d'accès »).
+   • Sinon, à la première visite, la page « Bienvenue dans
+     l'espace galerie » demande un nom, un e-mail et un mot de
+     passe (10 caractères minimum) : c'est le compte principal.
+     Faites-le dès que les fichiers sont en ligne.
+
 3. D'autres personnes : menu « Comptes d'accès » > « Donner un
    accès ». Deux sortes de comptes :
      • responsable : gère le site ET peut donner, modifier ou
        retirer des accès (cochez la case, ou plus tard le bouton
        « Autoriser à donner des accès ») ;
      • accès simple : gère tout le site, sauf les accès.
-   Le premier compte créé est responsable. Il en faut toujours
-   au moins un.
+   Il faut toujours au moins un responsable. Chacun règle son
+   nom, son identifiant et son e-mail dans « Mon compte ».
 
 Mot de passe oublié : un responsable en enregistre un nouveau
 (bouton « Nouveau mot de passe » en face du nom) et le transmet

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($mdp !== (string)($_POST['mdp2'] ?? '')) {
             $erreur = 'Les deux mots de passe ne sont pas identiques.';
         } else {
-            $u = ['id' => new_id(), 'nom' => $nom, 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'admin' => true, 'cree' => date('c')];
+            $u = ['id' => new_id(), 'nom' => $nom, 'identifiant' => slugify(explode(' ', $nom)[0]), 'email' => $email, 'hash' => password_hash($mdp, PASSWORD_DEFAULT), 'admin' => true, 'cree' => date('c')];
             data_save('utilisateurs', [$u]);
             session_regenerate_id(true);
             $_SESSION['uid'] = $u['id'];
@@ -33,14 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             sleep(min(10, $_SESSION['essais'] - 5)); // ralentit les tentatives répétées
         }
         foreach ($users as $u) {
-            if ($u['email'] === $email && password_verify($mdp, $u['hash'])) {
+            // On se connecte avec son identifiant (ex. son prénom) ou son adresse e-mail
+            $bonCompte = $email !== '' && (($u['email'] ?? '') === $email || mb_strtolower($u['identifiant'] ?? '') === $email);
+            if ($bonCompte && password_verify($mdp, $u['hash'])) {
                 session_regenerate_id(true);
                 $_SESSION['uid'] = $u['id'];
                 $_SESSION['essais'] = 0;
                 redirect($cible);
             }
         }
-        $erreur = 'E-mail ou mot de passe incorrect.';
+        $erreur = 'Identifiant ou mot de passe incorrect.';
     }
 }
 
@@ -63,7 +65,7 @@ admin_start($premier ? 'Créer le compte de la galerie' : 'Connexion');
     <?php if ($premier): ?>
     <div class="champ"><label for="nom">Votre prénom et nom</label><input id="nom" name="nom" required autocomplete="name" value="<?= e($_POST['nom'] ?? '') ?>"></div>
     <?php endif ?>
-    <div class="champ"><label for="email">E-mail</label><input id="email" type="email" name="email" required autocomplete="username" value="<?= e($_POST['email'] ?? '') ?>"></div>
+    <div class="champ"><label for="email"><?= $premier ? 'E-mail' : 'Identifiant ou e-mail' ?></label><input id="email" type="<?= $premier ? 'email' : 'text' ?>" name="email" required autocomplete="username" autocapitalize="none" value="<?= e($_POST['email'] ?? '') ?>"></div>
     <div class="champ"><label for="mdp">Mot de passe<?= $premier ? ' (10 caractères minimum)' : '' ?></label><input id="mdp" type="password" name="mdp" required autocomplete="<?= $premier ? 'new-password' : 'current-password' ?>"<?= $premier ? ' minlength="10"' : '' ?>></div>
     <?php if ($premier): ?>
     <div class="champ"><label for="mdp2">Mot de passe, encore une fois</label><input id="mdp2" type="password" name="mdp2" required autocomplete="new-password" minlength="10"></div>
